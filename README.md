@@ -1,9 +1,10 @@
 
 # Soundcloudfire
 I started to play around with the soundcloud API
+
+
 [![Build Status](https://travis-ci.org/paszin/soundcloudfire.svg?branch=master)](https://travis-ci.org/paszin/soundcloudfire)
-[![Test Coverage](https://codeclimate.com/github/paszin/soundcloudfire/badges/coverage.svg)](https://codeclimate.com/github/paszin/soundcloudfire/coverage)
-[![Issue Count](https://codeclimate.com/github/paszin/soundcloudfire/badges/issue_count.svg)](https://codeclimate.com/github/paszin/soundcloudfire)
+[![Code Climate](https://codeclimate.com/github/paszin/soundcloudfire/badges/gpa.svg)](https://codeclimate.com/github/paszin/soundcloudfire)[![Issue Count](https://codeclimate.com/github/paszin/soundcloudfire/badges/issue_count.svg)](https://codeclimate.com/github/paszin/soundcloudfire)
 
 
 
@@ -11,59 +12,7 @@ I started to play around with the soundcloud API
 
 This projects builds on AngularJS Cordova generator:
 
-[![NPM](https://nodei.co/npm/generator-angularjs-cordova.png?downloads=true)](https://nodei.co/npm/generator-angularjs-cordova/)
-
-
-## Installation
-
-```
-npm install -g generator-angularjs-cordova
-```
-
-## Overview
-
-A yeoman generator which combines the best features and practices for cordova based mobile app development  extended from the already available yeoman generators such as [angular generator](https://github.com/yeoman/generator-angular) [angular-cordova](https://github.com/wangshijun/generator-angular-cordova). The project scaffolds an AngularJs application as described and implemented with [MEAN stack](http://meanjs.org/docs.html#angularjs-modules).
-This generator is ideal for projects where a tool is required to generate and scaffold a project based on angular and cordova. If you like pre-defined templates such as ionic, there are dedicated generators which do the job.
-
-### Technologies:
-
-* [Cordova](http://phonegap.com) - for packaging your HTML, CSS and Javascript into deployable mobile apps.
-This generator currently has not been tested for its compatibility with phonegap. It might be added in the future.
-
-* [AngularJS](http://angularjs.org) - One of the most popular Javascript MVC/MV** frameworks that is available out there
-
-* [AngularUI](http://angular-ui.github.io/) - Includes Twitter bootstrap 3 and allows for developing responsive pages. It ships with various pre-defined templates.
-
-### Features
-
-* Uses the [Vertical Module approach](http://meanjs.org/docs.html#angularjs-modules) for initializing and extending the angularjs application.
-The project structure suggested by the Angular team with the [angular-seed](https://github.com/angular/angular-seed) works well but can get quite difficult to maintain and extend as the project grows. The vertical approach when used along the generator removes the hassle involved in manually including and injecting new services, defining routes and binding the views. It also allows for developers to work on individual modules which can then be combined seamlessly into the project.
-
-
-## Getting Started
-
-Before you begin make sure you have the [yo scaffolding tool](http://yeoman.io/generators.html) installed(As it is part of the Yeoman tool set you might have installed it before). To globally install *yo* you will need to use npm:
-
-**Note:** Your user might not have the permissions to install package globally, so use a super user or **sudo**.
-
-```
-$ npm install -g yo
-```
-
-Once ready, you should be able to use this with
-
-```
-npm install -g generator-angularjs-cordova
-```
-
-Create and navigate into a new directory and run the yo command to initialize a new project
-
-```
-mkdir testapp && cd testapp
-yo angularjs-cordova
-```
-
-This presents you with a series of options to initialize and customize your application
+https://nodei.co/npm/generator-angularjs-cordova/
 
 Once this is done, run
 ```
