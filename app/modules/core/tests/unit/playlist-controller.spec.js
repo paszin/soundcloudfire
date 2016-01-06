@@ -6,6 +6,8 @@ describe('Controller: PlaylistController', function() {
     beforeEach(module('ui.router'));
     //Load the module
     beforeEach(module('core'));
+    beforeEach(module('ngAudio'));
+    
 
     var PlaylistController,
         scope;
