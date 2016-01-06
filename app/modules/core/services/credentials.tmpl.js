@@ -9,7 +9,7 @@
  */
 angular
     .module('core')
-    .value('credentials_template', { //replace with credentials
+    .value('credentials', { //replace with credentials
     //replace the following with your real credentials for soundcloud
         "username": "username@soundcloud.com",
         "password": "verlongstringinnodictonary",
