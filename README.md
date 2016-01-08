@@ -1,107 +1,18 @@
-# AngularJS Cordova generator
-[![Build Status](https://travis-ci.org/keshavos/generator-angularjs-cordova.svg)](https://travis-ci.org/keshavos/generator-angularjs-cordova)
+
+# Soundcloudfire
+I started to play around with the soundcloud API
 
 
-[![NPM](https://nodei.co/npm/generator-angularjs-cordova.png?downloads=true)](https://nodei.co/npm/generator-angularjs-cordova/)
+[![Build Status](https://travis-ci.org/paszin/soundcloudfire.svg?branch=master)](https://travis-ci.org/paszin/soundcloudfire)
+[![Code Climate](https://codeclimate.com/github/paszin/soundcloudfire/badges/gpa.svg)](https://codeclimate.com/github/paszin/soundcloudfire)[![Issue Count](https://codeclimate.com/github/paszin/soundcloudfire/badges/issue_count.svg)](https://codeclimate.com/github/paszin/soundcloudfire)
 
 
-## Changelog
-
-* 0.2.3
-    * Support for generating angular documentation [#2](https://github.com/keshavos/generator-angularjs-cordova/issues/2)
-    * Add option to prompt user to add type of service [#3](https://github.com/keshavos/generator-angularjs-cordova/issues/3)
-    * Code format of templates and sample app [#4](https://github.com/keshavos/generator-angularjs-cordova/issues/4)
-    * Fix bug adding Windows 8 platform  [#5](https://github.com/keshavos/generator-angularjs-cordova/issues/5)
-
-* 0.2.2
-    * Replace module name input with list of available modules
-    * With any of the sub-generators, the prompt which used to ask the user which module the file should be generated under, all available modules are listed for user to pick from
-        * eg `yo angularjs-cordova:angular-filter foo` will now produce the following prompt:
-        ```
-        [?] Which module does this filter belongs to? (Use arrow keys)
-        > core
-          test1
-          test2
-          test3
-        ```
-* 0.2.1
-    * Updated README
-    * Development folder is now `app/` in the root folder. The source files are copied to `www/` with grunt tasks
-    * Remove option to use the cordova template app
-    * `angular-test` sub-generator prompts to generate test template for unit (targeting controller, service, directive or filter) or end-to-end test
-    * Add grunt tasks to perform build tasks which copies only required source to `www/` for build
-    * Add grunt tasks
-        * `grunt serve` serves the development app on port 9000
-        * `grunt build` performs build related tasks and moves required source to `www/`
-        * `grunt karma` runs karma tests
-        * `protractor protractor-desktop-config.js` runs protractor e2e tests
-            * Requires webdriver to be started, app running
-            * Requires app to be running on `http://127.0.0.1:9000/`
-    * Pre-configured protractor config and working e2e example of default app
-
-* 0.1.4
-    * Upgrade to cordova 3.5
-    * Better dependency declarations.
-    * More tests
-    * Refined documentation/ README
-
-* 0.0.2
-    * Fixes travis file to include bower required for passing tests
-
-* 0.0.1
-    * Minimal Viable Product which works as expected
 
 
-## Installation
 
-```
-npm install -g generator-angularjs-cordova
-```
+This projects builds on AngularJS Cordova generator:
 
-## Overview
-
-A yeoman generator which combines the best features and practices for cordova based mobile app development  extended from the already available yeoman generators such as [angular generator](https://github.com/yeoman/generator-angular) [angular-cordova](https://github.com/wangshijun/generator-angular-cordova). The project scaffolds an AngularJs application as described and implemented with [MEAN stack](http://meanjs.org/docs.html#angularjs-modules).
-This generator is ideal for projects where a tool is required to generate and scaffold a project based on angular and cordova. If you like pre-defined templates such as ionic, there are dedicated generators which do the job.
-
-### Technologies:
-
-* [Cordova](http://phonegap.com) - for packaging your HTML, CSS and Javascript into deployable mobile apps.
-This generator currently has not been tested for its compatibility with phonegap. It might be added in the future.
-
-* [AngularJS](http://angularjs.org) - One of the most popular Javascript MVC/MV** frameworks that is available out there
-
-* [AngularUI](http://angular-ui.github.io/) - Includes Twitter bootstrap 3 and allows for developing responsive pages. It ships with various pre-defined templates.
-
-### Features
-
-* Uses the [Vertical Module approach](http://meanjs.org/docs.html#angularjs-modules) for initializing and extending the angularjs application.
-The project structure suggested by the Angular team with the [angular-seed](https://github.com/angular/angular-seed) works well but can get quite difficult to maintain and extend as the project grows. The vertical approach when used along the generator removes the hassle involved in manually including and injecting new services, defining routes and binding the views. It also allows for developers to work on individual modules which can then be combined seamlessly into the project.
-
-
-## Getting Started
-
-Before you begin make sure you have the [yo scaffolding tool](http://yeoman.io/generators.html) installed(As it is part of the Yeoman tool set you might have installed it before). To globally install *yo* you will need to use npm:
-
-**Note:** Your user might not have the permissions to install package globally, so use a super user or **sudo**.
-
-```
-$ npm install -g yo
-```
-
-Once ready, you should be able to use this with
-
-```
-npm install -g generator-angularjs-cordova
-```
-
-Create and navigate into a new directory and run the yo command to initialize a new project
-
-```
-mkdir testapp && cd testapp
-yo angularjs-cordova
-```
-
-This presents you with a series of options to initialize and customize your application
+https://nodei.co/npm/generator-angularjs-cordova/
 
 Once this is done, run
 ```
