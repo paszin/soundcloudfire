@@ -19,3 +19,4 @@ platforms/ios/cordova/console.log
 
 ############credentials#######
 /app/modules/core/services/credentials.js
+/app/modules/core/services/credentials.tmpl.js ##since we have this file on the server, i can ignore it also for myself
