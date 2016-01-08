@@ -1,4 +1,5 @@
-'use strict';
+/*global angular, console, moment*/
+/*jslint plusplus: true */
 
 /**
  * @ngdoc object
@@ -10,6 +11,8 @@ angular
     .module('core')
     .controller('HomeController', ['$rootScope', '$scope', '$http', '$state', '$stateParams', '$log', '$timeout', '$interval', 'ngAudio', 'Soundcloud',
         function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, Soundcloud) {
+
+            'use strict';
 
             $scope.audio = {
                 "info": {
@@ -23,7 +26,7 @@ angular
                     "comment_count": 46
                 },
                 "stream": true
-            }
+            };
 
             $scope.info = {
                 "me": {},
@@ -31,26 +34,32 @@ angular
             };
 
             $scope.savePlaylists = function (data) {
-                $timeout(function () {
-                    console.log("save playlists");
 
-                    if ($scope.info.playlists.length !== 0) {
-                        console.log("take from cache");
-                        return;
-                    }
-                    var i, j;
-                    for (i = 0; i < data.length; i++) {
-                        $scope.info.playlists[i] = data[i];
-                        $scope.info.playlists[i].track_count_readable = (data[i].track_count == 1) ? "1 Track" : data[i].track_count + 'Tracks';
-                        $scope.info.playlists[i].duration_readable = moment.duration(data[i].duration, "milliseconds").humanize();
-                        $scope.info.playlists[i].index = i;
-                        $scope.info.playlists[i].showTracks = false;
-                        for (j = 0; j < data[i].length; j++) {
-                            $scope.info.playlists[i].tracks[j].isPlaying = false;
-                        }
+                console.log("save playlists");
 
+                if ($scope.info.playlists.length !== 0) {
+                    console.log("take from cache");
+                    return;
+                }
+                var i, j;
+                for (i = 0; i < data.length; i++) {
+                    $scope.info.playlists[i] = data[i];
+                    $scope.info.playlists[i].track_count_readable = (data[i].track_count === 1) ? "1 Track" : data[i].track_count + 'Tracks';
+                    $scope.info.playlists[i].duration_readable = moment.duration(data[i].duration, "milliseconds").humanize();
+                    $scope.info.playlists[i].index = i;
+                    $scope.info.playlists[i].showTracks = false;
+                    for (j = 0; j < data[i].length; j++) {
+                        $scope.info.playlists[i].tracks[j].isPlaying = false;
                     }
-                });
+
+                }
+
+            };
+
+            $scope.saveFavorites = function (data) {
+                $scope.favorites = data;
+
+
             };
 
 
@@ -65,7 +74,6 @@ angular
 
             $scope.getPlaylist = function (index) {
 
-
                 $scope.info.playlists[index].showTracks = !$scope.info.playlists[index].showTracks;
                 //$scope.info.playlist = $scope.info.playlists[index].tracks;
                 console.log($scope.info.playlists[index]);
@@ -76,11 +84,11 @@ angular
                   });*/
             };
 
-             $scope.audio = {
-                 "stream": undefined,
-                 "info": undefined,
-                 "isPlaying": false
-             };
+            $scope.audio = {
+                "stream": undefined,
+                "info": undefined,
+                "isPlaying": false
+            };
 
             $scope.playPauseSound = function (track) {
 
@@ -114,8 +122,8 @@ angular
                 }
 
             };
-            
-           
+
+
 
             var viewsFolder = "modules/core/views/";
             $scope.tabs = [
@@ -124,31 +132,31 @@ angular
                     content: viewsFolder + "stream.template.html",
                     call: undefined,
                     callback: undefined
-                    },
+                },
                 {
                     title: 'Playlists',
                     content: viewsFolder + "playlists.template.html",
                     call: Soundcloud.getPlaylists,
-                    callback: $scope.savePlaylists,
-                    },
+                    callback: $scope.savePlaylists
+                },
                 {
                     title: 'Likes',
-                    content: viewsFolder + "likes.template.html",
-                    call: undefined,
-                    callback: undefined
-                    },
+                    content: viewsFolder + "favorites.template.html",
+                    call: Soundcloud.getFavorites,
+                    callback: $scope.saveFavorites
+                },
                 {
                     title: 'Following',
                     content: viewsFolder + "following.template.html",
                     call: undefined,
                     callback: undefined
-                    }
-        ];
+                }
+            ];
 
             $scope.selectedIndex = 1;
             $scope.$watch('selectedIndex', function (current, old) {
-                var fnct = $scope.tabs[current]['call'],
-                    callback = $scope.tabs[current]['callback'];
+                var fnct = $scope.tabs[current].call,
+                    callback = $scope.tabs[current].callback;
                 if (fnct !== undefined) {
                     fnct(callback);
                 }
@@ -158,5 +166,5 @@ angular
 
 
             Soundcloud.getAuth($scope.saveAuth);
-                }
-                ]);
+        }
+        ]);

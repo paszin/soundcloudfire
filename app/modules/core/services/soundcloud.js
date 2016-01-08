@@ -1,4 +1,4 @@
-
+/*global angular, console */
 
 /**
  * @ngdoc service
@@ -9,7 +9,7 @@ angular
     .module('core')
     .factory('Soundcloud', ['$http', 'credentials',
         function ($http, credentials) {
-            
+
             'use strict';
 
             //credentials
@@ -27,106 +27,193 @@ angular
                 }),
                 meUrl = baseUrl + "/me?oauth_token=#{token}",
                 playlistsUrl = baseUrl + "/users/#{user_id}/playlists?oauth_token=#{token}",
+                favoritesUrl = baseUrl + "/users/#{user_id}/favorites?oauth_token=#{token}",
+                trackUrl = baseUrl + "/tracks/#{track_id}?oauth_token=#{token}",
                 //data
                 me_data,
                 playlists_data,
-                oauth_token;
+                oauth_token,
 
-            var glob = {
+                api = {
 
-                /**
-                 * @ngdoc function
-                 * @name core.Services.Soundcloud#getAuth
-                 * @methodOf core.Services.Soundcloud
-                 * @return {json} Returns auth data
-                 */
-                getAuth: function (callback) {
-                    $http({
-                        method: 'POST',
-                        url: authUrl
-                    }).then(function successCallback(response) {
-                        console.log("success auth")
-                        oauth_token = response['data']['access_token'];
-                        callback(response['data']);
+                    /**
+                     * @ngdoc function
+                     * @name core.Services.Soundcloud#getAuth
+                     * @methodOf core.Services.Soundcloud
+                     * @return {json} Returns auth data
+                     */
+                    getAuth: function (callback) {
+                        $http({
+                            method: 'POST',
+                            url: authUrl
+                        }).then(function successCallback(response) {
+                            console.log("success auth");
+                            oauth_token = response.data.access_token;
+                            callback(response.data);
 
-                    }, function errorCallback(response) {
-                        console.log("error auth");
-                    });
-                },
+                        }, function errorCallback(response) {
+                            console.log("error auth");
+                        });
+                    },
 
-                /**
-                 * @ngdoc function
-                 * @name core.Services.Soundcloud#getMe
-                 * @methodOf core.Services.Soundcloud
-                 * @return {json} Returns me data
-                 */
-                getMe: function (callback) {
-                    if (oauth_token === undefined) {
-                        return;
-                    }
-                    if (me_data) {
-                        console.log("found me data in cache");
-                        callback(me_data);
-                    } else {
-                        console.log(meUrl.format({
-                            "token": oauth_token
+                    /**
+                     * @ngdoc function
+                     * @name core.Services.Soundcloud#getMe
+                     * @methodOf core.Services.Soundcloud
+                     * @return {json} Returns me data
+                     */
+                    getMe: function (callback) {
+                        if (oauth_token === undefined) {
+                            return;
+                        }
+                        if (me_data) {
+                            console.log("found me data in cache");
+                            callback(me_data);
+                        } else {
+                            console.log(meUrl.format({
+                                "token": oauth_token
+                            }));
+                            $http({
+                                method: 'GET',
+                                url: meUrl.format({
+                                    "token": oauth_token
+                                })
+                            }).then(function successCallback(response) {
+                                console.log("success me");
+                                me_data = response.data;
+                                callback(response.data);
+                            }, function errorCallback(response) {
+                                console.log("error me");
+
+                            });
+                        }
+                    },
+                    /**
+                     * @ngdoc function
+                     * @name core.Services.Soundcloud#getPlaylists
+                     * @methodOf core.Services.Soundcloud
+                     * @return {json} Returns playlists data
+                     */
+                    getPlaylists: function (callback) {
+                        if (me_data === undefined) {
+                            console.log("missing me data");
+                            //glob.getMeData();
+                            return;
+                        }
+                        console.log(playlistsUrl.format({
+                            "token": oauth_token,
+                            "user_id": me_data.id
                         }));
                         $http({
                             method: 'GET',
-                            url: meUrl.format({
-                                "token": oauth_token
+                            url: playlistsUrl.format({
+                                "token": oauth_token,
+                                "user_id": me_data.id
                             })
                         }).then(function successCallback(response) {
-                            console.log("success me")
-                            me_data = response['data'];
-                            callback(response['data']);
+                            console.log("success playlists");
+                            playlists_data = response.data;
+                            callback(response.data);
                         }, function errorCallback(response) {
-                            console.log("error me");
-
+                            console.log("error playlists");
                         });
-                    }
-                },
-                /**
-                 * @ngdoc function
-                 * @name core.Services.Soundcloud#getPlaylists
-                 * @methodOf core.Services.Soundcloud
-                 * @return {json} Returns playlists data
-                 */
-                getPlaylists: function (callback) {
-                    if (me_data === undefined) {
-                        console.log("missing me data");
-                        //glob.getMeData();
-                        return;
-                    }
-                    console.log(playlistsUrl.format({
-                        "token": oauth_token,
-                        "user_id": me_data.id
-                    }));
-                    $http({
-                        method: 'GET',
-                        url: playlistsUrl.format({
+                    },
+                    
+                    /**
+                     * @ngdoc function
+                     * @name core.Services.Soundcloud#getFavorites
+                     * @methodOf core.Services.Soundcloud
+                     * @return {json} Returns auth data
+                     */
+                    getFavorites: function (callback) {
+                        if (me_data === undefined) {
+                            console.log("missing me data");
+                            //glob.getMeData();
+                            return;
+                        }
+                        console.log(favoritesUrl.format({
                             "token": oauth_token,
                             "user_id": me_data.id
-                        })
-                    }).then(function successCallback(response) {
-                        console.log("success playlists");
-                        playlists_data = response['data'];
-                        callback(response['data']);
-                    }, function errorCallback(response) {
-                        console.log("error playlists");
-                    });
-                },
-
-                getOauth_token: function () {
-                    return oauth_token;
-                },
-                getUrlWithToken: function (url) {
-                    return url + "?oauth_token=#{token}".format({
-                        token: oauth_token()
-                    });
-                }
-            };
+                        }));
+                        $http({
+                            method: 'GET',
+                            url: favoritesUrl.format({
+                                "token": oauth_token,
+                                "user_id": me_data.id
+                            })
+                        }).then(function successCallback(response) {
+                            console.log("success playlists");
+                            //favorites_data = response.data;
+                            callback(response.data);
+                        }, function errorCallback(response) {
+                            console.log("error favorites");
+                        });
 
 
-            return glob;
-                }]);
+                    },
+                    /**
+                     * @ngdoc function
+                     * @name core.Services.Soundcloud#getTrack
+                     * @methodOf core.Services.Soundcloud
+                     * @return {json} Returns auth data
+                     */
+                    getTrack: function (track_id, callback) {
+                        if (me_data === undefined) {
+                            console.log("missing me data");
+                            //glob.getMeData();
+                            return;
+                        }
+                        console.log(trackUrl.format({
+                            "token": oauth_token,
+                            "track_id": track_id
+                        }));
+                        $http({
+                            method: 'GET',
+                            url: trackUrl.format({
+                                "token": oauth_token,
+                                "track_id": track_id
+                            })
+                        }).then(function successCallback(response) {
+                            console.log("success track");
+                            //favorites_data = response.data;
+                            callback(response.data);
+                        }, function errorCallback(response) {
+                            console.log("error track");
+                        });
+
+
+                    },
+                    /**
+                     * @ngdoc function
+                     * @name core.Services.Soundcloud#getAuth
+                     * @methodOf core.Services.Soundcloud
+                     * @return {json} Returns auth data
+                     */
+                    getOauth_token: function () {
+                        return oauth_token;
+                    },
+                    /**
+                     * @ngdoc function
+                     * @name core.Services.Soundcloud#getAuth
+                     * @methodOf core.Services.Soundcloud
+                     * @return {json} Returns auth data
+                     */
+                    getUrlWithToken: function (url) {
+                        return url + "?oauth_token=#{token}".format({
+                            token: oauth_token()
+                        });
+                    },
+                    /**
+                     * @ngdoc function
+                     * @name core.Services.Soundcloud#getAuth
+                     * @methodOf core.Services.Soundcloud
+                     * @return {json} Returns auth data
+                     */
+                    getUri: function (url) {
+                        
+                    }
+                };
+
+
+            return api;
+        }]);
