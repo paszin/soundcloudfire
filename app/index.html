@@ -66,6 +66,9 @@
         </div>
     </footer>
 -->
+      <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+
+
     <!-- build:js scripts/vendor.js -->
         <!-- injector:bowerjs -->
         <script src="lib/jquery/dist/jquery.js"></script>
@@ -86,6 +89,7 @@
         <script src="lib/moment/moment.js"></script>
         <script src="lib/angular-fontawesome/dist/angular-fontawesome.js"></script>
         <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="lib/angular-route/angular-route.js"></script>
         <!-- endinjector -->
     <!-- endbuild -->
 
@@ -94,11 +98,15 @@
         <script src="js/config.js"></script>
         <script src="js/application.js"></script>
         <script src="modules/core/core.js"></script>
+        <script src="modules/soundcloud/soundcloud.js"></script>
         <script src="modules/core/config/routes.js"></script>
+        <script src="modules/core/services/angular-soundcloud.js"></script>
         <script src="modules/core/services/credentials.js"></script>
+        <script src="modules/core/services/credentials.tmpl.js"></script>
         <script src="modules/core/services/soundcloud.js"></script>
         <script src="modules/core/directives/keyeventhandler.js"></script>
         <script src="modules/core/controllers/home.js"></script>
+        <script src="modules/core/controllers/login.js"></script>
         <script src="modules/core/controllers/playlist.js"></script>
         <!-- endinjector -->
     <!-- endbuild -->

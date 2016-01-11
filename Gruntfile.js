@@ -1,7 +1,7 @@
 'use strict';
 
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
         connect: {
             options: {
                 port: 9000,
-                hostname: '0.0.0.0',
+                hostname: '127.0.0.1',
                 livereload: 35729
             },
             livereload: {
@@ -146,8 +146,8 @@ module.exports = function(grunt) {
 
         /**
          * Generate AngularJs Documentation
-        */
-        ngdocs : {
+         */
+        ngdocs: {
             options: {
                 dest: 'docs',
                 scripts: [
@@ -177,15 +177,15 @@ module.exports = function(grunt) {
         },
 
         /**
-        * Strip comments from the distribution code
-        */
+         * Strip comments from the distribution code
+         */
         comments: {
             dist: {
                 options: {
                     singleline: true,
                     multiline: true
                 },
-                src: [ 'www/scripts/custom.js']
+                src: ['www/scripts/custom.js']
             },
         },
 
@@ -193,7 +193,7 @@ module.exports = function(grunt) {
         injector: {
             options: {
                 addRootSlash: false,
-                ignorePath: 'app/',
+                ignorePath: ['app/', 'app/modules/core/services/credentials.templ.js'],
                 bowerPrefix: 'bower',
             },
             localDependencies: {
@@ -219,7 +219,7 @@ module.exports = function(grunt) {
             karmaDependencies: {
                 options: {
                     ignorePath: '',
-                    transform: function(filepath) {
+                    transform: function (filepath) {
                         return '\'' + filepath + '\',';
                     }
                 },
@@ -398,7 +398,7 @@ module.exports = function(grunt) {
     });
 
 
-    grunt.registerTask('serve', function(target) {
+    grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
             console.log('dist serve');
             return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -414,7 +414,7 @@ module.exports = function(grunt) {
         ]);
     });
 
-    grunt.registerTask('server', function(target) {
+    grunt.registerTask('server', function (target) {
         grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
         grunt.task.run(['serve:' + target]);
     });

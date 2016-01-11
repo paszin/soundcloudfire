@@ -32,6 +32,7 @@ module.exports = function(config) {
             'app/lib/moment/moment.js',
             'app/lib/angular-fontawesome/dist/angular-fontawesome.js',
             'app/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+            'app/lib/angular-route/angular-route.js',
             <!-- endinjector -->
 
             'app/js/config.js',
