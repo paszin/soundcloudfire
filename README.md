@@ -5,6 +5,7 @@ I started to play around with the soundcloud API
 
 [![Build Status](https://travis-ci.org/paszin/soundcloudfire.svg?branch=master)](https://travis-ci.org/paszin/soundcloudfire)
 [![Code Climate](https://codeclimate.com/github/paszin/soundcloudfire/badges/gpa.svg)](https://codeclimate.com/github/paszin/soundcloudfire)[![Issue Count](https://codeclimate.com/github/paszin/soundcloudfire/badges/issue_count.svg)](https://codeclimate.com/github/paszin/soundcloudfire)
+[![Dependencies](https://david-dm.org/paszin/soundcloudfire.svg)](https://david-dm.org/paszin/soundcloudfire)
 
 
 
