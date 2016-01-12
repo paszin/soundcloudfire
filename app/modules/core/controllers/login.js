@@ -20,7 +20,7 @@ angular
                 SoundCloudLogin.connect().then(function () {
                     console.log("connected"); // Connected!
                     $state.go('home');
-                    SoundCloudAPI.me();
+                    
                 });
             };
 

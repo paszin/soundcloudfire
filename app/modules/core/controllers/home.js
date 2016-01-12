@@ -13,8 +13,8 @@ angular
         function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, Soundcloud) {
 
             'use strict';
-            
-            Soundcloud.setToken();
+
+
 
             $scope.info = {
                 "me": {},
@@ -56,7 +56,7 @@ angular
 
                 Soundcloud.getPlaylists($scope.savePlaylists); //comment out as soon as we have better soundcloud service
             };
-            
+
 
             $scope.getPlaylist = function (index) {
 
@@ -114,26 +114,51 @@ angular
             var viewsFolder = "modules/core/views/";
             $scope.tabs = [
                 {
+                    title: 'Search',
+                    content: viewsFolder + "following.template.html",
+                    icon: "fa-search",
+                    call: undefined,
+                    callback: undefined
+                },
+                {
                     title: 'Stream',
-                    content: viewsFolder + "stream.template.html",
+                    content: viewsFolder + "following.template.html",
+                    icon: "fa-music",
                     call: undefined,
                     callback: undefined
                 },
                 {
                     title: 'Playlists',
                     content: viewsFolder + "playlists.template.html",
+                    icon: 'fa-th-list',
                     call: Soundcloud.getPlaylists,
                     callback: $scope.savePlaylists
                 },
                 {
                     title: 'Likes',
                     content: viewsFolder + "favorites.template.html",
+                    icon: 'fa-heart',
                     call: Soundcloud.getFavorites,
                     callback: $scope.saveFavorites
                 },
                 {
-                    title: 'Following',
+                    title: 'History',
                     content: viewsFolder + "following.template.html",
+                    icon: 'fa-clock-o',
+                    call: undefined,
+                    callback: undefined
+                },
+                {
+                    title: 'Next Tracks',
+                    content: viewsFolder + "following.template.html",
+                    icon: 'fa-headphones',
+                    call: undefined,
+                    callback: undefined
+                },
+                {
+                    title: 'Groups',
+                    content: viewsFolder + "following.template.html",
+                    icon: 'fa-users',
                     call: undefined,
                     callback: undefined
                 }
@@ -149,6 +174,16 @@ angular
             });
 
 
-            Soundcloud.getMe($scope.saveMe);
-        }
-        ]);
+
+            if (window.location.origin === "http://127.0.0.1:9000") {
+                Soundcloud.getAuth(function (data) {
+                    Soundcloud.getMe($scope.saveMe)
+                });
+            } else {
+                Soundcloud.setToken();
+                Soundcloud.getMe($scope.saveMe);
+            }
+
+
+
+    }]);
