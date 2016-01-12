@@ -4,7 +4,7 @@
 }
 
 .waveform-overlay {
-    position: absolute; 
+    position: absolute;
     top: 0px;
     z-index: 1;
     background: blue;
@@ -16,4 +16,41 @@
     position: relative;
     z-index: 2;
     width: 100%;
+}
+
+#backgroundimage {
+    background-position: center;
+    background-image: url('../img/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    overflow: auto;
+}
+
+.brightfont {
+    color: azure;
+}
+
+@font-face {
+    font-family: cool;
+    src: url("Chunkfive.otf") format("opentype");
+}
+
+.loginheader {
+    font-size: 45pt;
+    text-align: center;
+    font-family: 'cool', Helvetica, Verdana, Sans-Serif;
+    color: white;
+}
+
+.profile-avatar {
+    border-radius: 50%;
+}
+
+.footerdream {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.6);
+    // The rest of your CSS
 }

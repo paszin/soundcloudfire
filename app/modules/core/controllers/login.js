@@ -15,7 +15,7 @@ angular
         '$scope', '$state', '$stateParams', '$location', 'credentials', 'SoundCloudLogin', 'SoundCloudAPI', 'SoundCloudSessionManager',
         function ($scope, $state, $stateParams, $location, crendentials, SoundCloudLogin, SoundCloudAPI, SoundCloudSessionManager) {
 
-
+            $scope.entrykey = "domo44";
             $scope.loginWithSoundcloud = function () {
                 SoundCloudLogin.connect().then(function () {
                     console.log("connected"); // Connected!
