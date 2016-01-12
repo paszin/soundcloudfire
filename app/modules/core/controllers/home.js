@@ -13,20 +13,8 @@ angular
         function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, Soundcloud) {
 
             'use strict';
-
-            $scope.audio = {
-                "info": {
-                    "genre": "Deep-House Melodic",
-                    "title": "Vijay & Sofia Zlatko - Le Jardin (Pingpong Remix)SNIPPET",
-                    "artwork_url": "https://i1.sndcdn.com/artworks-000099309425-kzmqoa-large.jpg",
-                    "waveform_url": "https://w1.sndcdn.com/r2r7Vx88BA19_m.png",
-                    "stream_url": "https://api.soundcloud.com/tracks/161269750/stream",
-                    "playback_count": 50077,
-                    "favoritings_count": 1189,
-                    "comment_count": 46
-                },
-                "stream": true
-            };
+            
+            Soundcloud.setToken();
 
             $scope.info = {
                 "me": {},
@@ -68,9 +56,7 @@ angular
 
                 Soundcloud.getPlaylists($scope.savePlaylists); //comment out as soon as we have better soundcloud service
             };
-            $scope.saveAuth = function (data) {
-                Soundcloud.getMe($scope.saveMe);
-            };
+            
 
             $scope.getPlaylist = function (index) {
 
@@ -163,8 +149,6 @@ angular
             });
 
 
-
-
-            Soundcloud.getAuth($scope.saveAuth);
+            Soundcloud.getMe($scope.saveMe);
         }
         ]);

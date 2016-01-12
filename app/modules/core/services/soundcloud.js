@@ -7,8 +7,8 @@
  */
 angular
     .module('core')
-    .factory('Soundcloud', ['$http', 'credentials',
-        function ($http, credentials) {
+    .factory('Soundcloud', ['$http', 'credentials', 'SoundCloudSessionManager',
+        function ($http, credentials, SoundCloudSessionManager) {
 
             'use strict';
 
@@ -35,6 +35,13 @@ angular
                 oauth_token,
 
                 api = {
+                    
+                    setToken: function () {
+                        
+                        oauth_token = SoundCloudSessionManager.accessToken;
+                        
+                    },
+                    
 
                     /**
                      * @ngdoc function
