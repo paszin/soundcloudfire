@@ -8,11 +8,11 @@
  * @requires ng.$scope
  */
 angular
-    .module('core')
-    .controller('HomeController', ['$rootScope', '$scope', '$http', '$state', '$stateParams', '$log', '$timeout', '$interval', 'ngAudio', 'Soundcloud',
+    .module("core")
+    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "Soundcloud",
         function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, Soundcloud) {
 
-            'use strict';
+            "use strict";
 
             $scope.info = {
                 "me": {},
@@ -30,7 +30,7 @@ angular
                 var i, j;
                 for (i = 0; i < data.length; i++) {
                     $scope.info.playlists[i] = data[i];
-                    $scope.info.playlists[i].track_count_readable = (data[i].track_count === 1) ? "1 Track" : data[i].track_count + 'Tracks';
+                    $scope.info.playlists[i].track_count_readable = (data[i].track_count === 1) ? "1 Track" : data[i].track_count + "Tracks";
                     $scope.info.playlists[i].duration_readable = moment.duration(data[i].duration, "milliseconds").humanize();
                     $scope.info.playlists[i].index = i;
                     $scope.info.playlists[i].showTracks = false;
@@ -112,58 +112,58 @@ angular
             var viewsFolder = "modules/core/views/";
             $scope.tabs = [
                 {
-                    title: 'Search',
+                    title: "Search",
                     content: viewsFolder + "following.template.html",
                     icon: "fa-search",
                     call: undefined,
                     callback: undefined
                 },
                 {
-                    title: 'Stream',
+                    title: "Stream",
                     content: viewsFolder + "following.template.html",
                     icon: "fa-music",
                     call: undefined,
                     callback: undefined
                 },
                 {
-                    title: 'Playlists',
+                    title: "Playlists",
                     content: viewsFolder + "playlists.template.html",
-                    icon: 'fa-th-list',
+                    icon: "fa-th-list",
                     call: Soundcloud.getPlaylists,
                     callback: $scope.savePlaylists
                 },
                 {
-                    title: 'Likes',
+                    title: "Likes",
                     content: viewsFolder + "favorites.template.html",
-                    icon: 'fa-heart',
+                    icon: "fa-heart",
                     call: Soundcloud.getFavorites,
                     callback: $scope.saveFavorites
                 },
                 {
-                    title: 'History',
+                    title: "History",
                     content: viewsFolder + "following.template.html",
-                    icon: 'fa-clock-o',
+                    icon: "fa-clock-o",
                     call: undefined,
                     callback: undefined
                 },
                 {
-                    title: 'Next Tracks',
+                    title: "Next Tracks",
                     content: viewsFolder + "following.template.html",
-                    icon: 'fa-headphones',
+                    icon: "fa-headphones",
                     call: undefined,
                     callback: undefined
                 },
                 {
-                    title: 'Groups',
+                    title: "Groups",
                     content: viewsFolder + "following.template.html",
-                    icon: 'fa-users',
+                    icon: "fa-users",
                     call: undefined,
                     callback: undefined
                 }
             ];
 
             $scope.selectedIndex = 1;
-            $scope.$watch('selectedIndex', function (current, old) {
+            $scope.$watch("selectedIndex", function (current, old) {
                 var fnct = $scope.tabs[current].call,
                     callback = $scope.tabs[current].callback;
                 if (fnct !== undefined) {

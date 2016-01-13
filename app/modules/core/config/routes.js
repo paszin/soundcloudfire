@@ -10,14 +10,14 @@
 
 
 angular
-    .module('core')
-    .config(['$stateProvider',
-        '$urlRouterProvider',
+    .module("core")
+    .config(["$stateProvider",
+        "$urlRouterProvider",
         function ($stateProvider, $urlRouterProvider) {
             
-            'use strict';
+            "use strict";
 
-            $urlRouterProvider.otherwise('/login');
+            $urlRouterProvider.otherwise("/login");
 
             /**
              * @ngdoc event
@@ -27,7 +27,7 @@ angular
              *
              * Define routes and the associated paths
              *
-             * - When the path is `'/'`, route to home
+             * - When the path is `"/"`, route to home
              * */
 
             /**
@@ -38,21 +38,21 @@ angular
              *
              * Define routes and the associated paths
              *
-             * - When the state is `'login'`, route to login
+             * - When the state is `"login"`, route to login
              *
              */
 
 
             $stateProvider
-                .state('login', {
-                    url: '/login',
-                    templateUrl: 'modules/core/views/login.html',
-                    controller: 'LoginController'
+                .state("login", {
+                    url: "/login",
+                    templateUrl: "modules/core/views/login.html",
+                    controller: "LoginController"
                 })
-                .state('home', {
-                    url: '/home',
-                    templateUrl: 'modules/core/views/home.html',
-                    controller: 'HomeController'
+                .state("home", {
+                    url: "/home",
+                    templateUrl: "modules/core/views/home.html",
+                    controller: "HomeController"
                 });
         }
         ]);

@@ -8,14 +8,14 @@
 
 function SoundcloudUtil() {
     
-    'use strict';
+    "use strict";
 
     function mapEntry(key) {
-        return this[key] ? key + '=' + this[key] : undefined;
+        return this[key] ? key + "=" + this[key] : undefined;
     }
 
     function mapAndEscape(key) {
-        return this[key] ? key + '=' + encodeURIComponent(this[key]) : undefined;
+        return this[key] ? key + "=" + encodeURIComponent(this[key]) : undefined;
     }
 
     /**
@@ -26,7 +26,7 @@ function SoundcloudUtil() {
     this.toParams = function (obj) {
         return Object.keys(obj)
             .map(mapAndEscape.bind(obj))
-            .join('&');
+            .join("&");
     };
 
     /**
@@ -37,12 +37,12 @@ function SoundcloudUtil() {
     this.toOptions = function (obj) {
         return Object.keys(obj)
             .map(mapEntry.bind(obj))
-            .join(',');
+            .join(",");
     };
 
 }
 
 
 angular
-    .module('core')
-    .service('SoundcloudUtil', SoundcloudUtil);
+    .module("core")
+    .service("SoundcloudUtil", SoundcloudUtil);

@@ -6,14 +6,14 @@
  * @description Soundcloud Factory
  */
 angular
-    .module('core')
-    .factory('Soundcloud', ['$http', 'SoundcloudCredentials', 'SoundcloudSessionManager',
+    .module("core")
+    .factory("Soundcloud", ["$http", "SoundcloudCredentials", "SoundcloudSessionManager",
         function ($http, SoundcloudCredentials, SoundcloudSessionManager) {
 
-            'use strict';
+            "use strict";
 
             //credentials
-            var baseUrl = 'https://api.Soundcloud.com',
+            var baseUrl = "https://api.Soundcloud.com",
                 client_id = SoundcloudCredentials.client_id,
                 client_secret = SoundcloudCredentials.client_secret,
                 //endpoints
@@ -49,7 +49,7 @@ angular
                      */
                     getAuth: function (callback) {
                         $http({
-                            method: 'POST',
+                            method: "POST",
                             url: authUrl
                         }).then(function successCallback(response) {
                             console.log("success auth");
@@ -79,7 +79,7 @@ angular
                                 "token": oauth_token
                             }));
                             $http({
-                                method: 'GET',
+                                method: "GET",
                                 url: meUrl.format({
                                     "token": oauth_token
                                 })
@@ -110,7 +110,7 @@ angular
                             "user_id": me_data.id
                         }));
                         $http({
-                            method: 'GET',
+                            method: "GET",
                             url: playlistsUrl.format({
                                 "token": oauth_token,
                                 "user_id": me_data.id
@@ -141,7 +141,7 @@ angular
                             "user_id": me_data.id
                         }));
                         $http({
-                            method: 'GET',
+                            method: "GET",
                             url: favoritesUrl.format({
                                 "token": oauth_token,
                                 "user_id": me_data.id
@@ -173,7 +173,7 @@ angular
                             "track_id": track_id
                         }));
                         $http({
-                            method: 'GET',
+                            method: "GET",
                             url: trackUrl.format({
                                 "token": oauth_token,
                                 "track_id": track_id

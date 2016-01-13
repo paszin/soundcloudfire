@@ -9,7 +9,7 @@
 
 function createListener() {
 
-    'use strict';
+    "use strict";
 
     var url = window.location.href,
         queryParams = angular.extend.apply(null,
@@ -23,7 +23,7 @@ function createListener() {
                 return obj;
             }));
 
-    if ('access_token' in queryParams) {
+    if ("access_token" in queryParams) {
         window.opener._SoundcloudCallback(queryParams.access_token);
         window.close();
     }
@@ -31,5 +31,5 @@ function createListener() {
 }
 
 angular
-    .module('core')
+    .module("core")
     .config(createListener);

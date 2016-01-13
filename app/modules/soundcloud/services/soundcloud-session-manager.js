@@ -9,7 +9,7 @@
 
 function SoundcloudSessionManager() {
     
-    'use strict';
+    "use strict";
 
     var that = this;
     this.accessToken = null;
@@ -48,5 +48,5 @@ function SoundcloudSessionManager() {
 }
 
 angular
-    .module('core')
-    .service('SoundcloudSessionManager', SoundcloudSessionManager);
+    .module("core")
+    .service("SoundcloudSessionManager", SoundcloudSessionManager);
