@@ -1,5 +1,4 @@
-'use strict';
-
+/*global angular*/
 /**
  * @ngdoc object
  * @name core.config
@@ -15,6 +14,8 @@ angular
     .config(['$stateProvider',
         '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {
+            
+            'use strict';
 
             $urlRouterProvider.otherwise('/login');
 
@@ -48,19 +49,10 @@ angular
                     templateUrl: 'modules/core/views/login.html',
                     controller: 'LoginController'
                 })
-                .state('callback', {
-                    url: '/',
-                    templateUrl: 'modules/core/views/callback.html'
-                })
                 .state('home', {
                     url: '/home',
                     templateUrl: 'modules/core/views/home.html',
                     controller: 'HomeController'
-                })
-                .state('playlist', {
-                    url: '/{playlist_id}/tracks',
-                    templateUrl: 'modules/core/views/playlist.html',
-                    controller: 'PlaylistController'
                 });
         }
-    ]);
+        ]);

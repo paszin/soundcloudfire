@@ -1,7 +1,4 @@
-'use strict';
-
-
-
+/*global angular, console*/
 
 /**
  * @ngdoc object
@@ -12,12 +9,14 @@
 angular
     .module('core')
     .controller('LoginController', [
-        '$scope', '$state', '$stateParams', '$location', 'credentials', 'SoundCloudLogin', 'SoundCloudAPI', 'SoundCloudSessionManager',
-        function ($scope, $state, $stateParams, $location, crendentials, SoundCloudLogin, SoundCloudAPI, SoundCloudSessionManager) {
+        '$scope', '$state', '$stateParams', '$location', 'SoundcloudLogin', 'SoundcloudAPI', 'SoundcloudSessionManager',
+        function ($scope, $state, $stateParams, $location, SoundcloudLogin, SoundcloudAPI, SoundcloudSessionManager) {
+            
+            'use strict';
 
             $scope.entrykey = "domo44";
             $scope.loginWithSoundcloud = function () {
-                SoundCloudLogin.connect().then(function () {
+                SoundcloudLogin.connect().then(function () {
                     console.log("connected"); // Connected!
                     $state.go('home');
                     
@@ -25,4 +24,4 @@ angular
             };
 
         }
-]);
+    ]);

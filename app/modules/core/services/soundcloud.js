@@ -7,24 +7,22 @@
  */
 angular
     .module('core')
-    .factory('Soundcloud', ['$http', 'credentials', 'SoundCloudSessionManager',
-        function ($http, credentials, SoundCloudSessionManager) {
+    .factory('Soundcloud', ['$http', 'SoundcloudCredentials', 'SoundcloudSessionManager',
+        function ($http, SoundcloudCredentials, SoundcloudSessionManager) {
 
             'use strict';
 
             //credentials
-            var baseUrl = 'https://api.soundcloud.com',
-                client_id = credentials.client_id,
-                client_secret = credentials.client_secret,
-                username = credentials.username,
-                password = credentials.password,
+            var baseUrl = 'https://api.Soundcloud.com',
+                client_id = SoundcloudCredentials.client_id,
+                client_secret = SoundcloudCredentials.client_secret,
                 //endpoints
-                authUrl = baseUrl + "/oauth2/token?client_id=#{client_id}&client_secret=#{client_secret}&grant_type=password&username=#{username}&password=#{password}".format({
+                /*authUrl = baseUrl + "/oauth2/token?client_id=#{client_id}&client_secret=#{client_secret}&grant_type=password&username=#{username}&password=#{password}".format({
                     "client_id": client_id,
                     "client_secret": client_secret,
                     "username": username,
                     "password": password
-                }),
+                }),*/
                 meUrl = baseUrl + "/me?oauth_token=#{token}",
                 playlistsUrl = baseUrl + "/users/#{user_id}/playlists?oauth_token=#{token}",
                 favoritesUrl = baseUrl + "/users/#{user_id}/favorites?oauth_token=#{token}",
@@ -38,7 +36,7 @@ angular
                     
                     setToken: function () {
                         
-                        oauth_token = SoundCloudSessionManager.accessToken;
+                        oauth_token = SoundcloudSessionManager.accessToken;
                         
                     },
                     

@@ -14,8 +14,6 @@ angular
 
             'use strict';
 
-
-
             $scope.info = {
                 "me": {},
                 "playlists": []
@@ -54,7 +52,7 @@ angular
             $scope.saveMe = function (data) {
                 $scope.info.me = data;
 
-                Soundcloud.getPlaylists($scope.savePlaylists); //comment out as soon as we have better soundcloud service
+                Soundcloud.getPlaylists($scope.savePlaylists); //comment out as soon as we have better Soundcloud service
             };
 
 
@@ -175,7 +173,7 @@ angular
 
 
 
-            if (window.location.origin === "http://127.0.0.1:9000") {
+            if (window.location.origin === "http://127.0.0.1:9000" && false) {
                 Soundcloud.getAuth(function (data) {
                     Soundcloud.getMe($scope.saveMe)
                 });

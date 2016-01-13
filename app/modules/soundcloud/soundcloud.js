@@ -1,9 +1,8 @@
-'use strict';
-
+/*global ApplicationConfiguration*/
 /**
  * @ngdoc overview
- * @name soundcloud
- * @description soundcloud module
+ * @name Soundcloud
+ * @description Soundcloud module
  */
-ApplicationConfiguration
-    .registerModule('soundcloud');
+//ApplicationConfiguration
+  //  .registerModule('soundcloud');
