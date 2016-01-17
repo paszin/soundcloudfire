@@ -171,16 +171,10 @@ angular
                 }
             });
 
-
-
-            if (window.location.origin === "http://127.0.0.1:9000" && false) {
-                Soundcloud.getAuth(function (data) {
-                    Soundcloud.getMe($scope.saveMe)
-                });
-            } else {
+                debugger;
                 Soundcloud.setToken();
                 Soundcloud.getMe($scope.saveMe);
-            }
+            
 
 
 

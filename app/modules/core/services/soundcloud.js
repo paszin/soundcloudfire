@@ -36,7 +36,7 @@ angular
                     
                     setToken: function () {
                         
-                        oauth_token = SoundcloudSessionManager.accessToken;
+                        oauth_token = SoundcloudSessionManager.getToken();
                         
                     },
                     

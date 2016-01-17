@@ -7,7 +7,7 @@
  */
 
 
-function SoundcloudSessionManager() {
+function SoundcloudSessionManager(localStorageService) {
     
     "use strict";
 
@@ -19,7 +19,7 @@ function SoundcloudSessionManager() {
      * @returns {string} the token.
      */
     this.getToken = function getToken() {
-        return that.accessToken;
+        return localStorageService.get("ouath_token");
     };
 
     /**
@@ -28,6 +28,7 @@ function SoundcloudSessionManager() {
      */
     this.init = function init(token) {
         that.accessToken = token;
+        localStorageService.set("ouath_token", token);
     };
 
     /**

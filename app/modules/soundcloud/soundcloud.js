@@ -4,5 +4,5 @@
  * @name Soundcloud
  * @description Soundcloud module
  */
-//ApplicationConfiguration
-  //  .registerModule('soundcloud');
+ApplicationConfiguration
+    .registerModule("soundcloud");

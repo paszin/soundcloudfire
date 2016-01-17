@@ -33,6 +33,7 @@ module.exports = function(config) {
             'app/lib/angular-fontawesome/dist/angular-fontawesome.js',
             'app/lib/angular-bootstrap/ui-bootstrap-tpls.js',
             'app/lib/angular-route/angular-route.js',
+            'app/lib/angular-local-storage/dist/angular-local-storage.js',
             <!-- endinjector -->
 
             'app/js/config.js',
