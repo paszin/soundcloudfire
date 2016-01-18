@@ -1,4 +1,4 @@
-/*global angular*/
+/*global angular, console*/
 
 /**
  * @ngdoc service
@@ -7,13 +7,26 @@
  */
 
 
-function SoundcloudSessionManager(localStorageService) {
-    
+function SoundcloudSessionManager($http, localStorageService, SoundcloudAPIBase) {
+
     "use strict";
 
-    var that = this;
-    this.accessToken = null;
-
+    /**
+     * Initialize a Soundcloud session.
+     * @param token OAuth token
+     */
+    this.init = function init(token) {
+        $http.get(SoundcloudAPIBase + "/me", {
+            params: {
+                oauth_token: token
+            }
+        })
+            .then(function (response) {
+                localStorageService.set("user_id", response.data.id);
+            }, angular.noop);
+        localStorageService.set("ouath_token", token);
+    };
+    
     /**
      * Get token.
      * @returns {string} the token.
@@ -21,14 +34,13 @@ function SoundcloudSessionManager(localStorageService) {
     this.getToken = function getToken() {
         return localStorageService.get("ouath_token");
     };
-
+    
     /**
-     * Initialize a Soundcloud session.
-     * @param token OAuth token
+     * Get User ID.
+     * @returns {string} the id of logged in user.
      */
-    this.init = function init(token) {
-        that.accessToken = token;
-        localStorageService.set("ouath_token", token);
+    this.getUserId = function getUserId() {
+        return localStorageService.get("user_id");
     };
 
     /**
@@ -36,15 +48,18 @@ function SoundcloudSessionManager(localStorageService) {
      * @returns {boolean}
      */
     this.isConnected = function isConnected() {
-        return !!that.accessToken;
+        return !!localStorageService.get("ouath_token");
     };
 
     /**
      * Disconnect from Soundcloud.
      */
     this.disconnect = function disconnect() {
-        that.accessToken = null;
+        console.log("disconnected");
+        localStorageService.set("ouath_token", null);
     };
+
+    
 
 }
 

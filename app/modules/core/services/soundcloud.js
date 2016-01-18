@@ -42,27 +42,6 @@ angular
                         
                     },
                     
-
-                    /**
-                     * @ngdoc function
-                     * @name core.Services.Soundcloud#getAuth
-                     * @methodOf core.Services.Soundcloud
-                     * @return {json} Returns auth data
-                     */
-                    getAuth: function (callback) {
-                        $http({
-                            method: "POST",
-                            url: authUrl
-                        }).then(function successCallback(response) {
-                            console.log("success auth");
-                            oauth_token = response.data.access_token;
-                            callback(response.data);
-
-                        }, function errorCallback(response) {
-                            console.log("error auth");
-                        });
-                    },
-
                     /**
                      * @ngdoc function
                      * @name core.Services.Soundcloud#getMe

@@ -1,5 +1,7 @@
 /*global angular */
+/*jshint quotmark: double */
 
+ 
 
 /**
  * @ngdoc object

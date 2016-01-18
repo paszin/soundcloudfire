@@ -18,9 +18,11 @@ angular
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
                 controller: function ($rootScope, $scope, $element, $attrs, $transclude, SoundcloudNextTracks) {
+                    $scope.play = function (track) {
+                        $rootScope.playPauseSound(track);
+                    };
                     $scope.addToPlayNext = function (track) {
                         SoundcloudNextTracks.addTrack(track);
-                        debugger;
                     };
                 },
                 // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements

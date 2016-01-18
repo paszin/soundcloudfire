@@ -5,9 +5,18 @@
  * @name Soundcloud.Services.SoundApi
  * @description SoundApi Service
  */
-function SoundcloudAPI($http, SoundcloudAPIBase, SoundcloudCredentials, SoundcloudSessionManager) {
+function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, SoundcloudSessionManager) {
 
     "use strict";
+
+    var baseUrl = "https://api.Soundcloud.com",
+        clientId = SoundcloudCredentials.client_id,
+        clientSecret = SoundcloudCredentials.client_secret,
+        //endpoints
+        meUrl = baseUrl + "/me",
+        playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
+        favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
+        trackUrl = baseUrl + "/tracks/#{track_id}";
 
 
     function mapResponse(response) {
@@ -19,12 +28,12 @@ function SoundcloudAPI($http, SoundcloudAPIBase, SoundcloudCredentials, Soundclo
      * Get information about the logged in user.
      * @returns {*} metadata about the user
      */
-    this.me = function me() {
-        return $http.get(SoundcloudAPIBase + "/me.json", {
-                params: {
-                    oauth_token: SoundcloudSessionManager.accessToken
-                }
-            })
+    this.getMe = function me() {
+        return $http.get(meUrl, {
+            params: {
+                oauth_token: SoundcloudSessionManager.getToken()
+            }
+        })
             .then(mapResponse, SoundcloudSessionManager.disconnect);
     };
 
@@ -39,7 +48,35 @@ function SoundcloudAPI($http, SoundcloudAPIBase, SoundcloudCredentials, Soundclo
                 client_id: SoundcloudCredentials.client_id
             }
         }).then(mapResponse, $log.warn.bind($log, "Unable to retrieve song %s (response: %o)", trackId));
-    }
+    };
+
+
+    this.getPlaylists = function () {
+        $http({
+            method: "GET",
+            url: playlistsUrl.format({
+                "user_id": SoundcloudSessionManager.userId
+            }),
+            params: {
+                oauth_token: SoundcloudSessionManager.getToken()
+            }
+        }).then(mapResponse, function errorCallback(response) {
+            console.log("error playlists");
+        });
+    };
+
+    this.getFavorites = function () {
+        return $http({
+            method: "GET",
+            url: favoritesUrl.format({
+                "user_id": SoundcloudSessionManager.getUserId()
+            }),
+            params: {
+                oauth_token: SoundcloudSessionManager.getToken()
+            }
+        });
+    };
+
 
 }
 
@@ -47,4 +84,4 @@ function SoundcloudAPI($http, SoundcloudAPIBase, SoundcloudCredentials, Soundclo
 
 angular
     .module("soundcloud")
-    .service("SoundcloudAPI", SoundcloudAPI)
+    .service("SoundcloudAPI", SoundcloudAPI);

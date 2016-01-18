@@ -8,10 +8,14 @@
  * @description NextTraclsController
  * @requires ng.$scope
  */
-function NextTracksCtrl($scope, SoundcloudAPI, SoundcloudSessionManager, SoundcloudNextTracks) {
+function NextTracksCtrl($scope, SoundcloudNextTracks) {
 
     "use strict";
     $scope.playlist = SoundcloudNextTracks.nextTracks;
+
+    $scope.refresh = function () {
+        $scope.playlist = SoundcloudNextTracks.getNextTracks();
+    };
 
 }
 

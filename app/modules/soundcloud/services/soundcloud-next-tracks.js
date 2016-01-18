@@ -32,8 +32,14 @@ function SoundcloudNextTracks(localStorageService) {
             return o.id === track_id;
         });
     };
-
-
+    
+    /**
+     * Get the playlist.
+     * @returns {array} next tracks playlist
+     */
+    this.getNextTracks = function getNextTracks() {
+        return this.nextTracks;
+    };
 }
 
 angular

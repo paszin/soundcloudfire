@@ -3,7 +3,7 @@
     <div>
     <md-list>
 
-        <md-list-item ng-repeat="track in playlist.tracks" ng-click="$parent.playPauseSound(track)">
+        <md-list-item ng-repeat="track in playlist" ng-click="$parent.playPauseSound(track)">
             <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
             <p>{{ track.title }}</p>
             <i ng-show="track.isPlaying" class="fa fa-play"></i>

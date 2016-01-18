@@ -2,7 +2,7 @@
 
 <md-list-item ng-click="moreinfos=!moreinfos">
             <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
-            <md-button ng-click="playPauseTrack(track)">
+            <md-button ng-click="play(track)">
                 <p>{{ track.title }}</p>
             </md-button>
             <i ng-if="track.isPlaying" class="fa fa-play"></i>
