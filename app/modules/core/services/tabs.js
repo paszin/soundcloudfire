@@ -1,6 +1,4 @@
 /*global angular */
-/*jshint quotmark: double */
-
 
 /**
  * @ngdoc object
@@ -13,7 +11,7 @@ angular
     .value("Tabs", [
         {
             title: "Search",
-            content: viewsFolder + "following.template.html",
+            content: viewsFolder + "search.tab.html",
             icon: "fa-search"
         },
         {

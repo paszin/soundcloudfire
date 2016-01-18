@@ -13,7 +13,7 @@ function SoundcloudNextTracks() {
 
     "use strict";
     this.nextTracks = [];
-    this.currentTrackId = undefined;
+    this.currentTrackId = null;
 
     /**
      * add to playlist.

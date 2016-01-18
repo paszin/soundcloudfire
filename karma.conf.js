@@ -1,13 +1,14 @@
-'use strict';
+
 
 // Karma configuration
 module.exports = function(config) {
+    "use strict";
     config.set({
         // base path, that will be used to resolve files and exclude
-        basePath: '',
+        basePath: "",
 
         // Frameworks to use
-        frameworks: ['jasmine'],
+        frameworks: ["jasmine"],
 
         // 'ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils'
 
@@ -76,7 +77,7 @@ module.exports = function(config) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: ['PhantomJS'],
+        browsers: ["PhantomJS"],
 
         // If browser does not capture in given timeout [ms], kill it
         captureTimeout: 60000,

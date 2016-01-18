@@ -16,7 +16,9 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
         meUrl = baseUrl + "/me",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
-        trackUrl = baseUrl + "/tracks/#{track_id}";
+        trackUrl = baseUrl + "/tracks/#{track_id}",
+        trackSearchUrl = baseUrl + "/tracks",
+        followingsUrl = baseUrl + "/users/#{user_id}/followings";
 
 
     function mapResponse(response) {
@@ -74,6 +76,31 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
             }
         });
     };
+    
+    this.getFollowings = function () {
+        return $http({
+            method: "GET",
+            url: followingsUrl.format({
+                "user_id": SoundcloudSessionManager.getUserId()
+            }),
+            params: {
+                oauth_token: SoundcloudSessionManager.getToken()
+            }
+        });
+    };
+    
+    this.getTrackSearch = function (searchterm) {
+        debugger;
+        return $http({
+            method: "GET",
+            url: trackSearchUrl,
+            params: {
+                oauth_token: SoundcloudSessionManager.getToken(),
+                q: searchterm
+            }
+        });
+    };
+
 
 
 }
