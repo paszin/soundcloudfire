@@ -102,11 +102,16 @@ angular
             };
 
             $scope.selectedIndex = 1;
-            $scope.$watch("selectedIndex", function (current, old) {
-                var fnct = $scope.tabs[current].call,
-                    callback = $scope.tabs[current].callback;
-                if (fnct !== undefined) {
-                    fnct(callback);
+            $scope.$watch("selectedIndex", function (current) {
+                
+            });
+            
+            $scope.$watch("audio.stream.progress", function (current) {
+                if (current === 1) {
+                    var nextTrack = SoundcloudNextTracks.getNextTrack();
+                    if (nextTrack) {
+                        $rootScope.playPauseSound(nextTrack);
+                    }
                 }
             });
 

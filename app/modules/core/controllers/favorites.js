@@ -1,7 +1,4 @@
-/*global angular, console, moment*/
-/*jslint plusplus: true */
-/*jshint quotmark: double */
-
+/*global angular*/
 
 /**
  * @ngdoc object
@@ -10,8 +7,7 @@
  * @requires ng.$scope
  */
 
-
-function FavoritesCtrl($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, SoundcloudNextTracks, Tabs) {
+function FavoritesCtrl($scope, SoundcloudAPI, SoundcloudNextTracks) {
     "use strict";
     
     var favs = SoundcloudAPI.getFavorites();
@@ -19,7 +15,6 @@ function FavoritesCtrl($rootScope, $scope, $http, $state, $stateParams, $log, $t
         $scope.favorites = response.data;
     });
 }
-
 
 angular
     .module("core")

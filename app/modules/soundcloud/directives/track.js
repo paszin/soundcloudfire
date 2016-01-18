@@ -17,7 +17,7 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function ($rootScope, $scope, $element, $attrs, $transclude, SoundcloudNextTracks) {
+                controller ($rootScope, $scope, $element, $attrs, $transclude, SoundcloudNextTracks) {
                     $scope.play = function (track) {
                         $rootScope.playPauseSound(track);
                     };
@@ -31,7 +31,7 @@ angular
                 // replace: true,
                 // transclude: true,
                 // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-                link: function ($scope, iElm, iAttrs, controller) {
+                link ($scope, iElm, iAttrs, controller) {
 
                 }
             };

@@ -34,8 +34,8 @@ var ApplicationConfiguration = (function () {
         };
 
     return {
-        applicationModuleName: applicationModuleName,
-        applicationModuleVendorDependencies: applicationModuleVendorDependencies,
-        registerModule: registerModule
+        applicationModuleName,
+        applicationModuleVendorDependencies,
+        registerModule
     };
 }());

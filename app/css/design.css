@@ -5,7 +5,7 @@
 
 .waveform-overlay {
     position: absolute;
-    top: 0px;
+    top: 0;
     z-index: 1;
     background: blue;
     opacity: 0.5;

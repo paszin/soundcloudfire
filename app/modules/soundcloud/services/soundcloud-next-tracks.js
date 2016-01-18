@@ -9,18 +9,20 @@
  */
 
 
-function SoundcloudNextTracks(localStorageService) {
+function SoundcloudNextTracks() {
 
     "use strict";
     this.nextTracks = [];
+    this.currentTrackId = undefined;
 
     /**
      * add to playlist.
      * @returns {string} the token.
      */
     this.addTrack = function addTrack(track) {
-        this.nextTracks.push(track);
-        //return localStorageService.get("ouath_token");
+        if (_.findIndex(this.nextTracks, ["id", track.id]) < 0) {
+            this.nextTracks.push(track);
+        }
     };
 
     /**
@@ -33,6 +35,17 @@ function SoundcloudNextTracks(localStorageService) {
         });
     };
     
+    /**
+     * return next track in playlist.
+     * @return {object} track
+     */
+    this.getNextTrack = function getNextTrack() {
+        var currentIndex = _.findIndex(this.nextTracks, ["id", this.currentTrackId]),
+            nextTrack = this.nextTracks[currentIndex + 1];
+        this.currentTrackId = nextTrack.id;
+        return nextTrack;
+    };
+
     /**
      * Get the playlist.
      * @returns {array} next tracks playlist

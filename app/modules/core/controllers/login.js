@@ -1,5 +1,4 @@
 /*global angular, console*/
-/*jshint quotmark: double */
 
 
 /**
@@ -11,15 +10,14 @@
 angular
     .module("core")
     .controller("LoginController", [
-        "$scope", "$state", "$stateParams", "$location", "SoundcloudLogin", "SoundcloudAPI", "SoundcloudSessionManager",
-        function ($scope, $state, $stateParams, $location, SoundcloudLogin, SoundcloudAPI, SoundcloudSessionManager) {
+        "$scope", "$state", "SoundcloudLogin",
+        function ($scope, $state, SoundcloudLogin) {
             
             "use strict";
 
             $scope.entrykey = "domo44";
             $scope.loginWithSoundcloud = function () {
                 SoundcloudLogin.connect().then(function () {
-                    console.log("connected"); // Connected!
                     $state.go("home");
                     
                 });
