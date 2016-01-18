@@ -23,7 +23,7 @@ angular
         },
         {
             title: "Playlists",
-            content: viewsFolder + "playlists.template.html",
+            content: viewsFolder + "playlists.tab.html",
             icon: "fa-th-list"
         },
         {

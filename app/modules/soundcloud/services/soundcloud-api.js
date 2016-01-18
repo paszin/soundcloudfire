@@ -33,8 +33,8 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
             params: {
                 oauth_token: SoundcloudSessionManager.getToken()
             }
-        })
-            .then(mapResponse, SoundcloudSessionManager.disconnect);
+        });
+          //  .then(mapResponse, SoundcloudSessionManager.disconnect);
     };
 
     /**
@@ -52,16 +52,14 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
 
 
     this.getPlaylists = function () {
-        $http({
+        return $http({
             method: "GET",
             url: playlistsUrl.format({
-                "user_id": SoundcloudSessionManager.userId
+                "user_id": SoundcloudSessionManager.getUserId()
             }),
             params: {
                 oauth_token: SoundcloudSessionManager.getToken()
             }
-        }).then(mapResponse, function errorCallback(response) {
-            console.log("error playlists");
         });
     };
 

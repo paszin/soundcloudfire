@@ -11,11 +11,11 @@
  */
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "Soundcloud", "SoundcloudNextTracks", "Tabs",
-        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, Soundcloud, SoundcloudNextTracks, Tabs) {
+    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "SoundcloudAPI", "SoundcloudNextTracks", "SoundcloudSessionManager", "Tabs",
+        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, SoundcloudNextTracks, SoundcloudSessionManager, Tabs) {
 
             "use strict";
-            
+
             $scope.tabs = Tabs;
 
             $scope.info = {
@@ -23,44 +23,6 @@ angular
                 "playlists": []
             };
 
-            $scope.savePlaylists = function (data) {
-
-                console.log("save playlists");
-
-                if ($scope.info.playlists.length !== 0) {
-                    console.log("take from cache");
-                    return;
-                }
-                var i, j;
-                for (i = 0; i < data.length; i++) {
-                    $scope.info.playlists[i] = data[i];
-                    $scope.info.playlists[i].track_count_readable = (data[i].track_count === 1) ? "1 Track" : data[i].track_count + "Tracks";
-                    $scope.info.playlists[i].duration_readable = moment.duration(data[i].duration, "milliseconds").humanize();
-                    $scope.info.playlists[i].index = i;
-                    $scope.info.playlists[i].showTracks = false;
-                    for (j = 0; j < data[i].length; j++) {
-                        $scope.info.playlists[i].tracks[j].isPlaying = false;
-                    }
-
-                }
-
-            };
-
-          
-
-            $scope.saveMe = function (data) {
-                $scope.info.me = data;
-
-                Soundcloud.getPlaylists($scope.savePlaylists); //comment out as soon as we have better Soundcloud service
-            };
-
-
-            $scope.getPlaylist = function (index) {
-
-                $scope.info.playlists[index].showTracks = !$scope.info.playlists[index].showTracks;
-                //$scope.info.playlist = $scope.info.playlists[index].tracks;
-                console.log($scope.info.playlists[index]);
-            };
 
             $rootScope.audio = {
                 "stream": undefined,
@@ -90,7 +52,7 @@ angular
                         console.log("play");
                     } else {
                         $rootScope.audio.stream = ngAudio.load(track.stream_url + "?oauth_token=#{token}".format({
-                            token: Soundcloud.getOauth_token()
+                            token: SoundcloudSessionManager.getToken()
                         }));
                         $rootScope.audio.stream.play();
                         $rootScope.audio.info = track;
@@ -103,9 +65,9 @@ angular
 
             $scope.selectedIndex = 1;
             $scope.$watch("selectedIndex", function (current) {
-                
+
             });
-            
+
             $scope.$watch("audio.stream.progress", function (current) {
                 if (current === 1) {
                     var nextTrack = SoundcloudNextTracks.getNextTrack();
@@ -115,10 +77,8 @@ angular
                 }
             });
 
-            Soundcloud.setToken();
-            Soundcloud.getMe($scope.saveMe);
-
-            
-
+            SoundcloudAPI.getMe().then(function (response) {
+                $scope.me = response.data;
+            });
 
         }]);
