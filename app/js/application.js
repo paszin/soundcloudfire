@@ -1,4 +1,6 @@
-"use strict";
+/*global angular, ApplicationConfiguration*/
+/*jshint quotmark: double */
+
 
 angular
     .module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
@@ -6,15 +8,17 @@ angular
 angular
     .module(ApplicationConfiguration.applicationModuleName)
     .config(["$locationProvider",
-        function($locationProvider) {
+        function ($locationProvider) {
+            "use strict";
             $locationProvider.hashPrefix("!");
         }
-    ]);
+        ]);
 
 angular
     .module(ApplicationConfiguration.applicationModuleName)
     .config(["$locationProvider", "$mdThemingProvider",
         function ($locationProvider, $mdThemingProvider) {
+            "use strict";
             $locationProvider.hashPrefix("!");
             $mdThemingProvider.theme("default")
                 .accentPalette("deep-purple", {
@@ -31,7 +35,8 @@ angular
 //Then define the init function for starting up the application
 angular
     .element(document)
-    .ready(function() {
+    .ready(function () {
+        "use strict";
         if (window.location.hash === "#_=_") {
             window.location.hash = "#!";
         }

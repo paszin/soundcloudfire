@@ -1,4 +1,6 @@
 /*global angular*/
+/*jshint quotmark: double */
+
 /**
  * @ngdoc object
  * @name core.config
@@ -14,21 +16,12 @@ angular
     .config(["$stateProvider",
         "$urlRouterProvider",
         function ($stateProvider, $urlRouterProvider) {
-            
+
             "use strict";
 
             $urlRouterProvider.otherwise("/login");
 
-            /**
-             * @ngdoc event
-             * @name core.config.route
-             * @eventOf core.config
-             * @description
-             *
-             * Define routes and the associated paths
-             *
-             * - When the path is `"/"`, route to home
-             * */
+
 
             /**
              * @ngdoc event
@@ -36,9 +29,6 @@ angular
              * @eventOf core.config
              * @description
              *
-             * Define routes and the associated paths
-             *
-             * - When the state is `"login"`, route to login
              *
              */
 

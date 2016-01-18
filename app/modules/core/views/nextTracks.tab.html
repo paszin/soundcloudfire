@@ -1,0 +1,15 @@
+<div ng-controller="NextTracksCtrl">
+<h1>playing next...</h1>
+    <div>
+    <md-list>
+
+        <md-list-item ng-repeat="track in playlist.tracks" ng-click="$parent.playPauseSound(track)">
+            <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
+            <p>{{ track.title }}</p>
+            <i ng-show="track.isPlaying" class="fa fa-play"></i>
+        </md-list-item>
+       
+    </md-list>
+</div>
+
+</div>

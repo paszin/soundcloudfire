@@ -46,5 +46,5 @@ function SoundcloudAPI($http, SoundcloudAPIBase, SoundcloudCredentials, Soundclo
 
 
 angular
-    .module("core")
+    .module("soundcloud")
     .service("SoundcloudAPI", SoundcloudAPI)

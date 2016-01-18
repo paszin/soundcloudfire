@@ -7,7 +7,7 @@
  * @description Define a constant
  */
 angular
-    .module("core")
+    .module("soundcloud")
     .constant("SoundcloudPopupDefaults", {
         width: 456,
         height: 510,

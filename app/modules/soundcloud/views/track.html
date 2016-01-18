@@ -1,0 +1,14 @@
+
+
+<md-list-item ng-click="moreinfos=!moreinfos">
+            <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
+            <md-button ng-click="playPauseTrack(track)">
+                <p>{{ track.title }}</p>
+            </md-button>
+            <i ng-if="track.isPlaying" class="fa fa-play"></i>
+            <div ng-show="moreinfos" layout="row" layout-margin>
+                <md-button class="md-fab md-mini md-primary" aria-label="button"><i class="fa fa-thumbs-o-up"></i></md-button>
+                <md-button class="md-fab md-mini md-primary" aria-label="button"><i class="fa fa-thumbs-o-up"></i></md-button>
+                <md-button class="md-fab md-mini md-primary" aria-label="button" ng-click="addToPlayNext(track)"><i class="fa fa-hourglass-start"></i></md-button>
+            </div>
+        </md-list-item>

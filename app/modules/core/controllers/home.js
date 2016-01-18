@@ -1,5 +1,7 @@
 /*global angular, console, moment*/
 /*jslint plusplus: true */
+/*jshint quotmark: double */
+
 
 /**
  * @ngdoc object
@@ -9,8 +11,8 @@
  */
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "Soundcloud",
-        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, Soundcloud) {
+    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "Soundcloud", "SoundcloudNextTracks",
+        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, Soundcloud, SoundcloudNextTracks) {
 
             "use strict";
 
@@ -74,7 +76,7 @@ angular
                 "isPlaying": false
             };
 
-            $scope.playPauseSound = function (track) {
+            $rootScope.playPauseSound = function (track) {
 
                 track.isPlaying = !track.isPlaying;
 
@@ -148,7 +150,7 @@ angular
                 },
                 {
                     title: "Next Tracks",
-                    content: viewsFolder + "following.template.html",
+                    content: viewsFolder + "nextTracks.tab.html",
                     icon: "fa-headphones",
                     call: undefined,
                     callback: undefined
@@ -171,11 +173,10 @@ angular
                 }
             });
 
-                debugger;
-                Soundcloud.setToken();
-                Soundcloud.getMe($scope.saveMe);
-            
+            Soundcloud.setToken();
+            Soundcloud.getMe($scope.saveMe);
 
 
 
-    }]);
+
+        }]);

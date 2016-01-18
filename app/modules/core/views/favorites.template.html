@@ -1,14 +1,5 @@
 <div>
     <md-list>
-
-        <md-list-item ng-repeat="track in favorites" ng-click="playPauseSound(track)">
-            <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
-            <p>{{ track.title }}</p>
-            <i ng-if="track.isPlaying" class="fa fa-play"></i>
-            <!--<md-button class="md-fab md-raised" aria-label="playbutton" ng-click="playPauseSound(track)">
-                    <i ng-if="track.isPlaying" class="fa fa-pause"></i>
-                    <i ng-if="!track.isPlaying" class="fa fa-play"></i></md-button>-->
-        </md-list-item>
-       
+            <track track="track" ng-repeat="track in favorites"></track>
     </md-list>
 </div>

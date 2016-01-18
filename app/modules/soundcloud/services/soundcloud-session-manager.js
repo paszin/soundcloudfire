@@ -49,5 +49,5 @@ function SoundcloudSessionManager(localStorageService) {
 }
 
 angular
-    .module("core")
+    .module("soundcloud")
     .service("SoundcloudSessionManager", SoundcloudSessionManager);

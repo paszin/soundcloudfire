@@ -1,4 +1,6 @@
 /*global angular, console */
+/*jshint quotmark: double */
+
 
 /**
  * @ngdoc service

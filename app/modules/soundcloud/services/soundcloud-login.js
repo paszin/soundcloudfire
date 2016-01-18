@@ -42,5 +42,5 @@ function SoundcloudLogin($q, $log, SoundcloudAPIBase, SoundcloudUtil, Soundcloud
 }
 
 angular
-    .module("core")
+    .module("soundcloud")
     .service("SoundcloudLogin", SoundcloudLogin);
