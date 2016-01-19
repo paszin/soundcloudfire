@@ -1,0 +1,124 @@
+<!doctype html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- build:css styles/vendor.css -->
+        <!-- injector:bowercss -->
+        <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="lib/angular-material/angular-material.css">
+        <link rel="stylesheet" href="lib/font-awesome-bower/css/font-awesome.css">
+        <!-- endinjector -->
+    <!-- endbuild -->
+
+    <!-- build:css styles/custom.css -->
+        <!-- injector:css -->
+        <link rel="stylesheet" href="css/animations.css">
+        <link rel="stylesheet" href="css/customcordova.css">
+        <link rel="stylesheet" href="css/demo.css">
+        <link rel="stylesheet" href="css/design.css">
+        <!-- endinjector -->
+    <!-- endbuild -->
+    <script src="cordova.js"></script>
+  </head>
+      
+      <script>
+       function onKeyDown() {
+          console.log("Hi");
+      }
+      </script>
+
+  <body onKeyPress="onKeyDown()">
+    <!-- =================== Navigation bar =================== 
+    <header class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">
+                        scf
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-placeholder"></div>
+    <div role="main">
+        <header class="bs-header text-center" id="overview">
+            <div class="container">
+                <h1 id="app-heading">
+                    Soundcloud Fire
+                </h1>
+            </div>
+        </header>
+-->
+        <div id="uiview" ui-view layout-fill layout="column"></div>
+        <!-- /.container -->
+
+    <!-- /.main -->
+
+  <!--  <footer class="footer">
+        <div class="container">
+            <p>Code licensed under <a href="https://github.com/keshavos/generator-angularjs-cordova/">MIT License</a>.</p>
+        </div>
+    </footer>
+-->
+      <script src="https://connect.Soundcloud.com/sdk/sdk-3.0.0.js"></script>
+
+
+    <!-- build:js scripts/vendor.js -->
+        <!-- injector:bowerjs -->
+        <script src="lib/jquery/dist/jquery.js"></script>
+        <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular-resource/angular-resource.js"></script>
+        <script src="lib/angular-mocks/angular-mocks.js"></script>
+        <script src="lib/angular-cookies/angular-cookies.js"></script>
+        <script src="lib/angular-animate/angular-animate.js"></script>
+        <script src="lib/angular-touch/angular-touch.js"></script>
+        <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+        <script src="lib/angular-ui-utils/ui-utils.js"></script>
+        <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="lib/angular-audio/app/angular.audio.js"></script>
+        <script src="lib/angular-aria/angular-aria.js"></script>
+        <script src="lib/angular-material/angular-material.js"></script>
+        <script src="lib/string-format-js/format.js"></script>
+        <script src="lib/moment/moment.js"></script>
+        <script src="lib/angular-fontawesome/dist/angular-fontawesome.js"></script>
+        <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="lib/angular-route/angular-route.js"></script>
+        <script src="lib/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="lib/lodash/lodash.js"></script>
+        <!-- endinjector -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/custom.js -->
+        <!-- injector:js -->
+        <script src="js/config.js"></script>
+        <script src="js/application.js"></script>
+        <script src="modules/core/core.js"></script>
+        <script src="modules/soundcloud/soundcloud.js"></script>
+        <script src="modules/core/config/routes.js"></script>
+        <script src="modules/soundcloud/config/soundcloudcallbacklistener.js"></script>
+        <script src="modules/core/services/tabs.js"></script>
+        <script src="modules/soundcloud/services/soundcloud-api.js"></script>
+        <script src="modules/soundcloud/services/soundcloud-constants.js"></script>
+        <script src="modules/soundcloud/services/soundcloud-login.js"></script>
+        <script src="modules/soundcloud/services/soundcloud-next-tracks.js"></script>
+        <script src="modules/soundcloud/services/soundcloud-session-manager.js"></script>
+        <script src="modules/soundcloud/services/soundcloud-util.js"></script>
+        <script src="modules/soundcloud/directives/track.js"></script>
+        <script src="modules/core/controllers/favorites.js"></script>
+        <script src="modules/core/controllers/home.js"></script>
+        <script src="modules/core/controllers/login.js"></script>
+        <script src="modules/core/controllers/nextTracks.js"></script>
+        <script src="modules/core/controllers/playlists.js"></script>
+        <script src="modules/core/controllers/search.js"></script>
+        <!-- endinjector -->
+    <!-- endbuild -->
+
+  </body>
+</html>

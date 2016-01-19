@@ -1,0 +1,26 @@
+<md-list-item>
+    <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
+    <md-button ng-click="play(track)">
+        <p>{{ track.title }}</p>
+    </md-button>
+    <i ng-if="track.isPlaying" class="fa fa-play"></i>
+
+    <md-fab-speed-dial md-direction="left" ng-class="md-scale">
+        <md-fab-trigger>
+            <md-button aria-label="menu" class="md-fab md-primary md-mini">
+                <i class="fa fa-bars"></i>
+            </md-button>
+        </md-fab-trigger>
+        <md-fab-actions>
+            <md-button class="md-fab md-mini md-primary" aria-label="button" ng-click="addToPlayNext(track)"><i class="fa fa-hourglass-start"></i></md-button>
+            <md-button aria-label="button" class="md-fab md-raised md-mini">
+                <i class="fa fa-thumbs-o-up"></i>
+            </md-button>
+            <md-button aria-label="button" class="md-fab md-raised md-mini">
+                <i class="fa fa-thumbs-o-up"></i>
+            </md-button>
+        </md-fab-actions>
+    </md-fab-speed-dial>
+
+
+</md-list-item>
