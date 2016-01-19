@@ -14,7 +14,6 @@ function SearchCtrl($scope, SoundcloudAPI) {
     };
 
     $scope.searchTrack = function () {
-        debugger;
         var searchrequest = SoundcloudAPI.getTrackSearch($scope.search.input);
         searchrequest.then(function (response) {
             $scope.results = response.data;

@@ -90,7 +90,6 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
     };
     
     this.getTrackSearch = function (searchterm) {
-        debugger;
         return $http({
             method: "GET",
             url: trackSearchUrl,
