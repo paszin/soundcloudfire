@@ -384,9 +384,9 @@ module.exports = function (grunt) {
                 "copy:styles"
             ],
             dist: [
-                "copy:styles",
-                "imagemin",
-                "svgmin"
+                "copy:styles"
+               // "imagemin",
+            //    "svgmin"
             ]
         },
 
@@ -396,6 +396,17 @@ module.exports = function (grunt) {
                 configFile: "karma.conf.js",
                 singleRun: true
             }
+        },
+
+        "gh-pages": {
+            options: {
+                base: "www",
+                user: {
+                    name: 'Pascal Crenzin',
+                    email: 'pascalslogin@gmail.com'
+                }
+            },
+            src: ["**"]
         }
     });
 
@@ -458,4 +469,10 @@ module.exports = function (grunt) {
         "test",
         "build"
     ]);
+
+    grunt.registerTask("publish", [
+        "build",
+        "gh-pages"
+    ]);
+
 };
