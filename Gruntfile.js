@@ -365,7 +365,14 @@ module.exports = function (grunt) {
                     cwd: ".tmp/images",
                     dest: "<%= yeoman.dist %>/img",
                     src: ["generated/*"]
-                }]
+                },
+                    {
+                        expand: true,
+                        flatten: true,
+                        filter: "isFile",
+                        src: ["<%= yeoman.app %>/lib/*/fonts/*"],
+                        dest: "<%= yeoman.dist %>/styles/fonts"
+                    }]
             },
             styles: {
                 expand: true,
@@ -384,11 +391,34 @@ module.exports = function (grunt) {
                 "copy:styles"
             ],
             dist: [
-                "copy:styles"
-               // "imagemin",
-            //    "svgmin"
+                "copy:styles",
+                "imagemin",
+                "svgmin"
             ]
         },
+
+        //rewriting font url
+        cssUrlRewrite: {
+
+            dist: {
+                src: '<%= yeoman.dist %>/styles/vendor.css',
+                dest: '<%= yeoman.dist %>/styles/vendor.css',
+                options: {
+                    skipExternal: true,
+                    rewriteUrl: function (url, options, dataURI) {
+                        var i,
+                            fontEndings = '.[otf|eot|svg|ttf|woff|woff2]',
+                            filename = url.split('\\').pop(),
+                            filenameReg = new RegExp(fontEndings);
+                        if (filenameReg.test(fontEndings)) {
+                            return 'fonts/' + filename;
+                        }
+                        return url;
+                    }
+                }
+            }
+        },
+
 
         // Test settings
         karma: {
@@ -461,7 +491,8 @@ module.exports = function (grunt) {
         "rev",
         "usemin",
         "htmlmin",
-        "comments:dist"
+        "comments:dist",
+        "cssUrlRewrite"
     ]);
 
     grunt.registerTask("default", [
