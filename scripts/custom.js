@@ -2,11 +2,8 @@ var ApplicationConfiguration = (function () {
     "use strict";
     var applicationModuleName = "Soundcloudfire",
         applicationModuleVendorDependencies = [
-            "ngResource",
             "ngCookies",
             "ngAnimate",
-            "ngTouch",
-            "ngSanitize",
             "ui.router",
             "ui.bootstrap",
             "ui.utils",
@@ -72,9 +69,8 @@ angular
     });
 ApplicationConfiguration.registerModule("core");
 
-'use strict';
 ApplicationConfiguration
-    .registerModule('login');
+    .registerModule("login");
 ApplicationConfiguration
     .registerModule("soundcloud");
 
@@ -93,8 +89,8 @@ angular
             $stateProvider
                 .state("login", {
                     url: "/login",
-                    templateUrl: "modules/core/views/login.html",
-                    controller: "LoginController"
+                    templateUrl: "modules/login/views/login.html",
+                    controller: "LoginCtrl"
                 })
                 .state("home", {
                     url: "/home",
@@ -171,37 +167,23 @@ angular
         }
     ]
         );
-function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, SoundcloudSessionManager) {
+function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionManager) {
 
     "use strict";
 
     var baseUrl = "https://api.Soundcloud.com",
-        clientId = SoundcloudCredentials.getClientId(),
         meUrl = baseUrl + "/me",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
         trackUrl = baseUrl + "/tracks/#{track_id}",
         trackSearchUrl = baseUrl + "/tracks",
         followingsUrl = baseUrl + "/users/#{user_id}/followings";
-
-
-    function mapResponse(response) {
-        console.log(response.data);
-        return response.data;
-    }
-    this.getMe = function me() {
+    this.getMe = function () {
         return $http.get(meUrl, {
             params: {
                 oauth_token: SoundcloudSessionManager.getToken()
             }
         });
-    };
-    this.fetchMetadata = function fetchMetadata(trackId) {
-        return $http.get(SoundcloudAPIBase + "/tracks/" + trackId, {
-            params: {
-                client_id: SoundcloudCredentials.getClientId()
-            }
-        }).then(mapResponse, $log.warn.bind($log, "Unable to retrieve song %s (response: %o)", trackId));
     };
 
 
@@ -359,7 +341,7 @@ angular
     .service("SoundcloudNextTracks", SoundcloudNextTracks);
 
 
-function SoundcloudSessionManager($http, localStorageService, SoundcloudAPIBase) {
+function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAPIBase) {
 
     "use strict";
     this.init = function init(token) {
@@ -383,7 +365,7 @@ function SoundcloudSessionManager($http, localStorageService, SoundcloudAPIBase)
         return !!localStorageService.get("ouath_token");
     };
     this.disconnect = function disconnect() {
-        console.log("disconnected");
+        $log.error("disconnected");
         localStorageService.set("ouath_token", null);
     };
 
@@ -477,8 +459,8 @@ angular
 
 
             $rootScope.audio = {
-                "stream": undefined,
-                "info": undefined,
+                "stream": null,
+                "info": null,
                 "isPlaying": false
             };
 
@@ -489,19 +471,19 @@ angular
                 if ($rootScope.audio.info && track.stream_url !== $rootScope.audio.info.stream_url) {
                     $rootScope.audio.stream.pause();
                     $rootScope.audio.isPlaying = false;
-                    $rootScope.audio.stream = undefined;
+                    $rootScope.audio.stream = null;
                     $rootScope.audio.info.isPlaying = false;
-                    console.log("delete old track");
+                    $log.info("delete old track");
                 }
                 if ($rootScope.audio.isPlaying) {
                     $rootScope.audio.stream.pause();
                     $rootScope.audio.isPlaying = false;
-                    console.log("pause");
+                    $log.info("pause");
                 } else {
                     if ($rootScope.audio.stream) {
                         $rootScope.audio.stream.play();
                         $rootScope.audio.isPlaying = true;
-                        console.log("play");
+                        $log.info("play");
                     } else {
                         $rootScope.audio.stream = ngAudio.load(track.stream_url + "?oauth_token=#{token}".format({
                             token: SoundcloudSessionManager.getToken()
@@ -509,17 +491,14 @@ angular
                         $rootScope.audio.stream.play();
                         $rootScope.audio.info = track;
                         $rootScope.audio.isPlaying = true;
-                        console.log("play new track");
+                        $log.info("play new track");
                     }
                 }
 
             };
 
             $scope.selectedIndex = 1;
-            $scope.$watch("selectedIndex", function (current) {
-
-            });
-
+            
             $scope.$watch("audio.stream.progress", function (current) {
                 if (current === 1) {
                     var nextTrack = SoundcloudNextTracks.getNextTrack();
@@ -528,32 +507,12 @@ angular
                     }
                 }
             });
-
+            
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
             });
 
         }]);
-angular
-    .module("core")
-    .controller("LoginController", [
-        "$scope", "$state", "SoundcloudLogin", "SoundcloudCredentials",
-        function ($scope, $state, SoundcloudLogin, SoundcloudCredentials) {
-            
-            "use strict";
-            
-            $scope.cid = SoundcloudCredentials.getClientId();
-
-            $scope.entrykey = "domo44";
-            $scope.loginWithSoundcloud = function () {
-                SoundcloudLogin.connect().then(function () {
-                    $state.go("home");
-                    
-                });
-            };
-
-        }
-    ]);
 function NextTracksCtrl($scope, SoundcloudNextTracks) {
 
     "use strict";
@@ -619,3 +578,20 @@ function SearchCtrl($scope, SoundcloudAPI) {
 angular
     .module("core")
     .controller("SearchCtrl", SearchCtrl);
+
+function LoginCtrl($scope, $state, SoundcloudLogin) {
+
+    "use strict";
+
+    $scope.entrykey = "domo44";
+    $scope.loginWithSoundcloud = function () {
+        SoundcloudLogin.connect().then(function () {
+            $state.go("home");
+
+        });
+    };
+}
+
+angular
+    .module("login")
+    .controller("LoginCtrl", LoginCtrl);

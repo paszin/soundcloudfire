@@ -1,6 +1,6 @@
 <div flex ng-cloak layout="column">
 
-    <div ng-if="audio.stream === undefined" layout="row" layout-align="center center">
+    <div ng-if="audio.stream === null" layout="row" layout-align="center center">
         <img alt="-" ng-src="{{me.avatar_url}}" class="md-avatar" />
         <h1>Hi {{me.first_name}}!</h1>
     </div>
