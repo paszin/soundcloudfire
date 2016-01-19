@@ -249,10 +249,7 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
         });
     };
 
-
-
 }
-
 
 
 angular
@@ -283,7 +280,7 @@ function SoundcloudCredentials(SoundcloudRedirectUri) {
     var clientIdLocal = "460ffd8b4467887b82e277fb997d644b",
         clientIdGithub = "8cc5ee91d9e6015109dc93302c43e99c";
     this.getClientId = function getClientId() {
-        if (SoundcloudRedirectUri === "http://paszin.github.io/soundcloudfire/") {
+        if (SoundcloudRedirectUri.indexOf("paszin.github.io") > -1) {
             return clientIdGithub;
         } else {
             return clientIdLocal;
