@@ -276,10 +276,11 @@ angular
         response_type: "token",
         display: "popup"
     })
-    .constant("SoundcloudAPIBase", "https://api.Soundcloud.com")
-    .constant("SoundcloudCredentials", {
-        client_id: "460ffd8b4467887b82e277fb997d644b",
-        client_secret: "f4bd70d1c70fe99da3a52d97d749f761"
+    .constant("SoundcloudAPIBase", "https://api.Soundcloud.com");
+angular
+    .module("soundcloud")
+    .value("SoundcloudCredentials", {
+        client_id: (window.location.origin === "http://paszin.github.io/soundcloudfire/") ? "8cc5ee91d9e6015109dc93302c43e99c" : "460ffd8b4467887b82e277fb997d644b"
     });
 
 
