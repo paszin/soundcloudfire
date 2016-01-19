@@ -16,7 +16,7 @@ angular
         toolbar: "no",
         scrollbars: "yes"
     })
-    .constant("SoundcloudRedirectUri", window.location.origin)
+    .constant("SoundcloudRedirectUri", window.location.origin + window.location.pathname)
     .constant("SoundcloudConnectParamBase", {
         scope: "non-expiring",
         response_type: "token",

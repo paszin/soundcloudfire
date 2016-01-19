@@ -7,7 +7,7 @@
  */
 
 
-function SoundcloudSessionManager($http, localStorageService, SoundcloudAPIBase) {
+function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAPIBase) {
 
     "use strict";
 
@@ -55,7 +55,7 @@ function SoundcloudSessionManager($http, localStorageService, SoundcloudAPIBase)
      * Disconnect from Soundcloud.
      */
     this.disconnect = function disconnect() {
-        console.log("disconnected");
+        $log.error("disconnected");
         localStorageService.set("ouath_token", null);
     };
 

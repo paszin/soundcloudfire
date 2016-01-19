@@ -5,12 +5,11 @@
  * @name Soundcloud.Services.SoundApi
  * @description SoundApi Service
  */
-function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, SoundcloudSessionManager) {
+function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionManager) {
 
     "use strict";
 
     var baseUrl = "https://api.Soundcloud.com",
-        clientId = SoundcloudCredentials.getClientId(),
         //endpoints
         meUrl = baseUrl + "/me",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
@@ -21,7 +20,6 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
 
 
     function mapResponse(response) {
-        console.log(response.data);
         return response.data;
     }
 
@@ -29,7 +27,7 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
      * Get information about the logged in user.
      * @returns {*} metadata about the user
      */
-    this.getMe = function me() {
+    this.getMe = function () {
         return $http.get(meUrl, {
             params: {
                 oauth_token: SoundcloudSessionManager.getToken()
@@ -42,14 +40,14 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
      * Fetch metadata for a track that exists in Soundcloud.
      * @param trackId Track ID for the song
      * @returns {*} A promise for the song metadata
-     */
+     
     this.fetchMetadata = function fetchMetadata(trackId) {
         return $http.get(SoundcloudAPIBase + "/tracks/" + trackId, {
             params: {
                 client_id: SoundcloudCredentials.getClientId()
             }
         }).then(mapResponse, $log.warn.bind($log, "Unable to retrieve song %s (response: %o)", trackId));
-    };
+    };*/
 
 
     this.getPlaylists = function () {
@@ -99,10 +97,7 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
         });
     };
 
-
-
 }
-
 
 
 angular

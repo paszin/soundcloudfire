@@ -21,8 +21,6 @@ angular
 
             $urlRouterProvider.otherwise("/login");
 
-
-
             /**
              * @ngdoc event
              * @name core.config.route
@@ -36,8 +34,8 @@ angular
             $stateProvider
                 .state("login", {
                     url: "/login",
-                    templateUrl: "modules/core/views/login.html",
-                    controller: "LoginController"
+                    templateUrl: "modules/login/views/login.html",
+                    controller: "LoginCtrl"
                 })
                 .state("home", {
                     url: "/home",
