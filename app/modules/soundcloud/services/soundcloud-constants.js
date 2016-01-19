@@ -22,8 +22,4 @@ angular
         response_type: "token",
         display: "popup"
     })
-    .constant("SoundcloudAPIBase", "https://api.Soundcloud.com")
-    .constant("SoundcloudCredentials", {
-        client_id: "460ffd8b4467887b82e277fb997d644b",
-        client_secret: "f4bd70d1c70fe99da3a52d97d749f761"
-    });
+    .constant("SoundcloudAPIBase", "https://api.Soundcloud.com");
