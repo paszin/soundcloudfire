@@ -173,8 +173,7 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
     "use strict";
 
     var baseUrl = "https://api.Soundcloud.com",
-        clientId = SoundcloudCredentials.client_id,
-        clientSecret = SoundcloudCredentials.client_secret,
+        clientId = SoundcloudCredentials.getClientId(),
         meUrl = baseUrl + "/me",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
@@ -197,7 +196,7 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
     this.fetchMetadata = function fetchMetadata(trackId) {
         return $http.get(SoundcloudAPIBase + "/tracks/" + trackId, {
             params: {
-                client_id: SoundcloudCredentials.client_id
+                client_id: SoundcloudCredentials.getClientId()
             }
         }).then(mapResponse, $log.warn.bind($log, "Unable to retrieve song %s (response: %o)", trackId));
     };
@@ -277,11 +276,23 @@ angular
         display: "popup"
     })
     .constant("SoundcloudAPIBase", "https://api.Soundcloud.com");
-angular
-    .module("soundcloud")
-    .value("SoundcloudCredentials", {
-        client_id: (window.location.origin === "http://paszin.github.io/soundcloudfire/") ? "8cc5ee91d9e6015109dc93302c43e99c" : "460ffd8b4467887b82e277fb997d644b"
-    });
+
+function SoundcloudCredentials(SoundcloudRedirectUri) {
+    "use strict";
+    
+    var clientIdLocal = "460ffd8b4467887b82e277fb997d644b",
+        clientIdGithub = "8cc5ee91d9e6015109dc93302c43e99c";
+    this.getClientId = function getClientId() {
+        if (SoundcloudRedirectUri === "http://paszin.github.io/soundcloudfire/") {
+            return clientIdGithub;
+        } else {
+            return clientIdLocal;
+        }
+    };
+}
+
+angular.module("soundcloud")
+    .service("SoundcloudCredentials", SoundcloudCredentials);
 
 
 function SoundcloudLogin($q, $log, SoundcloudAPIBase, SoundcloudUtil, SoundcloudConnectParamBase,
@@ -292,7 +303,7 @@ function SoundcloudLogin($q, $log, SoundcloudAPIBase, SoundcloudUtil, Soundcloud
         var params, url, options, connectPromise;
 
         params = angular.extend({}, SoundcloudConnectParamBase);
-        params.client_id = SoundcloudCredentials.client_id;
+        params.client_id = SoundcloudCredentials.getClientId();
         params.redirect_uri = SoundcloudRedirectUri;
 
         options = angular.extend({}, SoundcloudPopupDefaults);
