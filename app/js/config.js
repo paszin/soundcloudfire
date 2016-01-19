@@ -1,5 +1,5 @@
 /*global angular*/
-/*jshint quotmark: double */
+
 
 // Init the application configuration module for AngularJS application
 var ApplicationConfiguration = (function () {
@@ -7,11 +7,8 @@ var ApplicationConfiguration = (function () {
     // Init module configuration options
     var applicationModuleName = "Soundcloudfire",
         applicationModuleVendorDependencies = [
-            "ngResource",
             "ngCookies",
             "ngAnimate",
-            "ngTouch",
-            "ngSanitize",
             "ui.router",
             "ui.bootstrap",
             "ui.utils",

@@ -19,9 +19,9 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
         followingsUrl = baseUrl + "/users/#{user_id}/followings";
 
 
-    function mapResponse(response) {
-        return response.data;
-    }
+  //  function mapResponse(response) {
+  //        return response.data;
+  //    }
 
     /**
      * Get information about the logged in user.
