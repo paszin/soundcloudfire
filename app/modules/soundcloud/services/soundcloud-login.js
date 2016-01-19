@@ -21,7 +21,7 @@ function SoundcloudLogin($q, $log, SoundcloudAPIBase, SoundcloudUtil, Soundcloud
         var params, url, options, connectPromise;
 
         params = angular.extend({}, SoundcloudConnectParamBase);
-        params.client_id = SoundcloudCredentials.client_id;
+        params.client_id = SoundcloudCredentials.getClientId();
         params.redirect_uri = SoundcloudRedirectUri;
 
         options = angular.extend({}, SoundcloudPopupDefaults);

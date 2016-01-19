@@ -10,8 +10,7 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
     "use strict";
 
     var baseUrl = "https://api.Soundcloud.com",
-        clientId = SoundcloudCredentials.client_id,
-        clientSecret = SoundcloudCredentials.client_secret,
+        clientId = SoundcloudCredentials.getClientId(),
         //endpoints
         meUrl = baseUrl + "/me",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
@@ -47,7 +46,7 @@ function SoundcloudAPI($http, $log, SoundcloudAPIBase, SoundcloudCredentials, So
     this.fetchMetadata = function fetchMetadata(trackId) {
         return $http.get(SoundcloudAPIBase + "/tracks/" + trackId, {
             params: {
-                client_id: SoundcloudCredentials.client_id
+                client_id: SoundcloudCredentials.getClientId()
             }
         }).then(mapResponse, $log.warn.bind($log, "Unable to retrieve song %s (response: %o)", trackId));
     };
