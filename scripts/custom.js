@@ -72,6 +72,9 @@ angular
     });
 ApplicationConfiguration.registerModule("core");
 
+'use strict';
+ApplicationConfiguration
+    .registerModule('login');
 ApplicationConfiguration
     .registerModule("soundcloud");
 
@@ -534,10 +537,12 @@ angular
 angular
     .module("core")
     .controller("LoginController", [
-        "$scope", "$state", "SoundcloudLogin",
-        function ($scope, $state, SoundcloudLogin) {
+        "$scope", "$state", "SoundcloudLogin", "SoundcloudCredentials",
+        function ($scope, $state, SoundcloudLogin, SoundcloudCredentials) {
             
             "use strict";
+            
+            $scope.cid = SoundcloudCredentials.getClientId();
 
             $scope.entrykey = "domo44";
             $scope.loginWithSoundcloud = function () {
