@@ -20,7 +20,7 @@
 
 #backgroundimage {
     background-position: center;
-    background-image: url('../img/background.jpg');
+    background-image: url('../img/loaders/background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     -webkit-background-size: cover;

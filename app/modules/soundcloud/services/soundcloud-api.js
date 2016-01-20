@@ -12,6 +12,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
     var baseUrl = "https://api.Soundcloud.com",
         //endpoints
         meUrl = baseUrl + "/me",
+        userUrl = baseUrl + "/users/#{user_id}/",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
         trackUrl = baseUrl + "/tracks/#{track_id}",
@@ -79,6 +80,18 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
             method: "GET",
             url: followingsUrl.format({
                 "user_id": SoundcloudSessionManager.getUserId()
+            }),
+            params: {
+                oauth_token: SoundcloudSessionManager.getToken()
+            }
+        });
+    };
+    
+    this.getUser = function (userId) {
+        return $http({
+            method: "GET",
+            url: userUrl.format({
+                "user_id": userId
             }),
             params: {
                 oauth_token: SoundcloudSessionManager.getToken()

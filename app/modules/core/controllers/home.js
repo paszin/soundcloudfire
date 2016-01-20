@@ -18,12 +18,6 @@ angular
 
             $scope.tabs = Tabs;
 
-            $scope.info = {
-                "me": {},
-                "playlists": []
-            };
-
-
             $rootScope.audio = {
                 "stream": null,
                 "info": null,
@@ -63,7 +57,7 @@ angular
 
             };
 
-            $scope.selectedIndex = 1;
+            $scope.selectedIndex = 3;
             // $scope.$watch("selectedIndex", function (current) { });
             
             $scope.$watch("audio.stream.progress", function (current) {

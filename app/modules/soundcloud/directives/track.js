@@ -27,7 +27,7 @@ angular
                 },
                 // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements
                 restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
-                templateUrl: "/modules/soundcloud/views/track.html",
+                templateUrl: "modules/soundcloud/views/track.html",
                 // replace: true,
                 // transclude: true,
                 // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
