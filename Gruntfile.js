@@ -358,6 +358,7 @@ module.exports = function (grunt) {
                         "index.html",
                         "modules/*/views/*.html",
                         "img/{,*/}*.{webp}",
+                        "img/{,*/}*.jpg",
                         "fonts/*"
                     ]
                 }, {
@@ -401,17 +402,17 @@ module.exports = function (grunt) {
         cssUrlRewrite: {
 
             dist: {
-                src: '<%= yeoman.dist %>/styles/vendor.css',
-                dest: '<%= yeoman.dist %>/styles/vendor.css',
+                src: "<%= yeoman.dist %>/styles/vendor.css",
+                dest: "<%= yeoman.dist %>/styles/vendor.css",
                 options: {
                     skipExternal: true,
                     rewriteUrl: function (url, options, dataURI) {
                         var i,
-                            fontEndings = '.[otf|eot|svg|ttf|woff|woff2]',
-                            filename = url.split('\\').pop(),
+                            fontEndings = ".[otf|eot|svg|ttf|woff|woff2]",
+                            filename = url.split("\\").pop(),
                             filenameReg = new RegExp(fontEndings);
                         if (filenameReg.test(fontEndings)) {
-                            return 'fonts/' + filename;
+                            return "fonts/" + filename;
                         }
                         return url;
                     }
@@ -432,8 +433,8 @@ module.exports = function (grunt) {
             options: {
                 base: "www",
                 user: {
-                    name: 'Pascal Crenzin',
-                    email: 'pascalslogin@gmail.com'
+                    name: "Pascal Crenzin",
+                    email: "pascalslogin@gmail.com"
                 }
             },
             src: ["**"]
