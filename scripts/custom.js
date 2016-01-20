@@ -423,7 +423,7 @@ angular
                     };
                 },
                 restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
-                templateUrl: "soundcloudfire/modules/soundcloud/views/track.html",
+                templateUrl: "modules/soundcloud/views/track.html",
                 link ($scope, iElm, iAttrs, controller) {
 
                 }
