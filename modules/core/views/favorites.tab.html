@@ -1,5 +1,3 @@
-<div ng-controller="FavoritesCtrl">
-    <md-list>
-            <track track="track" ng-repeat="track in favorites"></track>
-    </md-list>
+<div ng-controller="FavoritesCtrl" layout="row" layout-xs="column" layout-wrap>
+    <track layout="row" layout-align="start start" layout-wrap flex="33" track="track" ng-repeat="track in favorites"></track>
 </div>

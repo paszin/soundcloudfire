@@ -1,26 +1,28 @@
-<md-list-item>
-    <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
-    <md-button ng-click="play(track)">
-        <p>{{ track.title }}</p>
-    </md-button>
-    <i ng-if="track.isPlaying" class="fa fa-play"></i>
-
-    <md-fab-speed-dial md-direction="left" ng-class="md-scale">
-        <md-fab-trigger>
-            <md-button aria-label="menu" class="md-fab md-primary md-mini">
-                <i class="fa fa-bars"></i>
-            </md-button>
-        </md-fab-trigger>
-        <md-fab-actions>
-            <md-button class="md-fab md-mini md-primary" aria-label="button" ng-click="addToPlayNext(track)"><i class="fa fa-hourglass-start"></i></md-button>
-            <md-button aria-label="button" class="md-fab md-raised md-mini">
-                <i class="fa fa-thumbs-o-up"></i>
-            </md-button>
-            <md-button aria-label="button" class="md-fab md-raised md-mini">
-                <i class="fa fa-thumbs-o-up"></i>
-            </md-button>
-        </md-fab-actions>
-    </md-fab-speed-dial>
-
-
-</md-list-item>
+<div layout-fill>
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{track.title | beautifyTitle}}</span>
+                <span class="md-subhead">{{track.user.username}}</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content layout="row" layout-align="space-between">
+            <div class="md-media-md"><img alt="-" ng-style="{'height': '200px'}" ng-src="{{track.artwork_url | artworksize: 't300x300'}}" />
+            </div>
+            <md-card-actions layout="column">
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="play(track)" ng-show="!track.isPlaying">
+                    <i class="fa fa-play"></i>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="play(track)" ng-show="track.isPlaying">
+                    <i class="fa fa-pause"></i>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Favorite" ng-click="addToPlayNext(track)">
+                    <i class="fa fa-hourglass-start"></i>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Share">
+                    <i class="fa fa-thumbs-o-up"></i>
+                </md-button>
+            </md-card-actions>
+        </md-card-content>
+    </md-card>
+</div>

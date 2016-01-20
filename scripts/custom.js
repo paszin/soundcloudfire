@@ -173,6 +173,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
 
     var baseUrl = "https://api.Soundcloud.com",
         meUrl = baseUrl + "/me",
+        userUrl = baseUrl + "/users/#{user_id}/",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
         trackUrl = baseUrl + "/tracks/#{track_id}",
@@ -216,6 +217,18 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
             method: "GET",
             url: followingsUrl.format({
                 "user_id": SoundcloudSessionManager.getUserId()
+            }),
+            params: {
+                oauth_token: SoundcloudSessionManager.getToken()
+            }
+        });
+    };
+    
+    this.getUser = function (userId) {
+        return $http({
+            method: "GET",
+            url: userUrl.format({
+                "user_id": userId
             }),
             params: {
                 oauth_token: SoundcloudSessionManager.getToken()
@@ -430,11 +443,46 @@ angular
             };
         }
     ]);
+angular
+    .module("soundcloud")
+    .filter("artworksize", [
 
-function FavoritesCtrl($scope, SoundcloudAPI, SoundcloudNextTracks) {
+        function () {
+            "use strict";
+            return function (url, size) {
+                if (!url) {
+                    return url;
+                }
+                return url.replace("-large.jpg", "-" + size + ".jpg");
+            };
+        }
+    ]);
+angular
+    .module("soundcloud")
+    .filter("beautifyTitle", [
+
+        function () {
+            "use strict";
+            return function (title) {
+                
+                return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "");
+            };
+        }
+    ]);
+
+function FavoritesCtrl($scope, SoundcloudAPI) {
     "use strict";
-    
-    var favs = SoundcloudAPI.getFavorites();
+
+    var favs = SoundcloudAPI.getFavorites(),
+        favUsers = {},
+        i,
+        addArtist = function (resp) {
+            favUsers[resp.data.id] = resp.data;
+        };
+    $scope.getArtistName = function (userId) {
+        return favUsers[userId].user_name;
+    };
+
     favs.then(function (response) {
         $scope.favorites = response.data;
     });
@@ -451,12 +499,6 @@ angular
             "use strict";
 
             $scope.tabs = Tabs;
-
-            $scope.info = {
-                "me": {},
-                "playlists": []
-            };
-
 
             $rootScope.audio = {
                 "stream": null,
@@ -497,7 +539,7 @@ angular
 
             };
 
-            $scope.selectedIndex = 1;
+            $scope.selectedIndex = 3;
             
             $scope.$watch("audio.stream.progress", function (current) {
                 if (current === 1) {
