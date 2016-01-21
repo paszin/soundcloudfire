@@ -1,6 +1,7 @@
 <div ng-controller="NextTracksCtrl">
 <h1>playing next...</h1>
     <div>
+        <md-button>Convert to playlist</md-button>
     <md-list>
 
         <md-list-item ng-repeat="track in playlist" ng-click="$parent.playPauseSound(track)">

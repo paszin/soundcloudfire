@@ -6,6 +6,5 @@
 
     <md-button ng-click="searchTrack()">search for {{search.input}}</md-button>
 
-    <div ng-repeat="r in results">{{r.kind}}{{r.title}}</div>
-
+    <track ng-repeat="r in results" track="r"></track>
 </div>

@@ -10,16 +10,16 @@
             <div class="md-media-md"><img alt="-" ng-style="{'height': '200px'}" ng-src="{{track.artwork_url | artworksize: 't300x300'}}" />
             </div>
             <md-card-actions layout="column">
-                <md-button class="md-icon-button" aria-label="Settings" ng-click="play(track)" ng-show="!track.isPlaying">
+                <md-button class="md-icon-button" aria-label="play" ng-click="play(track)" ng-show="!track.isPlaying">
                     <i class="fa fa-play"></i>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Settings" ng-click="play(track)" ng-show="track.isPlaying">
+                <md-button class="md-icon-button" aria-label="pause" ng-click="play(track)" ng-show="track.isPlaying">
                     <i class="fa fa-pause"></i>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Favorite" ng-click="addToPlayNext(track)">
+                <md-button class="md-icon-button" aria-label="playlater" ng-click="addToPlayNext(track)">
                     <i class="fa fa-hourglass-start"></i>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Share">
+                <md-button class="md-icon-button" aria-label="niceone">
                     <i class="fa fa-thumbs-o-up"></i>
                 </md-button>
             </md-card-actions>
