@@ -1,4 +1,4 @@
-/*global angular, console, moment*/
+/*global angular, console*/
 /*jslint plusplus: true */
 /*jshint quotmark: double */
 

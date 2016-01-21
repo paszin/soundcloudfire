@@ -1,4 +1,16 @@
-/*global angular, console*/
+/*global angular*/
+
+
+/*notes: https://api-v2.soundcloud.com/stream?promoted_playlist=false&offset=00000152-609e-7f10-ffff-ffffee7202eb&sc_a_id=6b0b0b1d-af6d-4c7e-82b6-033c8952d91c&limit=50&client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=89b44ce to get the stream
+
+https://api.soundcloud.com/playlists/128606733?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=89b44ce PUT {"playlist":{"tracks":[{"id":181838657},{"id":181311470},{"id":114305296}]}}
+
+
+
+create new playlist https://api.soundcloud.com/playlists?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=89b44ce
+playlist%5Btitle%5D=awesomeness&playlist%5Bsharing%5D=private&playlist%5B_resource_id%5D=undefined&playlist%5B_resource_type%5D=playlist
+
+*/
 
 /**
  * @ngdoc service
