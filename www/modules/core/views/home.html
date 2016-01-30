@@ -1,0 +1,18 @@
+<div flex ng-cloak layout="column">
+
+    <div ng-if="audio.stream === null" layout="row" layout-align="center center">
+        <img alt="-" ng-src="{{me.avatar_url}}" class="md-avatar" />
+        <h1>Hi {{me.first_name}}!</h1>
+    </div>
+    <div ng-if="audio.stream" ng-include="'modules/core/views/currentPlay.template.html'"></div>
+
+    <md-tabs flex class="md-primary" md-selected="selectedIndex">
+        <md-tab ng-repeat="tab in tabs">
+            <md-tab-label>
+                <i class="fa {{tab.icon}} fa-2x"></i> {{tab.title}}
+            </md-tab-label>
+            
+            <md-tab-body><div ng-include="tab.content"></div></md-tab-body>
+        </md-tab>
+    </md-tabs>
+</div>

@@ -43,6 +43,11 @@ angular
             title: "Groups",
             content: viewsFolder + "following.template.html",
             icon: "fa-users"
+        },
+        {
+            title: "Analyze",
+            content: viewsFolder + "visualization.tab.html",
+            icon: "fa-magic"
         }
-    ]
-        );
+
+    ]);

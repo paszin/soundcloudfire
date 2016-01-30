@@ -1,0 +1,11 @@
+<md-list>  
+    <md-list-item layout="column" layout-align="center start" ng-repeat="playlist in $parent.info.playlists">
+        <div layout="column" layout-align="center start" flex="100" >
+            <md-button ng-click="$parent.getPlaylist(playlist.index)" class="md-accent">{{playlist.title}}</md-button>
+            
+            <p>{{playlist.track_count}} Tracks, {{playlist.duration_readable}}</p>
+        </div>
+        <div ng-if="playlist.showTracks"  ng-include="'modules/core/views/playlist.template.html'"></div>
+    </md-list-item>
+</md-list>
+

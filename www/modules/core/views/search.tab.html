@@ -1,0 +1,10 @@
+<div ng-controller="SearchCtrl">
+    <md-input-container>
+        <label>search</label>
+        <input ng-model="search.input">
+    </md-input-container>
+
+    <md-button ng-click="searchTrack()">search for {{search.input}}</md-button>
+
+    <track ng-repeat="r in results" track="r"></track>
+</div>

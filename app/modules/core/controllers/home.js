@@ -17,7 +17,8 @@ angular
             "use strict";
 
             $scope.tabs = Tabs;
-
+            $scope.full = {Info : true};
+            
             $rootScope.audio = {
                 "stream": null,
                 "info": null,
