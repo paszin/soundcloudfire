@@ -1,0 +1,14 @@
+<div ng-controller="PlaylistsCtrl">
+
+    <md-list>
+        <md-list-item layout="column" layout-align="center start" ng-repeat="playlist in playlists">
+            <div layout="column" layout-align="center start" flex="100" ng-click="getPlaylist(playlist.index)">
+                <h3>{{playlist.title}}</h3>
+                <p>{{playlist.track_count}} Tracks, {{playlist.duration_readable}}</p>
+            </div>
+            <div ng-if="playlist.showTracks" ng-include="'modules/playlists/views/playlist.template.html'"></div>
+        </md-list-item>
+    </md-list>
+
+
+</div>

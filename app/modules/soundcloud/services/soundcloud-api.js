@@ -5,11 +5,6 @@
 
 https://api.soundcloud.com/playlists/128606733?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=89b44ce PUT {"playlist":{"tracks":[{"id":181838657},{"id":181311470},{"id":114305296}]}}
 
-
-
-create new playlist https://api.soundcloud.com/playlists?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=89b44ce
-playlist%5Btitle%5D=awesomeness&playlist%5Bsharing%5D=private&playlist%5B_resource_id%5D=undefined&playlist%5B_resource_type%5D=playlist
-
 */
 
 /**
@@ -17,7 +12,7 @@ playlist%5Btitle%5D=awesomeness&playlist%5Bsharing%5D=private&playlist%5B_resour
  * @name Soundcloud.Services.SoundApi
  * @description SoundApi Service
  */
-function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionManager) {
+function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCredentials, SoundcloudSessionManager) {
 
     "use strict";
 
@@ -26,15 +21,16 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
         meUrl = baseUrl + "/me",
         userUrl = baseUrl + "/users/#{user_id}/",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
+        newPlaylistUrl = baseUrl + "/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
         trackUrl = baseUrl + "/tracks/#{track_id}",
         trackSearchUrl = baseUrl + "/tracks",
         followingsUrl = baseUrl + "/users/#{user_id}/followings";
 
 
-  //  function mapResponse(response) {
-  //        return response.data;
-  //    }
+    //  function mapResponse(response) {
+    //        return response.data;
+    //    }
 
     /**
      * Get information about the logged in user.
@@ -46,7 +42,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
                 oauth_token: SoundcloudSessionManager.getToken()
             }
         });
-          //  .then(mapResponse, SoundcloudSessionManager.disconnect);
+        //  .then(mapResponse, SoundcloudSessionManager.disconnect);
     };
 
     /**
@@ -75,6 +71,21 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
         });
     };
 
+    this.postEmptyPlaylist = function (title, isPrivate) {
+        var sharing = isPrivate ? "private" : "public";
+        return $http({
+            method: "POST",
+            url: newPlaylistUrl,
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            data: $httpParamSerializerJQLike({"oauth_token": SoundcloudSessionManager.getToken(),
+                   "playlist[title]": title,
+                   "playlist[sharing]": sharing,
+                   "playlist[_resource_id]": undefined,
+                   "playlist[_resource_type]": "playlist"
+                  })
+        });
+    };
+
     this.getFavorites = function () {
         return $http({
             method: "GET",
@@ -86,7 +97,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
             }
         });
     };
-    
+
     this.getFollowings = function () {
         return $http({
             method: "GET",
@@ -98,7 +109,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
             }
         });
     };
-    
+
     this.getUser = function (userId) {
         return $http({
             method: "GET",
@@ -110,7 +121,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
             }
         });
     };
-    
+
     this.getTrackSearch = function (searchterm) {
         return $http({
             method: "GET",

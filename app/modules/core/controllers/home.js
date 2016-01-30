@@ -1,4 +1,4 @@
-/*global angular, console*/
+/*global angular, console, _*/
 /*jslint plusplus: true */
 /*jshint quotmark: double */
 
@@ -13,11 +13,12 @@ angular
     .module("core")
     .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "SoundcloudAPI", "SoundcloudNextTracks", "SoundcloudSessionManager", "Tabs",
         function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, SoundcloudNextTracks, SoundcloudSessionManager, Tabs) {
-
+            
             "use strict";
-
-            $scope.tabs = Tabs;
-            $scope.full = {Info : true};
+            
+            $scope.tabs = _.filter(Tabs, function (ta) {
+                return ta.content !== "modules/core/views/empty.template.html";
+            });
             
             $rootScope.audio = {
                 "stream": null,
@@ -60,7 +61,7 @@ angular
 
             $scope.selectedIndex = 3;
             // $scope.$watch("selectedIndex", function (current) { });
-            
+
             $scope.$watch("audio.stream.progress", function (current) {
                 if (current === 1) {
                     var nextTrack = SoundcloudNextTracks.getNextTrack();
@@ -69,7 +70,7 @@ angular
                     }
                 }
             });
-            
+
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
             });
