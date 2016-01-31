@@ -1,0 +1,33 @@
+<div ng-controller="NextTracksCtrl">
+    <md-whiteframe class="md-whiteframe-1dp" ng-show="!nextTracks.length" layout="column" layout-margin layout-align="center center">
+        <h4>No upcoming tracks.</h4>
+        <p>Click the <i class="fa fa-hourglass-start"></i> to add tracks to your On-The-Go-Playlist.</p>
+    </md-whiteframe>
+    <div>
+        <md-button class="md-accent" ng-show="!editMode && nextTracks.length" ng-click="editMode=true">Convert to playlist</md-button>
+        <p ng-show="editMode" layout-margin>Save as playlist</p>
+        <div ng-show="editMode" layout="row" layout-margin>
+            <div layout="column">
+                <md-input-container ng-show="editMode">
+                    <label>Name</label>
+                    <input ng-model="playlist.name">
+                </md-input-container>
+                <md-checkbox ng-show="editMode" ng-model="playlist.isPrivate" aria-label="private">
+                    private
+                </md-checkbox>
+            </div>
+            <md-button ng-show="editMode" ng-click="saveAsPlaylist()"><i class="fa fa-check"></i></md-button>
+            <md-button ng-show="editMode" ng-click="editMode=false"><i class="fa fa-times"></i></md-button>
+        </div>
+        <md-list>
+
+            <md-list-item ng-repeat="track in nextTracks" ng-click="$parent.playPauseSound(track)">
+                <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
+                <p>{{ track.title }}</p>
+                <i ng-show="track.isPlaying" class="fa fa-play"></i>
+            </md-list-item>
+
+        </md-list>
+    </div>
+
+</div>

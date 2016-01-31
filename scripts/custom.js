@@ -69,10 +69,31 @@ angular
     });
 ApplicationConfiguration.registerModule("core");
 
+'use strict';
+ApplicationConfiguration
+    .registerModule('groups');
+
+'use strict';
+ApplicationConfiguration
+    .registerModule('history');
+ApplicationConfiguration
+    .registerModule("likes");
 ApplicationConfiguration
     .registerModule("login");
 ApplicationConfiguration
+    .registerModule("next-tracks");
+ApplicationConfiguration
+    .registerModule("playlists");
+
+'use strict';
+ApplicationConfiguration
+    .registerModule('search');
+ApplicationConfiguration
     .registerModule("soundcloud");
+
+'use strict';
+ApplicationConfiguration
+    .registerModule('visualization');
 
 
 angular
@@ -126,48 +147,53 @@ function createListener() {
 angular
     .module("core")
     .config(createListener);
-var viewsFolder = "modules/core/views/";
+
 angular
     .module("soundcloud")
     .value("Tabs", [
         {
             title: "Search",
-            content: viewsFolder + "search.tab.html",
+            content:  "modules/search/views/search.tab.html",
             icon: "fa-search"
         },
         {
             title: "Stream",
-            content: viewsFolder + "following.template.html",
+            content: "modules/core/views/empty.template.html",
             icon: "fa-music"
         },
         {
             title: "Playlists",
-            content: viewsFolder + "playlists.tab.html",
+            content: "modules/playlists/views/playlists.tab.html",
             icon: "fa-th-list"
         },
         {
             title: "Likes",
-            content: viewsFolder + "favorites.tab.html",
+            content: "modules/likes/views/likes.tab.html",
             icon: "fa-heart"
         },
         {
             title: "History",
-            content: viewsFolder + "following.template.html",
+            content: "modules/core/views/empty.template.html",
             icon: "fa-clock-o"
         },
         {
             title: "Next Tracks",
-            content: viewsFolder + "nextTracks.tab.html",
-            icon: "fa-headphones"
+            content: "modules/next-tracks/views/nextTracks.tab.html",
+            icon: "fa-hourglass-start" //"fa-headphones"
         },
         {
             title: "Groups",
-            content: viewsFolder + "following.template.html",
+            content: "modules/core/views/empty.template.html",
             icon: "fa-users"
+        },
+        {
+            title: "Analyze",
+            content: "modules/core/views/empty.template.html",
+            icon: "fa-magic"
         }
-    ]
-        );
-function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionManager) {
+
+    ]);
+function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCredentials, SoundcloudSessionManager) {
 
     "use strict";
 
@@ -175,6 +201,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
         meUrl = baseUrl + "/me",
         userUrl = baseUrl + "/users/#{user_id}/",
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
+        newPlaylistUrl = baseUrl + "/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
         trackUrl = baseUrl + "/tracks/#{track_id}",
         trackSearchUrl = baseUrl + "/tracks",
@@ -200,6 +227,51 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
         });
     };
 
+    this.postPlaylist = function (title, isPrivate, track_ids) {
+        var sharing = isPrivate ? "private" : "public",
+            idsSerie = _.join(_.map(track_ids, function (id) {
+                return "playlist%5Btracks%5D%5B%5D%5Bid%5D=" + id;
+            }), '&');
+        return $http({
+            method: "POST",
+            url: newPlaylistUrl,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data: $httpParamSerializerJQLike({
+                "oauth_token": SoundcloudSessionManager.getToken(),
+                "playlist[title]": title,
+                "playlist[sharing]": sharing,
+                "playlist[_resource_id]": undefined,
+                "playlist[_resource_type]": "playlist"
+            }) + '&' + idsSerie
+        });
+    };
+
+
+    this.putPlaylist = function (playlist_id, track_ids) {
+       
+        var ids = _.map(track_ids, function (id) {
+            return {
+                id: id
+            };
+        });
+        return $http({
+            method: "PUT",
+            url: newPlaylistUrl + "/" + playlist_id,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: {
+                "oauth_token": "1-138878-12338076-4b43aa07814c42", //SoundcloudSessionManager.getToken(),
+                "playlist": {
+                    "tracks": ids
+                }
+            }
+        });
+    };
+
+
     this.getFavorites = function () {
         return $http({
             method: "GET",
@@ -211,7 +283,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
             }
         });
     };
-    
+
     this.getFollowings = function () {
         return $http({
             method: "GET",
@@ -223,7 +295,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
             }
         });
     };
-    
+
     this.getUser = function (userId) {
         return $http({
             method: "GET",
@@ -235,7 +307,7 @@ function SoundcloudAPI($http, $log, SoundcloudCredentials, SoundcloudSessionMana
             }
         });
     };
-    
+
     this.getTrackSearch = function (searchterm) {
         return $http({
             method: "GET",
@@ -347,6 +419,11 @@ function SoundcloudNextTracks() {
     this.getNextTracks = function getNextTracks() {
         return this.nextTracks;
     };
+    this.getNextTracksIds = function getNextTracksIds() {
+        return _.map(this.nextTracks, function (obj) {
+            return obj.id;
+        });
+    };
 }
 
 angular
@@ -395,11 +472,11 @@ function SoundcloudUtil() {
     "use strict";
 
     function mapEntry(key) {
-        return this[key] ? key + "=" + this[key] : undefined;
+        return this[key] ? key + "=" + this[key] : null;
     }
 
     function mapAndEscape(key) {
-        return this[key] ? key + "=" + encodeURIComponent(this[key]) : undefined;
+        return this[key] ? key + "=" + encodeURIComponent(this[key]) : null;
     }
     this.toParams = function (obj) {
         return Object.keys(obj)
@@ -418,6 +495,26 @@ function SoundcloudUtil() {
 angular
     .module("core")
     .service("SoundcloudUtil", SoundcloudUtil);
+
+angular
+    .module("core")
+    .directive("visualization", function () {
+        return {
+            restrict: "A",
+            link: function (scope, element) {
+
+                var canvas = document.getElementById("canvas");
+                var stage = new createjs.Stage(canvas);
+                var circle = new createjs.Shape();
+                circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+                circle.x = 100;
+                circle.y = 100;
+                stage.addChild(circle);
+                stage.update();
+
+            }
+        };
+    });
 angular
     .module("soundcloud")
     .directive("track", [
@@ -437,9 +534,6 @@ angular
                 },
                 restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
                 templateUrl: "modules/soundcloud/views/track.html",
-                link ($scope, iElm, iAttrs, controller) {
-
-                }
             };
         }
     ]);
@@ -469,29 +563,17 @@ angular
             };
         }
     ]);
-
-function FavoritesCtrl($scope, SoundcloudAPI) {
-    "use strict";
-
-    var favs = SoundcloudAPI.getFavorites();
-
-    favs.then(function (response) {
-        $scope.favorites = response.data;
-    });
-}
-
-angular
-    .module("core")
-    .controller("FavoritesCtrl", FavoritesCtrl);
 angular
     .module("core")
     .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "SoundcloudAPI", "SoundcloudNextTracks", "SoundcloudSessionManager", "Tabs",
         function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, SoundcloudNextTracks, SoundcloudSessionManager, Tabs) {
-
+            
             "use strict";
-
-            $scope.tabs = Tabs;
-
+            
+            $scope.tabs = _.filter(Tabs, function (ta) {
+                return ta.content !== "modules/core/views/empty.template.html";
+            });
+            
             $rootScope.audio = {
                 "stream": null,
                 "info": null,
@@ -532,7 +614,7 @@ angular
             };
 
             $scope.selectedIndex = 3;
-            
+
             $scope.$watch("audio.stream.progress", function (current) {
                 if (current === 1) {
                     var nextTrack = SoundcloudNextTracks.getNextTrack();
@@ -541,16 +623,79 @@ angular
                     }
                 }
             });
-            
+
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
             });
 
         }]);
-function NextTracksCtrl($scope, SoundcloudNextTracks) {
+
+function FavoritesCtrl($scope, SoundcloudAPI) {
+    "use strict";
+
+    var favs = SoundcloudAPI.getFavorites();
+
+    favs.then(function (response) {
+        $scope.favorites = response.data;
+    });
+}
+
+angular
+    .module("core")
+    .controller("FavoritesCtrl", FavoritesCtrl);
+
+function LoginCtrl($scope, $state, SoundcloudLogin) {
 
     "use strict";
-    $scope.playlist = SoundcloudNextTracks.nextTracks;
+
+    $scope.entrykey = "domo44";
+    $scope.loginWithSoundcloud = function () {
+        SoundcloudLogin.connect().then(function () {
+            $state.go("home");
+
+        });
+    };
+}
+
+angular
+    .module("login")
+    .controller("LoginCtrl", LoginCtrl);
+function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, SoundcloudAPI) {
+
+    "use strict";
+
+    $scope.editMode = false;
+    $scope.playlist = {
+        name: "Name",
+        isPrivate: true
+    };
+
+
+    $scope.nextTracks = SoundcloudNextTracks.nextTracks;
+
+    $scope.saveAsPlaylist = function () {
+        SoundcloudAPI.postPlaylist($scope.playlist.name, $scope.playlist.isPrivate, SoundcloudNextTracks.getNextTracksIds())
+            .then(
+                function (resp) {
+                    $scope.editMode = false;
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent("Saved as playlist")
+                            .position("top right")
+                            .hideDelay(3000)
+                    );
+                },
+                function (resp) {
+                    $log.error(resp);
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent("Fuck, Error, check console for further details")
+                            .position("top right")
+                            .hideDelay(3000)
+                    );
+                }
+            );
+    };
 
     $scope.refresh = function () {
         $scope.playlist = SoundcloudNextTracks.getNextTracks();
@@ -612,20 +757,3 @@ function SearchCtrl($scope, SoundcloudAPI) {
 angular
     .module("core")
     .controller("SearchCtrl", SearchCtrl);
-
-function LoginCtrl($scope, $state, SoundcloudLogin) {
-
-    "use strict";
-
-    $scope.entrykey = "domo44";
-    $scope.loginWithSoundcloud = function () {
-        SoundcloudLogin.connect().then(function () {
-            $state.go("home");
-
-        });
-    };
-}
-
-angular
-    .module("login")
-    .controller("LoginCtrl", LoginCtrl);
