@@ -14,7 +14,7 @@ angular
             return function (title) {
                 //available sizes: large
                 
-                return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "");
+                return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "").replace("[OUT NOW!]", "");
             };
         }
     ]);

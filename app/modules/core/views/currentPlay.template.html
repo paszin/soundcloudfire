@@ -1,13 +1,13 @@
 <div layout="row" layout-align="start center">
-    <img flex="15" layout-margin ng-src="{{audio.info.artwork_url | artworksize: 't300x300'}}" />
+    <img flex="15" layout-margin ng-src="{{playerService.audio.info.artwork_url | artworksize: 't300x300'}}" />
     <div flex="80" layout="column">
-        <h1>{{audio.info.title}}</h1>
-        <p>{{audio.info.user.username}}</p>
-        <p>favs: {{audio.info.favoritings_count}}</p>
+        <h1>{{playerService.audio.info.title}}</h1>
+        <p>{{playerService.audio.info.user.username}}</p>
+        <p>favs: {{playerService.audio.info.favoritings_count}}</p>
         <div>
             <div layout="column" layout-align="start end" flex class="waveform-holder">
-                <img class="waveform" ng-src="{{audio.info.waveform_url}}" ng-Style="{'height': '50px'}"/>
-                <span ng-Style="{'width': audio.stream.progress*100 + '%'}" class="waveform-overlay"> </span>
+                <img class="waveform" id="waveformprogress" ng-src="{{playerService.audio.info.waveform_url}}" ng-click="clickWaveform($event)" ng-Style="{'height': '50px'}"/>
+                <span ng-Style="{'width': playerService.audio.stream.progress*100 + '%'}" class="waveform-overlay"> </span>
             </div>
         </div>
     </div>
