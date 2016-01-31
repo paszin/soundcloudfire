@@ -34,7 +34,7 @@ function SoundcloudNextTracks() {
             return o.id === track_id;
         });
     };
-    
+
     /**
      * return next track in playlist.
      * @return {object} track
@@ -52,6 +52,16 @@ function SoundcloudNextTracks() {
      */
     this.getNextTracks = function getNextTracks() {
         return this.nextTracks;
+    };
+
+    /**
+     * Get the playlist.
+     * @returns {array} next tracks ids
+     */
+    this.getNextTracksIds = function getNextTracksIds() {
+        return _.map(this.nextTracks, function (obj) {
+            return obj.id;
+        });
     };
 }
 

@@ -406,9 +406,8 @@ module.exports = function (grunt) {
                 dest: "<%= yeoman.dist %>/styles/vendor.css",
                 options: {
                     skipExternal: true,
-                    rewriteUrl: function (url, options, dataURI) {
-                        var i,
-                            fontEndings = ".[otf|eot|svg|ttf|woff|woff2]",
+                    rewriteUrl: function (url) {
+                        var fontEndings = ".[otf|eot|svg|ttf|woff|woff2]",
                             filename = url.split("\\").pop(),
                             filenameReg = new RegExp(fontEndings);
                         if (filenameReg.test(fontEndings)) {

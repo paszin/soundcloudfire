@@ -1,7 +1,16 @@
 <div ng-controller="NextTracksCtrl">
 <h1>playing next...</h1>
     <div>
-        <md-button>Convert to playlist</md-button>
+        <md-button ng-show="!editMode" ng-click="editMode=true">Convert to playlist</md-button>
+        <md-button ng-show="editMode" ng-click="editMode=false">Cancel</md-button>
+        <md-button ng-show="editMode" ng-click="saveAsPlaylist()">save</md-button>
+         <md-checkbox ng-show="editMode" ng-model="playlist.isPrivate" aria-label="private">
+            private
+          </md-checkbox>
+        <md-input-container ng-show="editMode">
+        <label>Name</label>
+        <input ng-model="playlist.name">
+      </md-input-container>
     <md-list>
 
         <md-list-item ng-repeat="track in playlist" ng-click="$parent.playPauseSound(track)">

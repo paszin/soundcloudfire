@@ -1,9 +1,7 @@
-/*global angular*/
-
+/*global angular, _*/
+/*jshint nomen: true */
 
 /*notes: https://api-v2.soundcloud.com/stream?promoted_playlist=false&offset=00000152-609e-7f10-ffff-ffffee7202eb&sc_a_id=6b0b0b1d-af6d-4c7e-82b6-033c8952d91c&limit=50&client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=89b44ce to get the stream
-
-https://api.soundcloud.com/playlists/128606733?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=89b44ce PUT {"playlist":{"tracks":[{"id":181838657},{"id":181311470},{"id":114305296}]}}
 
 */
 
@@ -71,20 +69,50 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
         });
     };
 
-    this.postEmptyPlaylist = function (title, isPrivate) {
-        var sharing = isPrivate ? "private" : "public";
+    this.postPlaylist = function (title, isPrivate, track_ids) {
+        var sharing = isPrivate ? "private" : "public",
+            idsSerie = _.join(_.map(track_ids, function (id) {
+                return "playlist%5Btracks%5D%5B%5D%5Bid%5D=" + id;
+            }), '&');
         return $http({
             method: "POST",
             url: newPlaylistUrl,
-            headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            data: $httpParamSerializerJQLike({"oauth_token": SoundcloudSessionManager.getToken(),
-                   "playlist[title]": title,
-                   "playlist[sharing]": sharing,
-                   "playlist[_resource_id]": undefined,
-                   "playlist[_resource_type]": "playlist"
-                  })
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data: $httpParamSerializerJQLike({
+                "oauth_token": SoundcloudSessionManager.getToken(),
+                "playlist[title]": title,
+                "playlist[sharing]": sharing,
+                "playlist[_resource_id]": undefined,
+                "playlist[_resource_type]": "playlist"
+            }) + '&' + idsSerie
         });
     };
+
+
+    this.putPlaylist = function (playlist_id, track_ids) {
+       
+        var ids = _.map(track_ids, function (id) {
+            return {
+                id: id
+            };
+        });
+        return $http({
+            method: "PUT",
+            url: newPlaylistUrl + "/" + playlist_id,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: {
+                "oauth_token": "1-138878-12338076-4b43aa07814c42", //SoundcloudSessionManager.getToken(),
+                "playlist": {
+                    "tracks": ids
+                }
+            }
+        });
+    };
+
 
     this.getFavorites = function () {
         return $http({
