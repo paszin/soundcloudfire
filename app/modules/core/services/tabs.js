@@ -37,7 +37,7 @@ angular
         {
             title: "Next Tracks",
             content: "modules/next-tracks/views/nextTracks.tab.html",
-            icon: "fa-headphones"
+            icon: "fa-hourglass-start" //"fa-headphones"
         },
         {
             title: "Groups",

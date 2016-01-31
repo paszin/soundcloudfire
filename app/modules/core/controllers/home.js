@@ -16,8 +16,6 @@ angular
             
             "use strict";
             
-            SoundcloudAPI.putPlaylist(190978788, [239686986, 42317298, 188464611]);
-            
             $scope.tabs = _.filter(Tabs, function (ta) {
                 return ta.content !== "modules/core/views/empty.template.html";
             });

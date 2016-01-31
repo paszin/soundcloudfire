@@ -11,11 +11,11 @@ function SoundcloudUtil() {
     "use strict";
 
     function mapEntry(key) {
-        return this[key] ? key + "=" + this[key] : undefined;
+        return this[key] ? key + "=" + this[key] : null;
     }
 
     function mapAndEscape(key) {
-        return this[key] ? key + "=" + encodeURIComponent(this[key]) : undefined;
+        return this[key] ? key + "=" + encodeURIComponent(this[key]) : null;
     }
 
     /**
