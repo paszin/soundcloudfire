@@ -21,9 +21,9 @@ var ApplicationConfiguration = (function () {
         };
 
     return {
-        applicationModuleName,
-        applicationModuleVendorDependencies,
-        registerModule
+        applicationModuleName: applicationModuleName,
+        applicationModuleVendorDependencies: applicationModuleVendorDependencies,
+        registerModule: registerModule
     };
 }());
 
@@ -67,7 +67,9 @@ angular
             .bootstrap(document,
                 [ApplicationConfiguration.applicationModuleName]);
     });
-ApplicationConfiguration.registerModule("core");
+
+ApplicationConfiguration
+    .registerModule("audioplayer");ApplicationConfiguration.registerModule("core");
 
 'use strict';
 ApplicationConfiguration
@@ -147,6 +149,56 @@ function createListener() {
 angular
     .module("core")
     .config(createListener);
+function playerService($log, ngAudio, SoundcloudSessionManager) {
+
+    "use strict";
+    this.audio = {
+        "stream": null,
+        "info": null,
+        "isPlaying": false
+    };
+
+    this.playPauseSound = function (track) {
+
+        track.isPlaying = !track.isPlaying;
+
+        if (this.audio.info && track.stream_url !== this.audio.info.stream_url) {
+            this.audio.stream.pause();
+            this.audio.isPlaying = false;
+            this.audio.stream = null;
+            this.audio.info.isPlaying = false;
+            $log.info("delete old track");
+        }
+        if (this.audio.isPlaying) {
+            this.audio.stream.pause();
+            this.audio.isPlaying = false;
+            $log.info("pause");
+        } else {
+            if (this.audio.stream) {
+                this.audio.stream.play();
+                this.audio.isPlaying = true;
+                $log.info("play");
+            } else {
+                this.audio.stream = ngAudio.load(track.stream_url + "?oauth_token=#{token}".format({
+                    token: SoundcloudSessionManager.getToken()
+                }));
+                this.audio.stream.play();
+                this.audio.info = track;
+                this.audio.isPlaying = true;
+                $log.info("play new track");
+            }
+        }
+    };
+    
+    
+    this.goTo = function (pos) { 
+        this.audio.stream.progress =pos;
+    }
+}
+
+
+angular.module("audioplayer")
+       .service("playerService", playerService);
 
 angular
     .module("soundcloud")
@@ -524,16 +576,16 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller ($rootScope, $scope, $element, $attrs, $transclude, SoundcloudNextTracks) {
+                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks) {
                     $scope.play = function (track) {
-                        $rootScope.playPauseSound(track);
+                        playerService.playPauseSound(track);
                     };
                     $scope.addToPlayNext = function (track) {
                         SoundcloudNextTracks.addTrack(track);
                     };
                 },
                 restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
-                templateUrl: "modules/soundcloud/views/track.html",
+                templateUrl: "modules/soundcloud/views/track.html"
             };
         }
     ]);
@@ -559,70 +611,41 @@ angular
             "use strict";
             return function (title) {
                 
-                return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "");
+                return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "").replace("[OUT NOW!]", "");
             };
         }
     ]);
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "SoundcloudAPI", "SoundcloudNextTracks", "SoundcloudSessionManager", "Tabs",
-        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, SoundcloudNextTracks, SoundcloudSessionManager, Tabs) {
-            
+    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "SoundcloudAPI", "SoundcloudNextTracks", "SoundcloudSessionManager", "Tabs", "playerService",
+        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, SoundcloudNextTracks, SoundcloudSessionManager, Tabs, playerService) {
+
             "use strict";
-            
+
             $scope.tabs = _.filter(Tabs, function (ta) {
                 return ta.content !== "modules/core/views/empty.template.html";
             });
-            
-            $rootScope.audio = {
-                "stream": null,
-                "info": null,
-                "isPlaying": false
-            };
 
-            $rootScope.playPauseSound = function (track) {
 
-                track.isPlaying = !track.isPlaying;
+            $scope.selectedIndex = 2;
 
-                if ($rootScope.audio.info && track.stream_url !== $rootScope.audio.info.stream_url) {
-                    $rootScope.audio.stream.pause();
-                    $rootScope.audio.isPlaying = false;
-                    $rootScope.audio.stream = null;
-                    $rootScope.audio.info.isPlaying = false;
-                    $log.info("delete old track");
-                }
-                if ($rootScope.audio.isPlaying) {
-                    $rootScope.audio.stream.pause();
-                    $rootScope.audio.isPlaying = false;
-                    $log.info("pause");
-                } else {
-                    if ($rootScope.audio.stream) {
-                        $rootScope.audio.stream.play();
-                        $rootScope.audio.isPlaying = true;
-                        $log.info("play");
-                    } else {
-                        $rootScope.audio.stream = ngAudio.load(track.stream_url + "?oauth_token=#{token}".format({
-                            token: SoundcloudSessionManager.getToken()
-                        }));
-                        $rootScope.audio.stream.play();
-                        $rootScope.audio.info = track;
-                        $rootScope.audio.isPlaying = true;
-                        $log.info("play new track");
-                    }
-                }
+            $rootScope.playerService = playerService;
 
-            };
-
-            $scope.selectedIndex = 3;
-
-            $scope.$watch("audio.stream.progress", function (current) {
+            $scope.$watch("playerService.audio.stream.progress", function (current) {
                 if (current === 1) {
                     var nextTrack = SoundcloudNextTracks.getNextTrack();
                     if (nextTrack) {
-                        $rootScope.playPauseSound(nextTrack);
+                        playerService.playPauseSound(nextTrack);
                     }
                 }
             });
+
+            $rootScope.clickWaveform = function (event) {
+                $log.info(event);
+                var element = document.getElementById("waveformprogress"); 
+                playerService.goTo((event.offsetX)/element.clientWidth);
+                
+            };
 
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;

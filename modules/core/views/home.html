@@ -1,18 +1,18 @@
 <div flex ng-cloak layout="column">
 
-    <div ng-if="audio.stream === null" layout="row" layout-align="center center">
+    <div ng-if="playerService.audio.stream === null" layout="row" layout-align="center center">
         <img alt="-" ng-src="{{me.avatar_url}}" class="md-avatar" />
         <h1>Hi {{me.first_name}}!</h1>
     </div> 
     
-    <div ng-show="audio.stream && !fullInfos" layout="row" layout-align="none space-between" >
+    <div ng-show="playerService.audio.stream && !fullInfos" layout="row" layout-align="none space-between" >
         <div flex="90" ng-include="'modules/core/views/currentPlayMini.template.html'"></div>
-        <md-button ng-click="fullInfos=true"><i class="fa fa-info"></i></md-button>
+        <md-button aria-label="fullinfos" ng-click="fullInfos=true"><i class="fa fa-info"></i></md-button>
     </div>
 
-    <div ng-show="audio.stream && fullInfos" layout="row" layout-align="none space-between" >
+    <div ng-show="playerService.audio.stream && fullInfos" layout="row" layout-align="none space-between" >
         <div flex="90" ng-include="'modules/core/views/currentPlay.template.html'"></div>
-        <md-button ng-click="fullInfos=false"><i class="fa fa-info"></i></md-button>
+        <md-button aria-label="lessinfos" ng-click="fullInfos=false"><i class="fa fa-info"></i></md-button>
     </div>
 
     <md-tabs flex class="md-primary" md-selected="selectedIndex">

@@ -1,5 +1,5 @@
 <div layout="row" layout-align="start center">
-    <img layout-margin ng-src="{{audio.info.artwork_url | artworksize: 'small'}}" />
+    <img layout-margin ng-src="{{playerService.audio.info.artwork_url | artworksize: 'small'}}" />
     <md-button class="md-icon-button" aria-label="play" ng-click="play(track)" ng-show="!track.isPlaying">
                     <i class="fa fa-play"></i>
                 </md-button>
@@ -7,7 +7,6 @@
                     <i class="fa fa-pause"></i>
                 </md-button>
     <div flex="80" layout="row">
-        <p>{{audio.info.title}}</p>
-        <p>{{audio.info.user.username}}</p>
+        <span>{{playerService.audio.info.user.username}}</span> - <span>{{playerService.audio.info.title}}</span>
     </div>
 </div>
