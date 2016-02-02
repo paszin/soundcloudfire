@@ -1,12 +1,18 @@
 <div layout="row" layout-align="start center">
     <img layout-margin ng-src="{{playerService.audio.info.artwork_url | artworksize: 'small'}}" />
-    <md-button class="md-icon-button" aria-label="play" ng-click="play(track)" ng-show="!track.isPlaying">
-                    <i class="fa fa-play"></i>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="pause" ng-click="play(track)" ng-show="track.isPlaying">
-                    <i class="fa fa-pause"></i>
-                </md-button>
-    <div flex="80" layout="row">
-        <span>{{playerService.audio.info.user.username}}</span> - <span>{{playerService.audio.info.title}}</span>
+    <md-button class="md-icon-button" aria-label="play" ng-click="playerService.playPauseSound(track)" ng-show="!playerService.audio.isPlaying">
+        <i class="fa fa-play"></i>
+    </md-button>
+    <md-button class="md-icon-button" aria-label="pause" ng-click="playerService.playPauseSound(track)" ng-show="playerService.audio.isPlaying">
+        <i class="fa fa-pause"></i>
+    </md-button>
+    <div flex="80" layout="row" layout-align="center space-around">
+        <div> 
+            <span>{{playerService.audio.info.user.username}}</span> - <span>{{playerService.audio.info.title | beautifyTitle}}&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+        </div>
+        <div layout="column" layout-align="center center" flex class="waveform-holder">
+            <img class="waveform" id="waveformprogress" ng-src="{{playerService.audio.info.waveform_url}}" ng-click="clickWaveform($event)" ng-Style="{'height': '20px'}" />
+            <span ng-Style="{'width': playerService.audio.stream.progress*100 + '%'}" class="waveform-overlay"> </span>
+        </div>
     </div>
 </div>

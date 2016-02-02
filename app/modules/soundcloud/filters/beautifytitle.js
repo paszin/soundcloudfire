@@ -12,8 +12,9 @@ angular
         function () {
             "use strict";
             return function (title) {
-                //available sizes: large
-                
+                if (title === undefined) {
+                    return undefined;
+                }
                 return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "").replace("[OUT NOW!]", "");
             };
         }

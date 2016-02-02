@@ -16,6 +16,9 @@ function playerService($log, ngAudio, SoundcloudSessionManager) {
     };
 
     this.playPauseSound = function (track) {
+        if (track === undefined) {
+            track = this.audio.info;
+        }
 
         track.isPlaying = !track.isPlaying;
 
