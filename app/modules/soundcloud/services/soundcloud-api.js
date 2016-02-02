@@ -21,7 +21,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
         newPlaylistUrl = baseUrl + "/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
-        trackUrl = baseUrl + "/tracks/#{track_id}",
+        //trackUrl = baseUrl + "/tracks/#{track_id}",
         trackSearchUrl = baseUrl + "/tracks",
         followingsUrl = baseUrl + "/users/#{user_id}/followings";
 
@@ -73,7 +73,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
         var sharing = isPrivate ? "private" : "public",
             idsSerie = _.join(_.map(track_ids, function (id) {
                 return "playlist%5Btracks%5D%5B%5D%5Bid%5D=" + id;
-            }), '&');
+            }), "&");
         return $http({
             method: "POST",
             url: newPlaylistUrl,
@@ -86,7 +86,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
                 "playlist[sharing]": sharing,
                 "playlist[_resource_id]": undefined,
                 "playlist[_resource_type]": "playlist"
-            }) + '&' + idsSerie
+            }) + "&" + idsSerie
         });
     };
 
