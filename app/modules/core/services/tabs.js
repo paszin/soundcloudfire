@@ -46,7 +46,7 @@ angular
         },
         {
             title: "Analyze",
-            content: "modules/core/views/empty.template.html",
+            content: "modules/core/views/visualization.tab.html",
             icon: "fa-magic"
         }
 

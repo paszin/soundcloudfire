@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * @ngdoc overview
@@ -6,4 +5,4 @@
  * @description visualization module
  */
 ApplicationConfiguration
-    .registerModule('visualization');
+    .registerModule("visualization");

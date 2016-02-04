@@ -1,2 +1,13 @@
-<canvas width="500" height="300" background="{'background': '#555555'}" id="canvas" visualization></canvas>
+<div ng-controller="VisualizationCtrl">
+    <md-progress-circular ng-show=loading md-mode="indeterminate"></md-progress-circular>
+
+    <md-button class="md-raised md-accent" ng-disable="loading" ng-click="analyzeTrack()">analyze</md-button>
+    <p ng-show="result.status.message">{{result.status.message}}</p>
     
+    <canvas id="radar" class="chart chart-radar" chart-data="data" chart-labels="labels">
+    </canvas>
+
+    <a target="_self" href="http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:9088/download/97097113.mp3" download="soundclouddownload.mp3">download</a>
+
+    <!--<canvas width="500" height="300" background="{'background': '#555555'}" id="canvas" visualization></canvas>-->
+</div>

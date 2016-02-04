@@ -1,4 +1,4 @@
-'use strict';
+/*global ApplicationConfiguration*/
 
 /**
  * @ngdoc overview
@@ -6,4 +6,4 @@
  * @description groups module
  */
 ApplicationConfiguration
-    .registerModule('groups');
+    .registerModule("groups");

@@ -51,7 +51,7 @@ function playerService($log, ngAudio, SoundcloudSessionManager) {
     };
     
     
-    this.goTo = function (pos) { 
+    this.goTo = function (pos) {
         this.audio.stream.progress = pos;
     };
 }

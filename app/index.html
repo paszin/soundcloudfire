@@ -9,9 +9,9 @@
 
     <!-- build:css styles/vendor.css -->
         <!-- injector:bowercss -->
-        <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="lib/angular-material/angular-material.css">
         <link rel="stylesheet" href="lib/font-awesome-bower/css/font-awesome.css">
+        <link rel="stylesheet" href="lib/angular-chart.js/dist/angular-chart.css">
         <!-- endinjector -->
     <!-- endbuild -->
 
@@ -64,6 +64,8 @@
         <script src="lib/angular-local-storage/dist/angular-local-storage.js"></script>
         <script src="lib/lodash/lodash.js"></script>
         <script src="lib/EaselJS/lib/easeljs-0.8.2.combined.js"></script>
+        <script src="lib/Chart.js/Chart.js"></script>
+        <script src="lib/angular-chart.js/dist/angular-chart.js"></script>
         <!-- endinjector -->
     <!-- endbuild -->
 
@@ -93,11 +95,13 @@
         <script src="modules/soundcloud/services/soundcloud-next-tracks.js"></script>
         <script src="modules/soundcloud/services/soundcloud-session-manager.js"></script>
         <script src="modules/soundcloud/services/soundcloud-util.js"></script>
+        <script src="modules/visualization/services/analyzer-api.js"></script>
         <script src="modules/core/directives/visualization.js"></script>
         <script src="modules/soundcloud/directives/track.js"></script>
         <script src="modules/soundcloud/filters/artworksize.js"></script>
         <script src="modules/soundcloud/filters/beautifytitle.js"></script>
         <script src="modules/core/controllers/home.js"></script>
+        <script src="modules/core/controllers/visualization.js"></script>
         <script src="modules/likes/controllers/likes.js"></script>
         <script src="modules/login/controllers/login.js"></script>
         <script src="modules/next-tracks/controllers/nextTracks.js"></script>

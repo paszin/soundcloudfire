@@ -1,28 +1,26 @@
-<div layout-fill>
-    <md-card>
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">{{track.title | beautifyTitle}}</span>
-                <span class="md-subhead">{{track.user.username}}</span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content layout="row" layout-align="space-between">
-            <div class="md-media-md"><img alt="-" ng-style="{'height': '200px'}" ng-src="{{track.artwork_url | artworksize: 't300x300'}}" />
-            </div>
-            <md-card-actions layout="column">
-                <md-button class="md-icon-button" aria-label="play" ng-click="play(track)" ng-show="!track.isPlaying">
-                    <i class="fa fa-play"></i>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="pause" ng-click="play(track)" ng-show="track.isPlaying">
-                    <i class="fa fa-pause"></i>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="playlater" ng-click="addToPlayNext(track)">
-                    <i class="fa fa-hourglass-start"></i>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="niceone" target="_blank" href="{{track.permalink_url}}">
-                    <i class="fa fa-soundcloud"></i>
-                </md-button>
-            </md-card-actions>
-        </md-card-content>
-    </md-card>
-</div>
+<md-card layout-margin flex>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">{{track.title | beautifyTitle}}</span>
+            <span class="md-subhead">{{track.user.username}}</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content layout="row" layout-align="space-between">
+        <div class="md-media-md"><img alt="-" ng-style="{'height': '200px'}" ng-src="{{track.artwork_url | artworksize: 't300x300'}}" />
+        </div>
+        <md-card-actions layout="column">
+            <md-button class="md-icon-button" aria-label="play" ng-click="play(track)" ng-show="!track.isPlaying">
+                <i class="fa fa-play"></i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="pause" ng-click="play(track)" ng-show="track.isPlaying">
+                <i class="fa fa-pause"></i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="playlater" ng-click="addToPlayNext(track)">
+                <i class="fa fa-hourglass-start"></i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="niceone" target="_blank" href="{{track.permalink_url}}">
+                <i class="fa fa-soundcloud"></i>
+            </md-button>
+        </md-card-actions>
+    </md-card-content>
+</md-card>

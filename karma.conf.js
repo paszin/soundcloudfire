@@ -41,6 +41,8 @@ module.exports = function(config) {
             "app/lib/angular-local-storage/dist/angular-local-storage.js",
             "app/lib/lodash/lodash.js",
             "app/lib/EaselJS/lib/easeljs-0.8.2.combined.js",
+            "app/lib/Chart.js/Chart.js",
+            "app/lib/angular-chart.js/dist/angular-chart.js",
             <!-- endinjector -->
 
             'app/js/config.js',

@@ -14,7 +14,8 @@ var ApplicationConfiguration = (function () {
             "ui.utils",
             "ngAudio",
             "ngMaterial",
-            "LocalStorageModule"
+            "LocalStorageModule",
+            "chart.js"
         ],
 
         // Add a new vertical module
