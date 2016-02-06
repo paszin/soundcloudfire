@@ -9,7 +9,8 @@ var ApplicationConfiguration = (function () {
             "ui.utils",
             "ngAudio",
             "ngMaterial",
-            "LocalStorageModule"
+            "LocalStorageModule",
+            "chart.js"
         ],
         registerModule = function (moduleName) {
             angular
@@ -71,13 +72,10 @@ angular
 ApplicationConfiguration
     .registerModule("audioplayer");ApplicationConfiguration.registerModule("core");
 
-'use strict';
 ApplicationConfiguration
-    .registerModule('groups');
-
-'use strict';
+    .registerModule("groups");
 ApplicationConfiguration
-    .registerModule('history');
+    .registerModule("history");
 ApplicationConfiguration
     .registerModule("likes");
 ApplicationConfiguration
@@ -86,16 +84,12 @@ ApplicationConfiguration
     .registerModule("next-tracks");
 ApplicationConfiguration
     .registerModule("playlists");
-
-'use strict';
 ApplicationConfiguration
-    .registerModule('search');
+    .registerModule("search");
 ApplicationConfiguration
     .registerModule("soundcloud");
-
-'use strict';
 ApplicationConfiguration
-    .registerModule('visualization');
+    .registerModule("visualization");
 
 
 angular
@@ -159,6 +153,9 @@ function playerService($log, ngAudio, SoundcloudSessionManager) {
     };
 
     this.playPauseSound = function (track) {
+        if (track === undefined) {
+            track = this.audio.info;
+        }
 
         track.isPlaying = !track.isPlaying;
 
@@ -191,9 +188,9 @@ function playerService($log, ngAudio, SoundcloudSessionManager) {
     };
     
     
-    this.goTo = function (pos) { 
-        this.audio.stream.progress =pos;
-    }
+    this.goTo = function (pos) {
+        this.audio.stream.progress = pos;
+    };
 }
 
 
@@ -240,7 +237,7 @@ angular
         },
         {
             title: "Analyze",
-            content: "modules/core/views/empty.template.html",
+            content: "modules/core/views/visualization.tab.html",
             icon: "fa-magic"
         }
 
@@ -255,7 +252,6 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
         playlistsUrl = baseUrl + "/users/#{user_id}/playlists",
         newPlaylistUrl = baseUrl + "/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
-        trackUrl = baseUrl + "/tracks/#{track_id}",
         trackSearchUrl = baseUrl + "/tracks",
         followingsUrl = baseUrl + "/users/#{user_id}/followings";
     this.getMe = function () {
@@ -283,7 +279,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
         var sharing = isPrivate ? "private" : "public",
             idsSerie = _.join(_.map(track_ids, function (id) {
                 return "playlist%5Btracks%5D%5B%5D%5Bid%5D=" + id;
-            }), '&');
+            }), "&");
         return $http({
             method: "POST",
             url: newPlaylistUrl,
@@ -296,7 +292,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
                 "playlist[sharing]": sharing,
                 "playlist[_resource_id]": undefined,
                 "playlist[_resource_type]": "playlist"
-            }) + '&' + idsSerie
+            }) + "&" + idsSerie
         });
     };
 
@@ -547,6 +543,39 @@ function SoundcloudUtil() {
 angular
     .module("core")
     .service("SoundcloudUtil", SoundcloudUtil);
+function AnalyzerAPI($http) {
+
+    "use strict";
+
+    var uploadUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:9088/upload?track_id=#{track_id}",
+        profileUrl = "http://developer.echonest.com/api/v4/track/profile?api_key=E2X5BMEC5HNVZDTS1&format=json&id=#{upload_id}&bucket=audio_summary";
+
+
+    this.getTrackUpload = function (track_id) {
+        return $http({
+            method: "GET",
+            url: uploadUrl.format({
+                track_id: track_id
+            })
+        });
+    };
+
+
+    this.getTrackProfile = function (upload_id) {
+        return $http({
+            method: "GET",
+            url: profileUrl.format({
+                upload_id: upload_id
+            })
+        });
+    };
+
+}
+
+
+angular
+    .module("core")
+    .service("AnalyzerAPI", AnalyzerAPI);
 
 angular
     .module("core")
@@ -610,7 +639,9 @@ angular
         function () {
             "use strict";
             return function (title) {
-                
+                if (title === undefined) {
+                    return undefined;
+                }
                 return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "").replace("[OUT NOW!]", "");
             };
         }
@@ -652,6 +683,65 @@ angular
             });
 
         }]);
+
+function VisualizationCtrl($scope, $timeout, $interval, playerService, AnalyzerAPI) {
+    "use strict";
+
+
+    $scope.result = {
+        "status": {
+            message: null
+        },
+        "track": {
+            audio_summary: null
+        }
+    };
+    $scope.loading = false;
+
+    $scope.labels = ["danceability", "energy", "speechiness", "acousticness", "liveness"];
+
+    $scope.data = [
+        [0, 0, 0, 0, 0]
+    ];
+
+    $scope.analyzeTrack = function () {
+        $scope.uploadTrack();
+    };
+
+    $scope.progress = {
+        value: 0
+    };
+
+    $scope.getDownload = function () {
+        if (playerService.audio.info) {
+            return "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:9088/download/" + playerService.audio.info.id + ".mp3";
+        }
+    };
+
+    $scope.uploadTrack = function () {
+        $scope.loading = true;
+        var uploadRequest = AnalyzerAPI.getTrackUpload(playerService.audio.info.id);
+        uploadRequest.then(function (response) {
+
+            $timeout(function () {
+                $scope.profileTrack(response.data.echonest_trackid);
+            }, 10000);
+        });
+    };
+
+    $scope.profileTrack = function (nest_id) {
+        AnalyzerAPI.getTrackProfile(nest_id).then(function (resp) {
+            $scope.loading = false;
+            $scope.result = resp.data.response;
+            var as = resp.data.response.track.audio_summary;
+            $scope.data = [[as.danceability, as.energy, as.speechiness, as.acousticness, as.liveness]];
+        });
+    };
+}
+
+angular
+    .module("core")
+    .controller("VisualizationCtrl", VisualizationCtrl);
 
 function FavoritesCtrl($scope, SoundcloudAPI) {
     "use strict";

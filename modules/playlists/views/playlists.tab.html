@@ -6,9 +6,9 @@
                 <h3>{{playlist.title}}</h3>
                 <p>{{playlist.track_count}} Tracks, {{playlist.duration_readable}}</p>
             </div>
-            <div ng-if="playlist.showTracks" ng-include="'modules/playlists/views/playlist.template.html'"></div>
+            <div ng-show="playlist.showTracks" layout="row" layout-align="center stretch" layout-xs="column"  layout-wrap>
+                <track layout flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" layout-wrap flex="33" track="track" ng-repeat="track in playlist.tracks"></track>
+            </div>
         </md-list-item>
     </md-list>
-
-
 </div>

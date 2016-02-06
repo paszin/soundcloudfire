@@ -1,7 +1,7 @@
 <div layout="row" layout-align="start center">
     <img flex="15" layout-margin ng-src="{{playerService.audio.info.artwork_url | artworksize: 't300x300'}}" />
     <div flex="80" layout="column">
-        <h1>{{playerService.audio.info.title}}</h1>
+        <h1>{{playerService.audio.info.title | beautifyTitle}}</h1>
         <p>{{playerService.audio.info.user.username}}</p>
         <p>favs: {{playerService.audio.info.favoritings_count}}</p>
         <div>
