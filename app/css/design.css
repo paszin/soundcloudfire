@@ -29,17 +29,25 @@
     overflow: auto;
 }
 
+#backgroundfull { 
+  background: url(../img/login/background.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .brightfont {
     color: azure;
 }
 
 @font-face {
     font-family: cool;
-    src: url("Chunkfive.otf") format("opentype");
+    src: url("../fonts/Swistblnk Duwhoers Brush.otf") format("opentype");
 }
 
 .loginheader {
-    font-size: 45pt;
+    font-size: 72pt;
     text-align: center;
     font-family: 'cool', Helvetica, Verdana, Sans-Serif;
     color: white;
@@ -47,4 +55,9 @@
 
 .profile-avatar {
     border-radius: 50%;
+}
+
+#radarx {
+    width: 300px;
+    height: 300px;
 }

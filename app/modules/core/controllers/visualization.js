@@ -35,14 +35,20 @@ function VisualizationCtrl($scope, $timeout, $interval, playerService, AnalyzerA
         value: 0
     };
 
+    $scope.getDownload = function () {
+        if (playerService.audio.info) {
+            return "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:9088/download/" + playerService.audio.info.id + ".mp3";
+        }
+    };
+
     $scope.uploadTrack = function () {
         $scope.loading = true;
         var uploadRequest = AnalyzerAPI.getTrackUpload(playerService.audio.info.id);
         uploadRequest.then(function (response) {
-            
+
             $timeout(function () {
                 $scope.profileTrack(response.data.echonest_trackid);
-            }, 12000);
+            }, 10000);
         });
     };
 
