@@ -12,8 +12,8 @@ angular
         function () {
             "use strict";
             return function (title) {
-                if (title === undefined) {
-                    return undefined;
+                if (title === void 0) {
+                    return void 0;
                 }
                 return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "").replace("[OUT NOW!]", "");
             };

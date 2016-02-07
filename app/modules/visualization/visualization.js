@@ -1,4 +1,4 @@
-
+/*global ApplicationConfiguration*/
 /**
  * @ngdoc overview
  * @name visualization
