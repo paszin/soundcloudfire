@@ -8,6 +8,7 @@
     <div ng-show="playerService.audio.stream && !fullInfos" layout="row" layout-align="none space-between" >
         <div flex="90" ng-include="'modules/core/views/currentPlayMini.template.html'"></div>
         <md-button aria-label="fullinfos" ng-click="fullInfos=true"><i class="fa fa-info"></i></md-button>
+        
     </div>
 
     <div ng-show="playerService.audio.stream && fullInfos" layout="row" layout-align="none space-between" >

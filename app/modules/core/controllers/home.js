@@ -28,6 +28,7 @@ angular
 
             $scope.$watch("playerService.audio.stream.progress", function (current) {
                 if (current === 1) {
+                    SoundcloudNextTracks.deleteTrack(playerService.audio.info.id);
                     var nextTrack = SoundcloudNextTracks.getNextTrack();
                     if (nextTrack) {
                         playerService.playPauseSound(nextTrack);

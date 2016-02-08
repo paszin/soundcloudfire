@@ -6,9 +6,11 @@
         <p>favs: {{playerService.audio.info.favoritings_count}}</p>
         <div>
             <div layout="column" layout-align="start end" flex class="waveform-holder">
-                <img class="waveform" id="waveformprogress" ng-src="{{playerService.audio.info.waveform_url}}" ng-click="clickWaveform($event)" ng-Style="{'height': '50px'}"/>
+                <img class="waveform" id="waveformprogress" ng-src="{{playerService.audio.info.waveform_url}}" ng-click="clickWaveform($event)" ng-Style="{'height': '50px'}" />
                 <span ng-Style="{'width': playerService.audio.stream.progress*100 + '%'}" class="waveform-overlay"> </span>
             </div>
         </div>
     </div>
 </div>
+
+<md-button aria-label="share" ng-click="shareGroup()"><i class="fa fa-share"></i></md-button>
