@@ -41,7 +41,7 @@ angular
         },
         {
             title: "Groups",
-            content: "modules/core/views/empty.template.html",
+            content: "modules/groups/views/groups.tab.html",
             icon: "fa-users"
         },
         {

@@ -1,0 +1,10 @@
+<div ng-controller="GroupsController">
+    <md-list>
+        <md-list-item layout="column" layout-align="center start" ng-repeat="group in groups">
+            <div layout="column" layout-align="center start" flex="100" ng-click="">
+                <h3>{{group.name}}</h3>
+                <p>{{playlist.tracks.length}} Tracks</p>
+            </div>
+        </md-list-item>
+    </md-list>
+</div>
