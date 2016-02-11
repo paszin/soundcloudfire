@@ -11,8 +11,8 @@
  */
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "SoundcloudAPI", "SoundcloudNextTracks", "SoundcloudSessionManager", "Tabs", "playerService",
-        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, SoundcloudNextTracks, SoundcloudSessionManager, Tabs, playerService) {
+    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "SoundcloudSessionManager", "Tabs", "playerService",
+        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, SoundcloudSessionManager, Tabs, playerService) {
 
             "use strict";
 
@@ -42,6 +42,10 @@ angular
                 playerService.goTo((event.offsetX)/element.clientWidth);
                 
             };
+            
+            $scope.addToGroup = function () {
+                GroupsBackend.addTrack(5, playerService.audio.info.id, 1);
+            }
 
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;

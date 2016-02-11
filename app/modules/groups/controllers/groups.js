@@ -19,5 +19,16 @@ angular
                 $scope.groups = resp.data.groups;
             });
 
+            $scope.showTracks = function (group) {
+                group.doShowTracks = !group.doShowTracks;
+                if (group.sctracks) {
+                    console.log("already there");
+                    return true; //already loaded
+                }
+                GroupsBackend.getTracks(group.id).then(function (resp) {
+                    group.sctracks = resp.data.tracks;
+                });
+            };
+
 
         }]);

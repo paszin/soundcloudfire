@@ -43,6 +43,7 @@ module.exports = function(config) {
             "app/lib/EaselJS/lib/easeljs-0.8.2.combined.js",
             "app/lib/Chart.js/Chart.js",
             "app/lib/angular-chart.js/dist/angular-chart.js",
+            "app/lib/angular-resource/angular-resource.js",
             <!-- endinjector -->
 
             'app/js/config.js',
