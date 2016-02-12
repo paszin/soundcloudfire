@@ -44,6 +44,11 @@ module.exports = function(config) {
             "app/lib/Chart.js/Chart.js",
             "app/lib/angular-chart.js/dist/angular-chart.js",
             "app/lib/angular-resource/angular-resource.js",
+            "app/lib/fullpage.js/jquery.fullPage.js",
+            "app/lib/fullpage.js/vendors/jquery.easings.min.js",
+            "app/lib/fullpage.js/vendors/jquery.slimscroll.min.js",
+            "app/lib/angular-fullpage.js/angular-fullpage.js",
+            "app/lib/angular-fullpage.js/angular-fullpage.min.js",
             <!-- endinjector -->
 
             'app/js/config.js',

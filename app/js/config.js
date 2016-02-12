@@ -15,7 +15,8 @@ var ApplicationConfiguration = (function () {
             "ngAudio",
             "ngMaterial",
             "LocalStorageModule",
-            "chart.js"
+            "chart.js",
+            "fullPage.js"
         ],
 
         // Add a new vertical module

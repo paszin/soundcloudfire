@@ -11,8 +11,14 @@
 function LoginCtrl($scope, $state, SoundcloudLogin) {
 
     "use strict";
+    
+    $scope.mainOptions = {
+      sectionsColor: ["#100055"],
+			anchors: ["WelcomePage"],
+			menu: '#menu'
+    };
 
-    $scope.entrykey = "domo44";
+
     $scope.loginWithSoundcloud = function () {
         SoundcloudLogin.connect().then(function () {
             $state.go("home");
