@@ -10,7 +10,8 @@ var ApplicationConfiguration = (function () {
             "ngAudio",
             "ngMaterial",
             "LocalStorageModule",
-            "chart.js"
+            "chart.js",
+            "fullPage.js"
         ],
         registerModule = function (moduleName) {
             angular
@@ -47,7 +48,7 @@ angular
             "use strict";
             $locationProvider.hashPrefix("!");
             $mdThemingProvider.theme("default")
-                .accentPalette("deep-purple", {
+                .accentPalette("blue-grey", {
                     "default": "400",
                     "hue-3": "A100"
 
@@ -153,7 +154,7 @@ function playerService($log, ngAudio, SoundcloudSessionManager) {
     };
 
     this.playPauseSound = function (track) {
-        if (track === undefined) {
+        if (track === void 0) {
             track = this.audio.info;
         }
 
@@ -232,7 +233,7 @@ angular
         },
         {
             title: "Groups",
-            content: "modules/core/views/empty.template.html",
+            content: "modules/groups/views/groups.tab.html",
             icon: "fa-users"
         },
         {
@@ -242,6 +243,94 @@ angular
         }
 
     ]);
+function GroupDialog($log, $mdDialog, $mdMedia) {
+
+    this.show = function (track_id) {
+        var useFullScreen = ($mdMedia("sm") || $mdMedia("xs"));
+        $mdDialog.show({
+            controller: DialogController,
+            locals: {
+                track_id: track_id
+            },
+            templateUrl: "modules/groups/views/dialog.html",
+            parent: angular.element(document.body),
+            clickOutsideToClose: true,
+            fullscreen: useFullScreen
+        });
+    };
+
+}
+
+angular
+    .module("groups")
+    .service("GroupDialog", GroupDialog);
+
+
+function DialogController($scope, $mdDialog, GroupsBackend, track_id) {
+    $scope.track_id = track_id;
+    $scope.groups = [];
+    GroupsBackend.getGroups().then(function (resp) {
+        $scope.groups = resp.data.groups;
+    });
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function () {
+        $scope.groups.forEach(function (group) {
+            if (group.selected) {
+                GroupsBackend.addTrack(group.id, $scope.track_id, 0).then($mdDialog.hide());
+            }
+        })
+
+
+    };
+}
+function GroupsBackend($http, $log) {
+
+    "use strict";
+
+    var baseUrl;
+    baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
+    this.getGroups = function () {
+        return $http.get(baseUrl + "/groups");
+    };
+
+    this.getTracks = function (group_id) {
+        return $http.get(baseUrl + "/groups/" + group_id + "/tracks");
+    };
+    
+    this.addTrack = function (group_id, track_id, user_id) {
+      return $http({
+            method: "POST",
+            url: baseUrl + "/groups/" + group_id + "/tracks",
+            data: {
+                track_id: track_id,
+                user_id: user_id
+            }
+        }); 
+    };
+
+    this.newGroup = function (name, description, user_id) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/groups",
+            data: {
+                name: name,
+                description: description,
+                user_id: user_id
+            }
+        });
+    };
+
+}
+
+
+angular
+    .module("groups")
+    .service("GroupsBackend", GroupsBackend);
 function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCredentials, SoundcloudSessionManager) {
 
     "use strict";
@@ -576,17 +665,46 @@ function AnalyzerAPI($http) {
 angular
     .module("core")
     .service("AnalyzerAPI", AnalyzerAPI);
+angular
+    .module("audioplayer")
+    .directive("audioplayer", [
+        function () {
+            "use strict";
+            return {
+                scope: {
+                    track: "=track"
+                }, // {} = isolate, true = child, false/undefined = no change
+                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks) {
+                    $scope.full = {info: true};
+                    $scope.playerService = playerService;
+                    $scope.play = function (track) {
+                        playerService.playPauseSound(track);
+                    };
+
+                    $scope.clickWaveform = function (event) {
+                        var element = document.getElementById("waveformprogress");
+                        playerService.goTo((event.offsetX) / element.clientWidth);
+
+                    };
+
+                },
+                restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
+                templateUrl: "modules/audioplayer/views/audioplayer.html"
+            };
+        }
+    ]);
 
 angular
     .module("core")
     .directive("visualization", function () {
+        "use strict";
         return {
             restrict: "A",
             link: function (scope, element) {
 
-                var canvas = document.getElementById("canvas");
-                var stage = new createjs.Stage(canvas);
-                var circle = new createjs.Shape();
+                var canvas = document.getElementById("canvas"),
+                    stage = new createjs.Stage(canvas),
+                    circle = new createjs.Shape();
                 circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
                 circle.x = 100;
                 circle.y = 100;
@@ -605,12 +723,16 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks) {
+                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks, GroupDialog) {
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
                     };
                     $scope.addToPlayNext = function (track) {
                         SoundcloudNextTracks.addTrack(track);
+                    };
+                    
+                    $scope.addToGroup = function (track) {
+                        GroupDialog.show(track.id);
                     };
                 },
                 restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
@@ -639,8 +761,8 @@ angular
         function () {
             "use strict";
             return function (title) {
-                if (title === undefined) {
-                    return undefined;
+                if (title === void 0) {
+                    return void 0;
                 }
                 return title.replace("Free Download", "").replace("OUT NOW !!!", "").replace("FREE DOWNLOAD", "").replace("[OUT NOW!]", "");
             };
@@ -648,8 +770,8 @@ angular
     ]);
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "ngAudio", "SoundcloudAPI", "SoundcloudNextTracks", "SoundcloudSessionManager", "Tabs", "playerService",
-        function ($rootScope, $scope, $http, $state, $stateParams, $log, $timeout, $interval, ngAudio, SoundcloudAPI, SoundcloudNextTracks, SoundcloudSessionManager, Tabs, playerService) {
+    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
+        function ($rootScope, $scope, $state, $stateParams, $log, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
 
             "use strict";
 
@@ -660,10 +782,11 @@ angular
 
             $scope.selectedIndex = 2;
 
-            $rootScope.playerService = playerService;
+            $scope.playerService = playerService;
 
             $scope.$watch("playerService.audio.stream.progress", function (current) {
                 if (current === 1) {
+                    SoundcloudNextTracks.deleteTrack(playerService.audio.info.id);
                     var nextTrack = SoundcloudNextTracks.getNextTrack();
                     if (nextTrack) {
                         playerService.playPauseSound(nextTrack);
@@ -671,12 +794,10 @@ angular
                 }
             });
 
-            $rootScope.clickWaveform = function (event) {
-                $log.info(event);
-                var element = document.getElementById("waveformprogress"); 
-                playerService.goTo((event.offsetX)/element.clientWidth);
-                
-            };
+            
+            $scope.addToGroup = function () {
+                GroupsBackend.addTrack(5, playerService.audio.info.id, 1);
+            }
 
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
@@ -742,6 +863,36 @@ function VisualizationCtrl($scope, $timeout, $interval, playerService, AnalyzerA
 angular
     .module("core")
     .controller("VisualizationCtrl", VisualizationCtrl);
+angular
+    .module("groups")
+    .controller("GroupsController", ["$scope", "$http", "$state", "$stateParams", "$log", "$timeout", "$interval", "GroupsBackend", "SoundcloudAPI",
+        function ($scope, $http, $state, $stateParams, $log, $timeout, $interval, GroupsBackend, SoundcloudAPI) {
+
+            "use strict";
+            $scope.groups = [];
+
+
+            $scope.refresh = function () {
+                GroupsBackend.getGroups().then(function (resp) {
+                    $scope.groups = resp.data.groups;
+                });
+            };
+
+            $scope.refresh();
+
+            $scope.showTracks = function (group) {
+                group.doShowTracks = !group.doShowTracks;
+                if (group.sctracks) {
+                    console.log("already there");
+                    return true; //already loaded
+                }
+                GroupsBackend.getTracks(group.id).then(function (resp) {
+                    group.sctracks = resp.data.tracks;
+                });
+            };
+
+
+        }]);
 
 function FavoritesCtrl($scope, SoundcloudAPI) {
     "use strict";
@@ -760,8 +911,14 @@ angular
 function LoginCtrl($scope, $state, SoundcloudLogin) {
 
     "use strict";
+    
+    $scope.mainOptions = {
+      sectionsColor: ["#100055"],
+			anchors: ["WelcomePage"],
+			menu: '#menu'
+    };
 
-    $scope.entrykey = "domo44";
+
     $scope.loginWithSoundcloud = function () {
         SoundcloudLogin.connect().then(function () {
             $state.go("home");
