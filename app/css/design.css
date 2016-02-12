@@ -29,16 +29,37 @@
     overflow: auto;
 }
 
-#backgroundfull { 
-  background: url(../img/login/background.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+
+.image-blurred-edge {
+    background-image: url('http://lorempixel.com/200/200/city/9');
+    width: 200px;
+    height: 200px;
+    /* you need to match the shadow color to your background or image border for the desired effect*/
+    box-shadow: 0 0 8px 8px white inset;
 }
+
+#past{
+    /* For IE 5.5 - 7*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99222222, endColorstr=#99222222);
+    /* For IE 8*/
+    -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99222222, endColorstr=#99222222);
+    z-index:10;
+    padding:10px;
+-moz-box-shadow:0px 0px 7px #000000;
+-webkit-box-shadow:0px 0px 7px #000000;
+box-shadow:0px 0px 7px #000000;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px; 
+}
+
 
 .brightfont {
     color: azure;
+}
+
+.decentbackground {
+    background-color: dimgray;
 }
 
 @font-face {

@@ -1,7 +1,7 @@
-<div flex ng-cloak layout="column">
+<div flex class="decentbackground" layout="column">
 
-    <div ng-if="playerService.audio.stream === null" layout="row" layout-align="center center">
-        <img alt="-" ng-src="{{me.avatar_url}}" class="md-avatar" />
+    <div ng-if="playerService.audio.stream === null" layout="row" layout-align="center center" layout-margin>
+        <img id="past" alt="-" ng-src="{{me.avatar_url}}" />
         <h1>Hi {{me.first_name}}!</h1>
     </div> 
     

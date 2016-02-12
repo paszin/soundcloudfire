@@ -21,7 +21,7 @@ angular
             "use strict";
             $locationProvider.hashPrefix("!");
             $mdThemingProvider.theme("default")
-                .accentPalette("deep-purple", {
+                .accentPalette("blue-grey", {
                     "default": "400",
                     "hue-3": "A100"
 

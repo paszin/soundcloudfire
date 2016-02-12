@@ -4,23 +4,38 @@
             <span class="md-headline">{{track.title | beautifyTitle}}</span>
             <span class="md-subhead">{{track.user.username}}</span>
         </md-card-title-text>
-    </md-card-title>
-    <md-card-content layout="row" layout-align="space-between">
-        <div class="md-media-md"><img alt="-" ng-style="{'height': '200px'}" ng-src="{{track.artwork_url | artworksize: 't300x300'}}" />
+        <md-card-title-media>
+            <div class="md-media-md card-media"><img alt="-"  ng-src="{{track.artwork_url | artworksize: 't300x300'}}" />
         </div>
-        <md-card-actions layout="column">
+          </md-card-title-media>
+    </md-card-title>
+        <md-card-actions layout="row" layout-align="space-between">
             <md-button class="md-icon-button" aria-label="play" ng-click="play(track)" ng-show="!track.isPlaying">
-                <i class="fa fa-play"></i>
+                <i class="fa fa-play"><md-tooltip md-direction="top">
+          play
+        </md-tooltip></i>
             </md-button>
             <md-button class="md-icon-button" aria-label="pause" ng-click="play(track)" ng-show="track.isPlaying">
-                <i class="fa fa-pause"></i>
+                <i class="fa fa-pause"><md-tooltip md-direction="top">
+          pause
+        </md-tooltip></i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="share">
+                <i class="fa fa-share">
+                <md-tooltip md-direction="top">
+          post in group
+        </md-tooltip></i>
             </md-button>
             <md-button class="md-icon-button" aria-label="playlater" ng-click="addToPlayNext(track)">
-                <i class="fa fa-hourglass-start"></i>
+                <i class="fa fa-hourglass-start"><md-tooltip md-direction="top">
+          add to next tracks
+        </md-tooltip></i>
             </md-button>
             <md-button class="md-icon-button" aria-label="niceone" target="_blank" href="{{track.permalink_url}}">
-                <i class="fa fa-soundcloud"></i>
+                <i class="fa fa-soundcloud"><md-tooltip md-direction="top">
+          open soundcloud page
+        </md-tooltip></i>
             </md-button>
         </md-card-actions>
-    </md-card-content>
 </md-card>
+
