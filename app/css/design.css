@@ -54,12 +54,20 @@ border-radius: 4px;
 }
 
 
+md-card {
+    background: #FAFAFF;
+}
+
+md-whiteframe {
+    background: #FAFAFF;
+}
+
 .brightfont {
     color: azure;
 }
 
 .decentbackground {
-    background-color: dimgray;
+    background-color: #AAAAAE;
 }
 
 @font-face {

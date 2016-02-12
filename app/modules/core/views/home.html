@@ -4,18 +4,16 @@
         <img id="past" alt="-" ng-src="{{me.avatar_url}}" />
         <h1>Hi {{me.first_name}}!</h1>
     </div> 
-    
+    <!--
     <div ng-show="playerService.audio.stream && !fullInfos" layout="row" layout-align="none space-between" >
         <div flex="90" ng-include="'modules/core/views/currentPlayMini.template.html'"></div>
         <md-button aria-label="fullinfos" ng-click="fullInfos=true"><i class="fa fa-info"></i></md-button>
         
     </div>
-
-    <div ng-show="playerService.audio.stream && fullInfos" layout="row" layout-align="none space-between" >
-        <div flex="90" ng-include="'modules/core/views/currentPlay.template.html'"></div>
-        <md-button aria-label="lessinfos" ng-click="fullInfos=false"><i class="fa fa-info"></i></md-button>
-    </div>
-
+-->    
+    
+    <audioplayer ng-if="playerService.audio.stream" layout="column" layout-align="center stretch" track="playerService.audio.info"></audioplayer>
+        
     <md-tabs flex class="md-primary" md-selected="selectedIndex">
         <md-tab ng-repeat="tab in tabs">
             <md-tab-label>
