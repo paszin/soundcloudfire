@@ -17,12 +17,16 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks) {
+                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks, GroupDialog) {
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
                     };
                     $scope.addToPlayNext = function (track) {
                         SoundcloudNextTracks.addTrack(track);
+                    };
+                    
+                    $scope.addToGroup = function (track) {
+                        GroupDialog.show(track.id);
                     };
                 },
                 // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements

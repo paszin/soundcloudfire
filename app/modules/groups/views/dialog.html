@@ -1,0 +1,29 @@
+<md-dialog aria-label="add to group">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Add to group</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    x
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                choose a group
+                <md-list>
+                    <md-list-item ng-repeat="group in groups">
+                        <p> {{ group.name }} </p>
+                        <md-checkbox class="md-secondary" ng-model="group.selected"></md-checkbox>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="answer()" style="margin-right:20px;">
+                Save
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

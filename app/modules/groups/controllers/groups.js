@@ -15,9 +15,15 @@ angular
 
             "use strict";
             $scope.groups = [];
-            GroupsBackend.getGroups().then(function (resp) {
-                $scope.groups = resp.data.groups;
-            });
+
+
+            $scope.refresh = function () {
+                GroupsBackend.getGroups().then(function (resp) {
+                    $scope.groups = resp.data.groups;
+                });
+            };
+
+            $scope.refresh();
 
             $scope.showTracks = function (group) {
                 group.doShowTracks = !group.doShowTracks;

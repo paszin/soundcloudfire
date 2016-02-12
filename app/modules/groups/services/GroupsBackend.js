@@ -7,13 +7,13 @@
  * @name core.Services.GroupsBackend
  * @description GroupsBackend Service
  */
-function GroupsBackend($http, $log, $httpParamSerializerJQLike) {
+function GroupsBackend($http, $log) {
 
     "use strict";
 
     var baseUrl;
     baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
-    baseUrl = "http://localhost:8000";
+    //baseUrl = "http://localhost:8000";
 
     /**
      * Get information

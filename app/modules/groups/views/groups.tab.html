@@ -1,4 +1,5 @@
 <div ng-controller="GroupsController">
+    <md-button ng-click="refresh()">refresh</md-button>
     <md-list>
         <div ng-repeat="group in groups">
             <md-list-item class="md-3-line secondary-button-padding">
@@ -11,7 +12,7 @@
 
             </md-list-item>
             
-            <div ng-show="group.doShowTracks" ng-repeat="track in group.sctracks">{{track.title}}</div>
+            <track ng-show="group.doShowTracks" ng-repeat="track in group.sctracks" track="track">{{track.title}}</track>
                 
         </div>
         <md-divider></md-divider>
