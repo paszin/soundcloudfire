@@ -22,7 +22,9 @@ angular
 
 
             $scope.selectedIndex = 2;
-            // $scope.$watch("selectedIndex", function (current) { });
+            $scope.$watch("selectedIndex", function (current) {
+                $scope.$broadcast($scope.tabs[current].title)
+            });
 
             $scope.playerService = playerService;
 

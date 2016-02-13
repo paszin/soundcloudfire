@@ -17,7 +17,7 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks, GroupDialog) {
+                controller: function controller($scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks, GroupDialog) {
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
                     };

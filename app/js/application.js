@@ -21,13 +21,14 @@ angular
             "use strict";
             $locationProvider.hashPrefix("!");
             $mdThemingProvider.theme("default")
-                .accentPalette("blue-grey", {
+                .accentPalette("orange", {
                     "default": "400",
                     "hue-3": "A100"
 
                 })
-                .primaryPalette("deep-orange", {
-                    "default": "300"
+                .primaryPalette("indigo", {
+                    "default": "500",
+                    "hue-3": "A100"
                 });
         }
         ]);

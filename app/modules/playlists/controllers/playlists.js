@@ -11,7 +11,7 @@ function PlaylistsCtrl($scope, SoundcloudAPI) {
     "use strict";
     $scope.playlists = [];
     $scope.savePlaylists = function (response) {
-       
+
         var i, j,
             data = response.data;
         for (i = 0; i < data.length; i++) {
@@ -32,8 +32,13 @@ function PlaylistsCtrl($scope, SoundcloudAPI) {
         $scope.playlists[index].showTracks = !$scope.playlists[index].showTracks;
     };
 
-    var playlists = SoundcloudAPI.getPlaylists();
-    playlists.then($scope.savePlaylists);
+    $scope.init = function () {
+        console.log("load playlists");
+        var playlists = SoundcloudAPI.getPlaylists();
+        playlists.then($scope.savePlaylists);
+    };
+    
+    $scope.$on("Playlists", $scope.init);
 }
 
 angular
