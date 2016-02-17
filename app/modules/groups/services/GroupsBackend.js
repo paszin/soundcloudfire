@@ -69,7 +69,20 @@ function GroupsBackend($http, $log) {
             }
         });
     };
-
+    
+    this.invitationCheck = function(code) {
+        return $http.get(baseUrl + "/invitation?code=" + code);
+    };
+    
+    this.addMemberByCode = function (user_id, code) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/invitation/" + code,
+            data: {
+                user_id: user_id,
+                }
+        });
+    };
 }
 
 

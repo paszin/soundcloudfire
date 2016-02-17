@@ -16,7 +16,7 @@
     "font-awesome-bower": "~4.5.0",
     "angular-bootstrap": "~1.1.1",
     "angular-route": "~1.4.8",
-    "angular-local-storage": "~0.2.3",
+    "angular-local-storage": "^0.2.3",
     "lodash": "^4.1.0",
     "EaselJS": "easeljs#~0.8.2",
     "angular-chart.js": "^0.8.8",

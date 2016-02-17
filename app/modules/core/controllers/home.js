@@ -11,11 +11,11 @@
  */
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
-        function ($rootScope, $scope, $state, $stateParams, $log, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
+    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "localStorageService", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
+        function ($rootScope, $scope, $state, $stateParams, $log, localStorageService, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
 
             "use strict";
-
+        
             $scope.tabs = _.filter(Tabs, function (ta) {
                 return ta.content !== "modules/core/views/empty.template.html";
             });
@@ -39,12 +39,15 @@ angular
             });
 
             
-            $scope.addToGroup = function () {
-                GroupsBackend.addTrack(5, playerService.audio.info.id, 1);
-            }
+            $scope.addMeToGroup = function () {
+                
+                GroupsBackend.addMemberByCode($scope.me.id, localStorageService.get("invitationcode"));
+            };
 
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
             });
+            
+            //add 
 
         }]);
