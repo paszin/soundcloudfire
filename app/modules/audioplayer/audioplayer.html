@@ -23,6 +23,11 @@
             <md-card-title-text>
                 <span class="md-headline">{{track.title | beautifyTitle}}</span>
                 <span class="md-subhead">{{track.user.username}}</span>
+                 <div class="md-subhead" layout="row">
+                    <span class="md-subhead" flex="20" layout-align="start start">{{track.created_at | beautifyDate}}</span> 
+                    <span class="md-subhead" flex="20"><i class="fa fa-play"></i> {{track.playback_count | beautifyNumber}}</span>
+                    <span class="md-subhead" flex="20"><i class="fa fa-heart"></i> {{track.favoritings_count | beautifyNumber}}</span> 
+                </div>
             </md-card-title-text>
             <md-card-title-media>
                 <div class="md-media-md card-media"><img alt="-" ng-src="{{track.artwork_url | artworksize: 't300x300'}}" />

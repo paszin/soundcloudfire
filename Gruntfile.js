@@ -156,9 +156,7 @@ module.exports = function (grunt) {
                     "app/lib/jquery/dist/jquery.js",
                     "app/lib/bootstrap/dist/js/bootstrap.js",
                     "app/lib/angular/angular.js",
-                    "app/lib/angular-resource/angular-resource.js",
                     "app/lib/angular-mocks/angular-mocks.js",
-                    "app/lib/angular-cookies/angular-cookies.js",
                     "app/lib/angular-sanitize/angular-sanitize.js",
                     "app/lib/angular-animate/angular-animate.js",
                     "app/lib/angular-touch/angular-touch.js",
@@ -195,7 +193,7 @@ module.exports = function (grunt) {
         injector: {
             options: {
                 addRootSlash: false,
-                ignorePath: ["app/", "app/modules/core/services/credentials.templ.js"],
+                ignorePath: ["app/"],
                 bowerPrefix: "bower"
             },
             localDependencies: {
@@ -203,12 +201,12 @@ module.exports = function (grunt) {
                     "app/index.html": [
                         "app/js/config.js",
                         "app/js/application.js",
-                        "app/modules/*/*.js",
-                        "app/modules/*/config/*.js",
-                        "app/modules/*/services/*.js",
-                        "app/modules/*/directives/*.js",
-                        "app/modules/*/filters/*.js",
-                        "app/modules/*/controllers/*.js",
+                        "app/modules/*/*.config.js",
+                        "app/modules/*/*.service.js",
+                        "app/modules/*/*.value.js",
+                        "app/modules/*/*.directive.js",
+                        "app/modules/*/*.filter.js",
+                        "app/modules/*/*.controller.js",
                         "app/css/**/*.css"
                     ]
                 }
@@ -234,14 +232,15 @@ module.exports = function (grunt) {
         rev: {
             dist: {
                 files: {
-                    src: [
+                    src: [ // TODO
                         "<%= yeoman.dist %>/app/js/*.js",
                         "<%= yeoman.dist %>/app/modules/*/*.js",
-                        "<%= yeoman.dist %>/app/modules/*/config/*.js",
-                        "<%= yeoman.dist %>/app/modules/*/services/*.js",
-                        "<%= yeoman.dist %>/app/modules/*/directives/*.js",
-                        "<%= yeoman.dist %>/app/modules/*/filters/*.js",
-                        "<%= yeoman.dist %>/app/modules/*/controllers/*.js",
+                        "<%= yeoman.dist %>/app/modules/*/*.config.js",
+                        "<%= yeoman.dist %>/app/modules/*/*.value.js",
+                        "<%= yeoman.dist %>/app/modules/*/*.service.js",
+                        "<%= yeoman.dist %>/app/modules/*/*.directive.js",
+                        "<%= yeoman.dist %>/app/modules/*/*.filter.js",
+                        "<%= yeoman.dist %>/app/modules/*/*.controller.js",
                         "<%= yeoman.dist %>/app/css/**/*.css",
                         "<%= yeoman.dist %>/app/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}",
                         "<%= yeoman.dist %>/css/fonts/*"
