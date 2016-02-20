@@ -14,8 +14,7 @@ function LoginCtrl($scope, $state, localStorageService, SoundcloudLogin, GroupsB
     
     $scope.mainOptions = {
       sectionsColor: ["#100055"],
-			anchors: ["WelcomePage"],
-			menu: '#menu'
+			anchors: ["WelcomePage"]
     };
     
     //parse invitation Code

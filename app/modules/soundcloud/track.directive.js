@@ -15,9 +15,10 @@ angular
                 // priority: 1,
                 // terminal: true,
                 scope: {
-                    track: "=track"
+                    track: "=track",
+                    group: "=group"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks, GroupDialog) {
+                controller: function controller($scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks, GroupsBackend, GroupDialog) {
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
                     };
@@ -25,10 +26,18 @@ angular
                         SoundcloudNextTracks.addTrack(track);
                     };
                     
-                    $scope.showComments = true;
+                    $scope.track.showComments = false;
+                    
+                    //$scope.showComments = true;
                    
                     $scope.addToGroup = function (track) {
                         GroupDialog.show($scope.track.id);
+                    };
+                    
+                    $scope.addComment = function () {
+                        $scope.track.comments.push({text: $scope.track.newcomment});
+                        GroupsBackend.addCommentToTrack($scope.group.id, $scope.track.id, 0, $scope.track.newcomment);
+                        $scope.track.newcomment = '';
                     };
                 },
                 // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements

@@ -1,4 +1,4 @@
-/*global angular*/
+/*global angular, moment*/
 
 /**
  * @ngdoc filter

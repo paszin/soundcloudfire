@@ -7,7 +7,7 @@
  * @name core.Services.GroupsBackend
  * @description GroupsBackend Service
  */
-function GroupsBackend($http, $log) {
+function GroupsBackend($http) {
 
     "use strict";
 
@@ -27,21 +27,22 @@ function GroupsBackend($http, $log) {
         return $http.get(baseUrl + "/groups/" + group_id + "/tracks").then(
             function (resp) {
                 var joinedData = resp.data.tracks.map(function (track) {
-                    var returnValue = {};
-                    for (var property in track.sn) {
+                    var property, returnValue = {};
+                    for (property in track.sn) {
                         if (track.sn.hasOwnProperty(property)) {
                             returnValue[property] = track.sn[property];
                         }
                     }
-                    for (var property in track.sc) {
+                    for (property in track.sc) {
                         if (track.sc.hasOwnProperty(property)) {
                             returnValue[property] = track.sc[property];
                         }
                     }
                     return returnValue;
                 });
-            return joinedData;
-            });
+                return joinedData;
+            }
+        );
     };
 
     this.addTrack = function (group_id, track_id, user_id, comment) {
@@ -56,7 +57,16 @@ function GroupsBackend($http, $log) {
         });
     };
 
-    this.addCommentToTrack = function (group_id, track_id, user_id, comment) {};
+    this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id + "/comments",
+            data: {
+                user_id: user_id,
+                text: comment
+            }
+        });
+    };
 
     this.newGroup = function (name, description, user_id) {
         return $http({
@@ -69,18 +79,18 @@ function GroupsBackend($http, $log) {
             }
         });
     };
-    
-    this.invitationCheck = function(code) {
+
+    this.invitationCheck = function (code) {
         return $http.get(baseUrl + "/invitation?code=" + code);
     };
-    
+
     this.addMemberByCode = function (user_id, code) {
         return $http({
             method: "POST",
             url: baseUrl + "/invitation/" + code,
             data: {
-                user_id: user_id,
-                }
+                user_id: user_id
+            }
         });
     };
 }
