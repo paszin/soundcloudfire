@@ -17,7 +17,7 @@ angular
             "use strict";
         
             $scope.tabs = _.filter(Tabs, function (ta) {
-                return ta.content !== "modules/core/views/empty.template.html";
+                return ta.content !== "modules/core/empty.template.html";
             });
 
 

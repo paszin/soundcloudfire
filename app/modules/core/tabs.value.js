@@ -11,42 +11,42 @@ angular
     .value("Tabs", [
         {
             title: "Search",
-            content:  "modules/search/views/search.tab.html",
+            content:  "modules/search/search.html",
             icon: "fa-search"
         },
         {
             title: "Stream",
-            content: "modules/core/views/empty.template.html",
+            content: "modules/core/empty.template.html",
             icon: "fa-music"
         },
         {
             title: "Playlists",
-            content: "modules/playlists/views/playlists.tab.html",
+            content: "modules/playlists/playlists.html",
             icon: "fa-th-list"
         },
         {
             title: "Likes",
-            content: "modules/likes/views/likes.tab.html",
+            content: "modules/likes/likes.html",
             icon: "fa-heart"
         },
         {
             title: "History",
-            content: "modules/core/views/empty.template.html",
+            content: "modules/core/empty.template.html",
             icon: "fa-clock-o"
         },
         {
             title: "Next Tracks",
-            content: "modules/next-tracks/views/nextTracks.tab.html",
+            content: "modules/next-tracks/nextTracks.html",
             icon: "fa-hourglass-start" //"fa-headphones"
         },
         {
             title: "Groups",
-            content: "modules/groups/views/groups.tab.html",
+            content: "modules/groups/groups.html",
             icon: "fa-users"
         },
         {
             title: "Analyze",
-            content: "modules/core/views/visualization.tab.html",
+            content: "modules/visualization/visualization.html",
             icon: "fa-magic"
         }
 

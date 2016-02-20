@@ -20,7 +20,7 @@ angular
                 var useFullScreen = ($mdMedia("sm") || $mdMedia("xs"));
                 $mdDialog.show({
                     controller: NewGroupDialogController,
-                    templateUrl: "modules/groups/views/newGroup.dialog.html",
+                    templateUrl: "modules/groups/newGroup.dialog.html",
                     parent: angular.element(document.body),
                     //targetEvent: ev,
                     clickOutsideToClose: true,

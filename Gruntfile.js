@@ -24,7 +24,7 @@ module.exports = function (grunt) {
             },
 
             js: {
-                files: ["<%= yeoman.app %>/modules/*/*.js", "<%= yeoman.app %>/modules/*/config/*.js", "<%= yeoman.app %>/modules/*/controllers/*.js", "<%= yeoman.app %>/modules/*/services/*.js", "<%= yeoman.app %>/modules/*/directives/*.js", "<%= yeoman.app %>/modules/*/filters/*.js"],
+                files: ["<%= yeoman.app %>/modules/*/*.js"],
                 tasks: ["newer:jshint:all", "ngdocs"],
                 options: {
                     livereload: true
@@ -232,7 +232,7 @@ module.exports = function (grunt) {
         rev: {
             dist: {
                 files: {
-                    src: [ // TODO
+                    src: [ 
                         "<%= yeoman.dist %>/app/js/*.js",
                         "<%= yeoman.dist %>/app/modules/*/*.js",
                         "<%= yeoman.dist %>/app/modules/*/*.config.js",
@@ -316,7 +316,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: "<%= yeoman.dist %>",
-                    src: ["*.html", "<%= yeoman.app %>/modules/*/views/*.html"],
+                    src: ["*.html", "<%= yeoman.app %>/modules/*/*.html"],
                     dest: "<%= yeoman.dist %>"
                 }]
             }
@@ -355,7 +355,7 @@ module.exports = function (grunt) {
                         "*.{ico,png,txt}",
                         ".htaccess",
                         "index.html",
-                        "modules/*/views/*.html",
+                        "modules/*/*.html",
                         "img/{,*/}*.{webp}",
                         "img/{,*/}*.jpg",
                         "fonts/*"

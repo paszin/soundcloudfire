@@ -34,12 +34,12 @@ angular
             $stateProvider
                 .state("login", {
                     url: "/login?code",
-                    templateUrl: "modules/login/views/login.html",
+                    templateUrl: "modules/login/login.html",
                     controller: "LoginCtrl"
                 })
                 .state("home", {
                     url: "/home",
-                    templateUrl: "modules/core/views/home.html",
+                    templateUrl: "modules/core/home.html",
                     controller: "HomeController"
                 });
         }

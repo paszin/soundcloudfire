@@ -16,7 +16,7 @@ function GroupDialog($log, $mdDialog, $mdMedia) {
             locals: {
                 track_id: track_id
             },
-            templateUrl: "modules/groups/views/dialog.html",
+            templateUrl: "modules/groups/dialog.html",
             parent: angular.element(document.body),
             //targetEvent: ev,
             clickOutsideToClose: true,
@@ -46,7 +46,7 @@ function DialogController($scope, $mdDialog, GroupsBackend, track_id) {
     $scope.answer = function () {
         $scope.groups.forEach(function (group) {
             if (group.selected) {
-                GroupsBackend.addTrack(group.id, $scope.track_id, 0).then($mdDialog.hide());
+                GroupsBackend.addTrack(group.id, $scope.track_id, 0, $scope.comment).then($mdDialog.hide());
             }
         })
 
