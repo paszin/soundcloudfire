@@ -50,15 +50,21 @@
         </md-button>
     </md-card-actions>
     <div ng-show="track.showComments">
-        <md-list><md-list-item class="md-1-line" ng-repeat="comment in track.comments">
-            <img ng-src="" class="md-avatar" alt="-" />
-            <p>{{comment.text}}</p>
+        <md-list>
+            <md-list-item class="md-2-line" ng-repeat="comment in track.comments">
+                <img ng-src="{{findMember(comment.author_id).avatar_url}}" class="md-avatar" alt="-" />
+                <div class="md-list-item-text" layout="column">
+                    <h4>{{comment.text}}</h4>
+                    <p>{{findMember(comment.author_id).full_name}} {{comment.added_at | beautifyDate}}</p>
+                </div>
             </md-list-item>
         </md-list>
-        <div ><md-input-container class="md-block">
-        <label>Add a comment</label>
-            <textarea ng-model="track.newcomment"></textarea>
-      </md-input-container>
-        <md-button ng-click="addComment()">send</md-button></div>
+        <div>
+            <md-input-container class="md-block">
+                <label>Add a comment</label>
+                <textarea ng-model="track.newcomment"></textarea>
+            </md-input-container>
+            <md-button ng-click="addComment()">send</md-button>
+        </div>
     </div>
 </md-card>

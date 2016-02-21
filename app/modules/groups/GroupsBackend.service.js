@@ -45,57 +45,64 @@ function GroupsBackend($http) {
         );
     };
 
-    this.addTrack = function (group_id, track_id, user_id, comment) {
-        return $http({
-            method: "POST",
-            url: baseUrl + "/groups/" + group_id + "/tracks",
-            data: {
-                track_id: track_id,
-                user_id: user_id,
-                comment: comment
-            }
-        });
-    };
+    this.getMembers = function (group_id) {
+        return $http.get(baseUrl + "/groups/" + group_id + "/members").then(
+            function (resp) {
+                return resp.data.members.map(member => member.sc);
+            })
+        };
 
-    this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
-        return $http({
-            method: "POST",
-            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id + "/comments",
-            data: {
-                user_id: user_id,
-                text: comment
-            }
-        });
-    };
+        this.addTrack = function (group_id, track_id, user_id, comment) {
+            return $http({
+                method: "POST",
+                url: baseUrl + "/groups/" + group_id + "/tracks",
+                data: {
+                    track_id: track_id,
+                    user_id: user_id,
+                    comment: comment
+                }
+            });
+        };
 
-    this.newGroup = function (name, description, user_id) {
-        return $http({
-            method: "POST",
-            url: baseUrl + "/groups",
-            data: {
-                name: name,
-                description: description,
-                user_id: user_id
-            }
-        });
-    };
+        this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
+            return $http({
+                method: "POST",
+                url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id + "/comments",
+                data: {
+                    user_id: user_id,
+                    text: comment
+                }
+            });
+        };
 
-    this.invitationCheck = function (code) {
-        return $http.get(baseUrl + "/invitation?code=" + code);
-    };
+        this.newGroup = function (name, description, user_id) {
+            return $http({
+                method: "POST",
+                url: baseUrl + "/groups",
+                data: {
+                    name: name,
+                    description: description,
+                    user_id: user_id
+                }
+            });
+        };
 
-    this.addMemberByCode = function (user_id, code) {
-        return $http({
-            method: "POST",
-            url: baseUrl + "/invitation/" + code,
-            data: {
-                user_id: user_id
-            }
-        });
-    };
-}
+        this.invitationCheck = function (code) {
+            return $http.get(baseUrl + "/invitation?code=" + code);
+        };
+
+        this.addMemberByCode = function (user_id, code) {
+            return $http({
+                method: "POST",
+                url: baseUrl + "/invitation/" + code,
+                data: {
+                    user_id: user_id
+                }
+            });
+        };
+    }
 
 
-angular
-    .module("groups")
-    .service("GroupsBackend", GroupsBackend);
+    angular
+        .module("groups")
+        .service("GroupsBackend", GroupsBackend);

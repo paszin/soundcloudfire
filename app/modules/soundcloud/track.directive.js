@@ -1,4 +1,4 @@
-/*global angular*/
+/*global angular, moment*/
 
 /**
  * @ngdoc directive
@@ -18,7 +18,7 @@ angular
                     track: "=track",
                     group: "=group"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks, GroupsBackend, GroupDialog) {
+                controller: function controller($scope, $element, $attrs, $transclude, playerService, SoundcloudSessionManager, SoundcloudNextTracks, GroupsBackend, GroupDialog) {
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
                     };
@@ -34,10 +34,17 @@ angular
                         GroupDialog.show($scope.track.id);
                     };
                     
+                    $scope.findMember = function(id) {
+                        return _.find($scope.group.members, {id: id});
+                    }
+                    
                     $scope.addComment = function () {
-                        $scope.track.comments.push({text: $scope.track.newcomment});
-                        GroupsBackend.addCommentToTrack($scope.group.id, $scope.track.id, 0, $scope.track.newcomment);
-                        $scope.track.newcomment = '';
+                        $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
+                        GroupsBackend.addCommentToTrack($scope.group.id, 
+                                                        $scope.track.id, 
+                                                        SoundcloudSessionManager.getUserId(), 
+                                                        $scope.track.newcomment);
+                        $scope.track.newcomment = "";
                     };
                 },
                 // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements

@@ -45,6 +45,11 @@ angular
                 GroupsBackend.getTracks(group.id).then(function (data) {
                     group.sctracks = data;
                 });
+                
+                GroupsBackend.getMembers(group.id).then(function (data) {
+                    group.members = data;
+                    console.log(data);
+                })
             };
 
         }]);
