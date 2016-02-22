@@ -11,11 +11,11 @@
  */
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "localStorageService", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
-        function ($rootScope, $scope, $state, $stateParams, $log, localStorageService, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
+    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "SoundcloudSessionManager", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
+        function ($rootScope, $scope, $state, $stateParams, $log, SoundcloudSessionManager, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
 
             "use strict";
-        
+
             $scope.tabs = _.filter(Tabs, function (ta) {
                 return ta.content !== "modules/core/empty.template.html";
             });
@@ -38,26 +38,31 @@ angular
                 }
             });
 
-            
+
             $scope.addMeToGroup = function () {
-                
-                GroupsBackend.invitationCheck($scope.me.id, localStorageService.get("invitationcode"))
+
+                GroupsBackend.invitationCheck(SoundcloudSessionManager.getInvitationCode())
                     .then(
-                        function(resp) {localStorageService.remove("invitationcode");}
-                );
+                        function (resp) {
+                            SoundcloudSessionManager.setInvationCode(null);
+                        }
+                    );
             };
 
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
+                //add 
+                debugger;
+                if (SoundcloudSessionManager.getInvitationCode()) {
+                    debugger;
+                    $scope.addMeToGroup();
+
+                }
+
             });
-                
-            
-            
-            //add 
-            if (localStorageService.get("invitationcode")) {
-                $scope.addMeToGroup();
-                
-            }
-            
+
+
+
+
 
         }]);

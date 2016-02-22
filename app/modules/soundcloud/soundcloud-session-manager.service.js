@@ -16,6 +16,7 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
      * @param token OAuth token
      */
     this.init = function init(token) {
+        debugger;
         $http.get(SoundcloudAPIBase + "/me", {
             params: {
                 oauth_token: token
@@ -58,6 +59,14 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
         $log.error("disconnected");
         localStorageService.set("ouath_token", null);
     };
+    
+    this.setInvitationCode = function(code) {
+        localStorageService.set("invitationcode", code);
+    };
+    
+    this.getInvitationCode = function() {
+        return localStorageService.get("invitationcode");
+    }
 
     
 

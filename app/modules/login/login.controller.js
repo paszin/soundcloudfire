@@ -8,7 +8,7 @@
  * @requires ng.$scope
  */
 
-function LoginCtrl($scope, $state, localStorageService, SoundcloudLogin, GroupsBackend) {
+function LoginCtrl($scope, $state, SoundcloudSessionManager, SoundcloudLogin, GroupsBackend) {
 
     "use strict";
     
@@ -18,7 +18,8 @@ function LoginCtrl($scope, $state, localStorageService, SoundcloudLogin, GroupsB
     };
     
     //parse invitation Code
-    localStorageService.set("invitationcode", $state.params.code);
+    debugger;
+    SoundcloudSessionManager.setInvitationCode($state.params.code);
     
 
 

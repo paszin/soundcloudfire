@@ -23,16 +23,17 @@ function SoundcloudLogin($q, $log, SoundcloudAPIBase, SoundcloudUtil, Soundcloud
         params = angular.extend({}, SoundcloudConnectParamBase);
         params.client_id = SoundcloudCredentials.getClientId();
         params.redirect_uri = SoundcloudRedirectUri;
+        params.state = "code";
 
         options = angular.extend({}, SoundcloudPopupDefaults);
         options.left = window.screenX + (window.outerWidth - options.height) / 2;
         options.right = window.screenY + (window.outerHeight - options.width) / 2;
 
-        $log.debug("Creating window with params %o and options %o", params, options);
+        //$log.debug("Creating window with params %o and options %o", params, options);
 
         url = SoundcloudAPIBase + "/connect?" + SoundcloudUtil.toParams(params);
         window.open(url, "SoundcloudPopup", SoundcloudUtil.toOptions(options));
-
+        debugger;
         connectPromise = $q.defer();
         window._SoundcloudCallback = connectPromise.resolve;
         connectPromise.promise

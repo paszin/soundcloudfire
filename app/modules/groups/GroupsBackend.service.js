@@ -7,7 +7,7 @@
  * @name core.Services.GroupsBackend
  * @description GroupsBackend Service
  */
-function GroupsBackend($http) {
+function GroupsBackend($http, SoundcloudSessionManager) {
 
     "use strict";
 
@@ -50,63 +50,69 @@ function GroupsBackend($http) {
             function (resp) {
                 return resp.data.members.map((member) => member.sc);
             });
-        };
+    };
 
-        this.addTrack = function (group_id, track_id, user_id, comment) {
-            return $http({
-                method: "POST",
-                url: baseUrl + "/groups/" + group_id + "/tracks",
-                data: {
-                    track_id: track_id,
-                    user_id: user_id,
-                    comment: comment
-                }
-            });
-        };
+    this.addTrack = function (group_id, track_id, user_id, comment) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/groups/" + group_id + "/tracks",
+            data: {
+                track_id: track_id,
+                user_id: user_id,
+                comment: comment
+            }
+        });
+    };
 
-        this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
-            return $http({
-                method: "POST",
-                url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id + "/comments",
-                data: {
-                    user_id: user_id,
-                    text: comment
-                }
-            });
-        };
+    this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id + "/comments",
+            data: {
+                user_id: user_id,
+                text: comment
+            }
+        });
+    };
 
-        this.newGroup = function (name, description, user_id) {
-            return $http({
-                method: "POST",
-                url: baseUrl + "/groups",
-                data: {
-                    name: name,
-                    description: description,
-                    user_id: user_id
-                }
-            });
-        };
+    this.newGroup = function (name, description, user_id) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/groups",
+            data: {
+                name: name,
+                description: description,
+                user_id: user_id
+            }
+        });
+    };
 
-        this.invitationCheck = function (code) {
-            return $http.get(baseUrl + "/invitations?code=" + code);
-        };
+    this.invitationCheck = function (code) {
+        debugger;
+        return $http.get(baseUrl + "/invitations", {
+            params: {
+                code: code,
+                user_id: SoundcloudSessionManager.getUserId()
+            }
+        });
+    };
 
-        this.inviteToGroup = function (group_id) {
-            var code = "welcome" + group_id;
-            return $http({
-                method: "POST",
-                url: baseUrl + "/invitations",
-                data: {
-                    code: code,
-                    group_id: group_id,
-                    message: "",
-                    added_by_name: ""
-                }
-            });
-        };
-    }
+    this.inviteToGroup = function (group_id) {
+        var code = "welcome" + group_id;
+        return $http({
+            method: "POST",
+            url: baseUrl + "/invitations",
+            data: {
+                code: code,
+                group_id: group_id,
+                message: "",
+                added_by_name: ""
+            }
+        });
+    };
+}
 
 
-    angular
-        .module("groups")
-        .service("GroupsBackend", GroupsBackend);
+angular
+    .module("groups")
+    .service("GroupsBackend", GroupsBackend);
