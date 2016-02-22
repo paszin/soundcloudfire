@@ -10,7 +10,9 @@
                     <h3>{{ group.name }}</h3>
                     <h4>{{ group.description }}</h4>
                     <p>{{ group.tracks.length }} Tracks</p>
-                    <md-button class="md-secondary" ng-click="showTracks(group)">show tracks</md-button>
+                    <div class="md-secondary">
+                    <md-button ng-click="showTracks(group)">show tracks</md-button>
+                    <md-button ng-click="inviteToGroup(group.id)">invite</md-button></div>
                 </div>
             </md-list-item>
             <div layout="row" layout-xs="column" layout-wrap>

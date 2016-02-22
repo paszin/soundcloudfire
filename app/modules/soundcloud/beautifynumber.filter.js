@@ -17,9 +17,9 @@ angular
                     return void 0;
                 }
                 if (count > Math.pow(10, 6)) {
-                        return counts.substring(0, counts.length-6) + "." + counts.substring(counts.length-5)[0] +  "M"
+                        return counts.substring(0, counts.length-6) + "." + counts.substring(counts.length-5)[0] +  "M";
                 } if (count > Math.pow(10, 3)) {
-                    return counts.substring(0, counts.length-3)  +  "k"
+                    return counts.substring(0, counts.length-3)  +  "k";
                 }
                 return count;
             };

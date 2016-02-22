@@ -1,0 +1,37 @@
+<!--
+<div full-page id="backgroundfull">
+    <div flex ng-cloak layout="column" layout-fill>
+        <div flex layout="column" layout-fill layout-align="space-around center">
+        	<div style="height:150px"></div>
+            <div flex layout="column" layout-align="center center" layout-margin>
+                <h1 >Soundcloud<BR>Mashup</h1>
+            </div>
+            <div style="height:20px"></div>
+            <div layout="row">
+                <div flex></div>
+                <section layout="column" layout-align="center center" layout-padding style="max-height:200px; width:500px">
+                    <md-input-container layout-fill>
+                        <label >Secret Code</label>
+                        <input ng-model="secretcode" class="brightfont" type="password">
+                    </md-input-container>
+                    <div layout="row" layout-fill layout-align="space-around start">
+                        
+                    </div>
+                </section>
+            </div>
+            <div flex></div>
+            
+        </div>
+    </div>
+</div>
+    -->
+
+<div full-page options="mainOptions">
+    <div class="section" id="section0" layout="row" layout-align="center center" layout-fill layout-margin>
+        <div layout="column" layout-align="space-around center">
+            <h1 class="loginheader">Soundcloud Mashup</h1>
+            <h2 class="brightfont">Enjoy your music</h2>
+
+            <md-button flex="20" class="md-raised md-primary" ng-click="loginWithSoundcloud()"><i class="fa fa-soundcloud"></i> Log In</md-button>
+        </div>
+    </div>

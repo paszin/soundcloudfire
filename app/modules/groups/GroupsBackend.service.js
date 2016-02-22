@@ -48,8 +48,8 @@ function GroupsBackend($http) {
     this.getMembers = function (group_id) {
         return $http.get(baseUrl + "/groups/" + group_id + "/members").then(
             function (resp) {
-                return resp.data.members.map(member => member.sc);
-            })
+                return resp.data.members.map((member) => member.sc);
+            });
         };
 
         this.addTrack = function (group_id, track_id, user_id, comment) {
@@ -88,15 +88,19 @@ function GroupsBackend($http) {
         };
 
         this.invitationCheck = function (code) {
-            return $http.get(baseUrl + "/invitation?code=" + code);
+            return $http.get(baseUrl + "/invitations?code=" + code);
         };
 
-        this.addMemberByCode = function (user_id, code) {
+        this.inviteToGroup = function (group_id) {
+            var code = "welcome" + group_id;
             return $http({
                 method: "POST",
-                url: baseUrl + "/invitation/" + code,
+                url: baseUrl + "/invitations",
                 data: {
-                    user_id: user_id
+                    code: code,
+                    group_id: group_id,
+                    message: "",
+                    added_by_name: ""
                 }
             });
         };

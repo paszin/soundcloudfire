@@ -1,0 +1,11 @@
+<div ng-controller="SearchCtrl">
+    <md-input-container>
+        <label>search</label>
+        <input ng-model="search.input">
+    </md-input-container>
+
+    <md-button class="md-raised md-accent" ng-click="searchTrack()">search</md-button>
+    <div layout="row" layout-warp>
+        <track layout="row" layout-align="start stretch" flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" layout-wrap flex="33" track="track" ng-repeat="track in results"></track>
+    </div>
+</div>

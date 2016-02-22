@@ -1,0 +1,15 @@
+<div ng-controller="VisualizationCtrl">
+    <md-progress-circular ng-show=loading md-mode="indeterminate"></md-progress-circular>
+
+    <md-button class="md-raised md-accent" ng-disabled="loading" ng-click="analyzeTrack()">analyze</md-button>
+    <p ng-show="result.status.message">{{result.status.message}}</p>
+    
+    <div style="height: 300px; width: 300px">
+    <canvas id="radar" class="chart chart-radar" chart-data="data" chart-labels="labels">
+    </canvas>
+        </div>
+
+    <md-button><a target="_self" ng-href="{{getDownload()}}" download="soundclouddownload.mp3">download</a></md-button>
+
+    <!--<canvas width="500" height="300" background="{'background': '#555555'}" id="canvas" visualization></canvas>-->
+</div>

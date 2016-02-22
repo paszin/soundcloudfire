@@ -232,9 +232,9 @@ module.exports = function (grunt) {
         rev: {
             dist: {
                 files: {
-                    src: [ 
+                    src: [
                         "<%= yeoman.dist %>/app/js/*.js",
-                        "<%= yeoman.dist %>/app/modules/*/*.js",
+                        //"<%= yeoman.dist %>/app/modules/*/*.js",
                         "<%= yeoman.dist %>/app/modules/*/*.config.js",
                         "<%= yeoman.dist %>/app/modules/*/*.value.js",
                         "<%= yeoman.dist %>/app/modules/*/*.service.js",
@@ -347,11 +347,11 @@ module.exports = function (grunt) {
         copy: {
             dist: {
                 files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: "<%= yeoman.app %>",
-                    dest: "<%= yeoman.dist %>",
-                    src: [
+                        expand: true,
+                        dot: true,
+                        cwd: "<%= yeoman.app %>",
+                        dest: "<%= yeoman.dist %>",
+                        src: [
                         "*.{ico,png,txt}",
                         ".htaccess",
                         "index.html",
@@ -361,10 +361,10 @@ module.exports = function (grunt) {
                         "fonts/*"
                     ]
                 }, {
-                    expand: true,
-                    cwd: ".tmp/images",
-                    dest: "<%= yeoman.dist %>/img",
-                    src: ["generated/*"]
+                        expand: true,
+                        cwd: ".tmp/images",
+                        dest: "<%= yeoman.dist %>/img",
+                        src: ["generated/*"]
                 },
                     {
                         expand: true,

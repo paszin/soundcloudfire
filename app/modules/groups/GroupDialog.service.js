@@ -2,6 +2,30 @@
 /*jshint nomen: true */
 
 
+
+function DialogController($scope, $mdDialog, GroupsBackend, SoundcloudSessionManager, track_id) {
+    $scope.track_id = track_id;
+    $scope.groups = [];
+    GroupsBackend.getGroups().then(function (resp) {
+        $scope.groups = resp.data.groups;
+    });
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function () {
+        $scope.groups.forEach(function (group) {
+            if (group.selected) {
+                GroupsBackend.addTrack(group.id, $scope.track_id, SoundcloudSessionManager.getUserId(), $scope.comment).then($mdDialog.hide());
+            }
+        })
+
+
+    };
+}
+
 /**
  * @ngdoc service
  * @name core.Services.
@@ -30,26 +54,3 @@ angular
     .module("groups")
     .service("GroupDialog", GroupDialog);
 
-
-function DialogController($scope, $mdDialog, GroupsBackend, track_id) {
-    $scope.track_id = track_id;
-    $scope.groups = [];
-    GroupsBackend.getGroups().then(function (resp) {
-        $scope.groups = resp.data.groups;
-    });
-    $scope.hide = function () {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    };
-    $scope.answer = function () {
-        $scope.groups.forEach(function (group) {
-            if (group.selected) {
-                GroupsBackend.addTrack(group.id, $scope.track_id, 0, $scope.comment).then($mdDialog.hide());
-            }
-        })
-
-
-    };
-}

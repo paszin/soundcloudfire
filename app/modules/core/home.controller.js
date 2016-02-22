@@ -41,13 +41,23 @@ angular
             
             $scope.addMeToGroup = function () {
                 
-                GroupsBackend.addMemberByCode($scope.me.id, localStorageService.get("invitationcode"));
+                GroupsBackend.invitationCheck($scope.me.id, localStorageService.get("invitationcode"))
+                    .then(
+                        function(resp) {localStorageService.remove("invitationcode");}
+                );
             };
 
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
             });
+                
+            
             
             //add 
+            if (localStorageService.get("invitationcode")) {
+                $scope.addMeToGroup();
+                
+            }
+            
 
         }]);

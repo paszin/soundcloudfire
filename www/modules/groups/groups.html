@@ -1,0 +1,25 @@
+<div ng-controller="GroupsController">
+    <md-toolbar class="md-hue-3" layout="row" layout-align="space-between center">
+        <md-button ng-click="newGroup()"><i class="fa fa-plus-square"></i> new group</md-button>
+        <md-button ng-click="refresh()"><i class="fa fa-refresh"></i></md-button>
+        </md-toolbar>
+    <md-list>
+        <div ng-repeat="group in groups">
+            <md-list-item class="md-3-line secondary-button-padding">
+                <div class="md-list-item-text" layout="column">
+                    <h3>{{ group.name }}</h3>
+                    <h4>{{ group.description }}</h4>
+                    <p>{{ group.tracks.length }} Tracks</p>
+                    <md-button class="md-secondary" ng-click="showTracks(group)">show tracks</md-button>
+                </div>
+            </md-list-item>
+            <div layout="row" layout-xs="column" layout-wrap>
+            <track layout="row" ng-class="track.showComments ? 'flex-sm-100 flex-md-100 flex-lg-100' : 'flex-lg-33'" layout-align="start stretch" flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" layout-wrap flex="33" ng-show="group.doShowTracks" 
+                   ng-repeat="track in group.sctracks" track="track" group="group"> </track>
+            </div>
+        <md-divider></md-divider>
+                
+        </div>
+        
+    </md-list>
+</div>

@@ -2,6 +2,22 @@
 /*jslint plusplus: true */
 
 
+
+function NewGroupDialogController($scope, $mdDialog, GroupsBackend) {
+    "use strict";
+    $scope.newgroup = {};
+
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function () {
+        GroupsBackend.newGroup($scope.newgroup.name, $scope.newgroup.description, 0).then($mdDialog.hide());
+    };
+}
+
 /**
  * @ngdoc object
  * @name core.Controllers.GroupsController
@@ -11,7 +27,7 @@
 angular
     .module("groups")
     .controller("GroupsController", ["$scope", "$log", "$mdDialog", "$mdMedia", "GroupsBackend", "SoundcloudAPI",
-        function ($scope, $log, $mdDialog, $mdMedia, GroupsBackend, SoundcloudAPI) {
+        function ($scope, $log, $mdDialog, $mdMedia, GroupsBackend) {
 
             "use strict";
             $scope.groups = [];
@@ -27,6 +43,10 @@ angular
                     fullscreen: useFullScreen
                 });
             };
+            
+            $scope.inviteToGroup = function (group_id) {
+                GroupsBackend.inviteToGroup(group_id);
+            }
 
 
             $scope.refresh = function () {
@@ -45,28 +65,11 @@ angular
                 GroupsBackend.getTracks(group.id).then(function (data) {
                     group.sctracks = data;
                 });
-                
-                GroupsBackend.getMembers(group.id).then(function (data) {
-                    group.members = data;
-                    console.log(data);
-                })
+
+                GroupsBackend.getMembers(group.id)
+                    .then(function (data) {
+                        group.members = data;
+                    });
             };
 
         }]);
-
-
-
-function NewGroupDialogController($scope, $mdDialog, GroupsBackend) {
-    "use strict";
-    $scope.newgroup = {};
-
-    $scope.hide = function () {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    };
-    $scope.answer = function () {
-        GroupsBackend.newGroup($scope.newgroup.name, $scope.newgroup.description, 0).then($mdDialog.hide());
-    };
-}
