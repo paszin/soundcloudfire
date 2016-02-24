@@ -44,7 +44,7 @@ angular
                 GroupsBackend.invitationCheck(SoundcloudSessionManager.getInvitationCode())
                     .then(
                         function (resp) {
-                            SoundcloudSessionManager.setInvationCode(null);
+                            //SoundcloudSessionManager.setInvationCode(null);
                         }
                     );
             };
@@ -52,9 +52,9 @@ angular
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
                 //add 
-                debugger;
+                 
                 if (SoundcloudSessionManager.getInvitationCode()) {
-                    debugger;
+                     
                     $scope.addMeToGroup();
 
                 }

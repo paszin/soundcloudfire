@@ -16,7 +16,7 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
      * @param token OAuth token
      */
     this.init = function init(token) {
-        debugger;
+         
         $http.get(SoundcloudAPIBase + "/me", {
             params: {
                 oauth_token: token

@@ -1,0 +1,21 @@
+<md-dialog aria-label="add to group">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Invite some friends</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    x
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                Share this url with everybody you would like to invite
+                <md-input-container class="md-block">
+                    <input disabled="true" ng-model="url"></input>
+          </md-input-container>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

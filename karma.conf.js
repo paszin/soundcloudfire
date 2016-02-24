@@ -49,6 +49,7 @@ module.exports = function(config) {
             "app/lib/fullpage.js/vendors/jquery.slimscroll.min.js",
             "app/lib/angular-fullpage.js/angular-fullpage.js",
             "app/lib/angular-fullpage.js/angular-fullpage.min.js",
+            "app/lib/clipboard/dist/clipboard.js",
             <!-- endinjector -->
 
             'app/js/config.js',

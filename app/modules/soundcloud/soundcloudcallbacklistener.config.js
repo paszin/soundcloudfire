@@ -24,14 +24,9 @@ function createListener() {
             }));
 
     if ("access_token" in queryParams) {
-        debugger;
         window.opener._SoundcloudCallback(queryParams.access_token);
         window.close();
     }
-    if ("state" in queryParams) {
-        debugger;
-    }
-
 }
 
 angular

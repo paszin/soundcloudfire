@@ -11,16 +11,17 @@
 function LoginCtrl($scope, $state, SoundcloudSessionManager, SoundcloudLogin, GroupsBackend) {
 
     "use strict";
-    
+
     $scope.mainOptions = {
-      sectionsColor: ["#100055"],
-			anchors: ["WelcomePage"]
+        sectionsColor: ["#100055"],
+        anchors: ["WelcomePage"]
     };
-    
+
     //parse invitation Code
-    debugger;
-    SoundcloudSessionManager.setInvitationCode($state.params.code);
-    
+    if ($state.params.code) {
+        SoundcloudSessionManager.setInvitationCode($state.params.code);
+    }
+
 
 
     $scope.loginWithSoundcloud = function () {

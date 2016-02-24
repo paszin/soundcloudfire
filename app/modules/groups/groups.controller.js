@@ -3,7 +3,7 @@
 
 
 
-function NewGroupDialogController($scope, $mdDialog, GroupsBackend) {
+function NewGroupDialogController($scope, $mdDialog, GroupsBackend, SoundcloudSessionManager) {
     "use strict";
     $scope.newgroup = {};
 
@@ -14,7 +14,24 @@ function NewGroupDialogController($scope, $mdDialog, GroupsBackend) {
         $mdDialog.cancel();
     };
     $scope.answer = function () {
-        GroupsBackend.newGroup($scope.newgroup.name, $scope.newgroup.description, 0).then($mdDialog.hide());
+        GroupsBackend.newGroup($scope.newgroup.name, $scope.newgroup.description, SoundcloudSessionManager.getUserId())
+            .then($mdDialog.hide());
+    };
+}
+
+
+function AddMembersDialogController($scope, $mdDialog, GroupsBackend, group_id) {
+    "use strict";
+    $scope.url = "";
+    GroupsBackend.inviteToGroup(group_id).then(function (code) {
+        $scope.url = code;
+    });
+
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
     };
 }
 
@@ -43,9 +60,19 @@ angular
                     fullscreen: useFullScreen
                 });
             };
-            
+
             $scope.inviteToGroup = function (group_id) {
-                GroupsBackend.inviteToGroup(group_id);
+                $mdDialog.show({
+                    controller: AddMembersDialogController,
+                    locals: {
+                        group_id: group_id
+                    },
+                    templateUrl: "modules/groups/addMembers.dialog.html",
+                    parent: angular.element(document.body),
+                    //targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+                //GroupsBackend.inviteToGroup(group_id);
             }
 
 

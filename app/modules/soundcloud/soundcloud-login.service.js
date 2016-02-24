@@ -33,7 +33,7 @@ function SoundcloudLogin($q, $log, SoundcloudAPIBase, SoundcloudUtil, Soundcloud
 
         url = SoundcloudAPIBase + "/connect?" + SoundcloudUtil.toParams(params);
         window.open(url, "SoundcloudPopup", SoundcloudUtil.toOptions(options));
-        debugger;
+         
         connectPromise = $q.defer();
         window._SoundcloudCallback = connectPromise.resolve;
         connectPromise.promise

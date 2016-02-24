@@ -48,7 +48,7 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     this.getMembers = function (group_id) {
         return $http.get(baseUrl + "/groups/" + group_id + "/members").then(
             function (resp) {
-                return resp.data.members.map((member) => member.sc);
+                return resp.data.members.map(function(member) {return member.sc;});
             });
     };
 
@@ -88,7 +88,7 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     };
 
     this.invitationCheck = function (code) {
-        debugger;
+         
         return $http.get(baseUrl + "/invitations", {
             params: {
                 code: code,
@@ -108,7 +108,7 @@ function GroupsBackend($http, SoundcloudSessionManager) {
                 message: "",
                 added_by_name: ""
             }
-        });
+        }).then(function() {return code;});
     };
 }
 
