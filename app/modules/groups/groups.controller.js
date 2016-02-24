@@ -20,11 +20,11 @@ function NewGroupDialogController($scope, $mdDialog, GroupsBackend, SoundcloudSe
 }
 
 
-function AddMembersDialogController($scope, $mdDialog, GroupsBackend, group_id) {
+function AddMembersDialogController($scope, $mdDialog, GroupsBackend, SoundcloudRedirectUri, group_id) {
     "use strict";
     $scope.url = "";
     GroupsBackend.inviteToGroup(group_id).then(function (code) {
-        $scope.url = code;
+        $scope.url = SoundcloudRedirectUri + "#!/login?code=" + code;
     });
 
     $scope.hide = function () {
@@ -85,7 +85,7 @@ angular
             $scope.refresh();
 
             $scope.showTracks = function (group) {
-                group.doShowTracks = !group.doShowTracks;
+                group.moreInfos = !group.moreInfos;
                 if (group.sctracks) {
                     return true; //already loaded
                 }
