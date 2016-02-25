@@ -7,3 +7,4 @@
  */
 ApplicationConfiguration
     .registerModule("groups");
+

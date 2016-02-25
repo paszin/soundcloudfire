@@ -1,7 +1,6 @@
 /*global angular*/
 /*jshint nomen: true */
 
-
 /**
  * @ngdoc service
  * @name core.Services.GroupsBackend
@@ -14,13 +13,17 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     var baseUrl;
     baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
     baseUrl = "http://localhost:8000";
-
+    
     /**
      * Get information
      * @returns {*} 
      */
     this.getGroups = function () {
-        return $http.get(baseUrl + "/groups");
+        return $http({
+            method: "GET",
+            url: baseUrl + "/groups",
+            params: {"user_id": SoundcloudSessionManager.getUserId()}
+        });
     };
 
     this.getTracks = function (group_id) {
@@ -48,7 +51,9 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     this.getMembers = function (group_id) {
         return $http.get(baseUrl + "/groups/" + group_id + "/members").then(
             function (resp) {
-                return resp.data.members.map(function(member) {return member.sc;});
+                return resp.data.members.map(function (member) {
+                    return member.sc;
+                });
             });
     };
 
@@ -88,7 +93,7 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     };
 
     this.invitationCheck = function (code) {
-         
+
         return $http.get(baseUrl + "/invitations", {
             params: {
                 code: code,
@@ -108,7 +113,9 @@ function GroupsBackend($http, SoundcloudSessionManager) {
                 message: "",
                 added_by_name: ""
             }
-        }).then(function() {return code;});
+        }).then(function () {
+            return code;
+        });
     };
 }
 

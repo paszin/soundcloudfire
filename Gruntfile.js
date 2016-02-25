@@ -201,12 +201,12 @@ module.exports = function (grunt) {
                     "app/index.html": [
                         "app/js/config.js",
                         "app/js/application.js",
-                        "app/modules/*/*.config.js",
-                        "app/modules/*/*.service.js",
-                        "app/modules/*/*.value.js",
-                        "app/modules/*/*.directive.js",
-                        "app/modules/*/*.filter.js",
-                        "app/modules/*/*.controller.js",
+                        "app/modules/*/*config.js",
+                        "app/modules/*/*service.js",
+                        "app/modules/*/*value.js",
+                        "app/modules/*/*directive.js",
+                        "app/modules/*/*filter.js",
+                        "app/modules/*/*controller.js",
                         "app/css/**/*.css"
                     ]
                 }
@@ -235,12 +235,12 @@ module.exports = function (grunt) {
                     src: [
                         "<%= yeoman.dist %>/app/js/*.js",
                         //"<%= yeoman.dist %>/app/modules/*/*.js",
-                        "<%= yeoman.dist %>/app/modules/*/*.config.js",
-                        "<%= yeoman.dist %>/app/modules/*/*.value.js",
-                        "<%= yeoman.dist %>/app/modules/*/*.service.js",
-                        "<%= yeoman.dist %>/app/modules/*/*.directive.js",
-                        "<%= yeoman.dist %>/app/modules/*/*.filter.js",
-                        "<%= yeoman.dist %>/app/modules/*/*.controller.js",
+                        "<%= yeoman.dist %>/app/modules/*/*config.js",
+                        "<%= yeoman.dist %>/app/modules/*/*value.js",
+                        "<%= yeoman.dist %>/app/modules/*/*service.js",
+                        "<%= yeoman.dist %>/app/modules/*/*directive.js",
+                        "<%= yeoman.dist %>/app/modules/*/*filter.js",
+                        "<%= yeoman.dist %>/app/modules/*/*controller.js",
                         "<%= yeoman.dist %>/app/css/**/*.css",
                         "<%= yeoman.dist %>/app/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}",
                         "<%= yeoman.dist %>/css/fonts/*"
@@ -478,7 +478,7 @@ module.exports = function (grunt) {
     grunt.registerTask("build", [
         "clean:dist",
         "injector",
-        "ngdocs",
+        //"ngdocs",
         "useminPrepare",
         "concurrent:dist",
         "autoprefixer",
