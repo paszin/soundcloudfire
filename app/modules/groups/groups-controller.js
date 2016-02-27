@@ -53,7 +53,7 @@ angular
                 var useFullScreen = ($mdMedia("sm") || $mdMedia("xs"));
                 $mdDialog.show({
                     controller: NewGroupDialogController,
-                    templateUrl: "modules/groups/newGroup.dialog.html",
+                    templateUrl: "modules/groups/newGroup-dialog.html",
                     parent: angular.element(document.body),
                     //targetEvent: ev,
                     clickOutsideToClose: true,
@@ -67,7 +67,7 @@ angular
                     locals: {
                         group_id: group_id
                     },
-                    templateUrl: "modules/groups/addMembers.dialog.html",
+                    templateUrl: "modules/groups/addMembers-dialog.html",
                     parent: angular.element(document.body),
                     //targetEvent: ev,
                     clickOutsideToClose: true
