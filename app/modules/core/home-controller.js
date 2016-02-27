@@ -23,7 +23,7 @@ angular
 
             $scope.selectedIndex = 2;
             $scope.$watch("selectedIndex", function (current) {
-                $scope.$broadcast($scope.tabs[current].title)
+                $scope.$broadcast($scope.tabs[current].title);
             });
 
             $scope.playerService = playerService;
@@ -38,7 +38,6 @@ angular
                 }
             });
 
-
             $scope.addMeToGroup = function () {
 
                 GroupsBackend.invitationCheck(SoundcloudSessionManager.getInvitationCode())
@@ -52,9 +51,9 @@ angular
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
                 //add 
-                 
+
                 if (SoundcloudSessionManager.getInvitationCode()) {
-                     
+
                     $scope.addMeToGroup();
 
                 }
