@@ -138,11 +138,10 @@ function createListener() {
         window.opener._SoundcloudCallback(queryParams.access_token);
         window.close();
     }
-
 }
 
 angular
-    .module("core")
+    .module("soundcloud")
     .config(createListener);
 ApplicationConfiguration
     .registerModule("visualization");
@@ -199,6 +198,31 @@ function playerService($log, ngAudio, SoundcloudSessionManager) {
 
 angular.module("audioplayer")
        .service("playerService", playerService);
+
+
+
+function DialogController($scope, $mdDialog, GroupsBackend, SoundcloudSessionManager, track_id) {
+    $scope.track_id = track_id;
+    $scope.groups = [];
+    GroupsBackend.getGroups().then(function (resp) {
+        $scope.groups = resp.data.groups;
+    });
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function () {
+        $scope.groups.forEach(function (group) {
+            if (group.selected) {
+                GroupsBackend.addTrack(group.id, $scope.track_id, SoundcloudSessionManager.getUserId(), $scope.comment).then($mdDialog.hide());
+            }
+        })
+
+
+    };
+}
 function GroupDialog($log, $mdDialog, $mdMedia) {
 
     this.show = function (track_id) {
@@ -220,39 +244,18 @@ function GroupDialog($log, $mdDialog, $mdMedia) {
 angular
     .module("groups")
     .service("GroupDialog", GroupDialog);
-
-
-function DialogController($scope, $mdDialog, GroupsBackend, track_id) {
-    $scope.track_id = track_id;
-    $scope.groups = [];
-    GroupsBackend.getGroups().then(function (resp) {
-        $scope.groups = resp.data.groups;
-    });
-    $scope.hide = function () {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    };
-    $scope.answer = function () {
-        $scope.groups.forEach(function (group) {
-            if (group.selected) {
-                GroupsBackend.addTrack(group.id, $scope.track_id, 0, $scope.comment).then($mdDialog.hide());
-            }
-        })
-
-
-    };
-}
-function GroupsBackend($http) {
+function GroupsBackend($http, SoundcloudSessionManager) {
 
     "use strict";
 
     var baseUrl;
     baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
-    //baseUrl = "http://localhost:8000";
     this.getGroups = function () {
-        return $http.get(baseUrl + "/groups");
+        return $http({
+            method: "GET",
+            url: baseUrl + "/groups",
+            params: {"user_id": SoundcloudSessionManager.getUserId()}
+        });
     };
 
     this.getTracks = function (group_id) {
@@ -280,64 +283,78 @@ function GroupsBackend($http) {
     this.getMembers = function (group_id) {
         return $http.get(baseUrl + "/groups/" + group_id + "/members").then(
             function (resp) {
-                return resp.data.members.map(member => member.sc);
-            })
-        };
-
-        this.addTrack = function (group_id, track_id, user_id, comment) {
-            return $http({
-                method: "POST",
-                url: baseUrl + "/groups/" + group_id + "/tracks",
-                data: {
-                    track_id: track_id,
-                    user_id: user_id,
-                    comment: comment
-                }
+                return resp.data.members.map(function (member) {
+                    return member.sc;
+                });
             });
-        };
+    };
 
-        this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
-            return $http({
-                method: "POST",
-                url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id + "/comments",
-                data: {
-                    user_id: user_id,
-                    text: comment
-                }
-            });
-        };
+    this.addTrack = function (group_id, track_id, user_id, comment) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/groups/" + group_id + "/tracks",
+            data: {
+                track_id: track_id,
+                user_id: user_id,
+                comment: comment
+            }
+        });
+    };
 
-        this.newGroup = function (name, description, user_id) {
-            return $http({
-                method: "POST",
-                url: baseUrl + "/groups",
-                data: {
-                    name: name,
-                    description: description,
-                    user_id: user_id
-                }
-            });
-        };
+    this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id + "/comments",
+            data: {
+                user_id: user_id,
+                text: comment
+            }
+        });
+    };
 
-        this.invitationCheck = function (code) {
-            return $http.get(baseUrl + "/invitation?code=" + code);
-        };
+    this.newGroup = function (name, description, user_id) {
+        return $http({
+            method: "POST",
+            url: baseUrl + "/groups",
+            data: {
+                name: name,
+                description: description,
+                user_id: user_id
+            }
+        });
+    };
 
-        this.addMemberByCode = function (user_id, code) {
-            return $http({
-                method: "POST",
-                url: baseUrl + "/invitation/" + code,
-                data: {
-                    user_id: user_id
-                }
-            });
-        };
-    }
+    this.invitationCheck = function (code) {
+
+        return $http.get(baseUrl + "/invitations", {
+            params: {
+                code: code,
+                user_id: SoundcloudSessionManager.getUserId()
+            }
+        });
+    };
+
+    this.inviteToGroup = function (group_id) {
+        var code = "welcome" + group_id;
+        return $http({
+            method: "POST",
+            url: baseUrl + "/invitations",
+            data: {
+                code: code,
+                group_id: group_id,
+                message: "",
+                added_by_name: ""
+            }
+        }).then(function () {
+            return code;
+        });
+    };
+}
 
 
-    angular
-        .module("groups")
-        .service("GroupsBackend", GroupsBackend);
+angular
+    .module("groups")
+    .service("GroupsBackend", GroupsBackend);
 function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCredentials, SoundcloudSessionManager) {
 
     "use strict";
@@ -516,16 +533,15 @@ function SoundcloudLogin($q, $log, SoundcloudAPIBase, SoundcloudUtil, Soundcloud
         params = angular.extend({}, SoundcloudConnectParamBase);
         params.client_id = SoundcloudCredentials.getClientId();
         params.redirect_uri = SoundcloudRedirectUri;
+        params.state = "code";
 
         options = angular.extend({}, SoundcloudPopupDefaults);
         options.left = window.screenX + (window.outerWidth - options.height) / 2;
         options.right = window.screenY + (window.outerHeight - options.width) / 2;
 
-        $log.debug("Creating window with params %o and options %o", params, options);
-
         url = SoundcloudAPIBase + "/connect?" + SoundcloudUtil.toParams(params);
         window.open(url, "SoundcloudPopup", SoundcloudUtil.toOptions(options));
-
+         
         connectPromise = $q.defer();
         window._SoundcloudCallback = connectPromise.resolve;
         connectPromise.promise
@@ -579,6 +595,7 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
 
     "use strict";
     this.init = function init(token) {
+         
         $http.get(SoundcloudAPIBase + "/me", {
             params: {
                 oauth_token: token
@@ -602,6 +619,14 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
         $log.error("disconnected");
         localStorageService.set("ouath_token", null);
     };
+    
+    this.setInvitationCode = function(code) {
+        localStorageService.set("invitationcode", code);
+    };
+    
+    this.getInvitationCode = function() {
+        return localStorageService.get("invitationcode");
+    }
 
     
 
@@ -849,9 +874,9 @@ angular
                     return void 0;
                 }
                 if (count > Math.pow(10, 6)) {
-                        return counts.substring(0, counts.length-6) + "." + counts.substring(counts.length-5)[0] +  "M"
+                        return counts.substring(0, counts.length-6) + "." + counts.substring(counts.length-5)[0] +  "M";
                 } if (count > Math.pow(10, 3)) {
-                    return counts.substring(0, counts.length-3)  +  "k"
+                    return counts.substring(0, counts.length-3)  +  "k";
                 }
                 return count;
             };
@@ -873,11 +898,11 @@ angular
     ]);
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "localStorageService", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
-        function ($rootScope, $scope, $state, $stateParams, $log, localStorageService, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
+    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "SoundcloudSessionManager", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
+        function ($rootScope, $scope, $state, $stateParams, $log, SoundcloudSessionManager, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
 
             "use strict";
-        
+
             $scope.tabs = _.filter(Tabs, function (ta) {
                 return ta.content !== "modules/core/empty.template.html";
             });
@@ -900,21 +925,70 @@ angular
                 }
             });
 
-            
+
             $scope.addMeToGroup = function () {
-                
-                GroupsBackend.addMemberByCode($scope.me.id, localStorageService.get("invitationcode"));
+
+                GroupsBackend.invitationCheck(SoundcloudSessionManager.getInvitationCode())
+                    .then(
+                        function (resp) {
+                        }
+                    );
             };
 
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
+                 
+                if (SoundcloudSessionManager.getInvitationCode()) {
+                     
+                    $scope.addMeToGroup();
+
+                }
+
             });
 
+
+
+
+
         }]);
+
+
+
+function NewGroupDialogController($scope, $mdDialog, GroupsBackend, SoundcloudSessionManager) {
+    "use strict";
+    $scope.newgroup = {};
+
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function () {
+        GroupsBackend.newGroup($scope.newgroup.name, $scope.newgroup.description, SoundcloudSessionManager.getUserId())
+            .then($mdDialog.hide());
+    };
+}
+
+
+function AddMembersDialogController($scope, $mdDialog, GroupsBackend, SoundcloudRedirectUri, group_id) {
+    "use strict";
+    $scope.url = "";
+    GroupsBackend.inviteToGroup(group_id).then(function (code) {
+        $scope.url = SoundcloudRedirectUri + "#!/login?code=" + code;
+    });
+
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+}
 angular
     .module("groups")
     .controller("GroupsController", ["$scope", "$log", "$mdDialog", "$mdMedia", "GroupsBackend", "SoundcloudAPI",
-        function ($scope, $log, $mdDialog, $mdMedia, GroupsBackend, SoundcloudAPI) {
+        function ($scope, $log, $mdDialog, $mdMedia, GroupsBackend) {
 
             "use strict";
             $scope.groups = [];
@@ -923,12 +997,24 @@ angular
                 var useFullScreen = ($mdMedia("sm") || $mdMedia("xs"));
                 $mdDialog.show({
                     controller: NewGroupDialogController,
-                    templateUrl: "modules/groups/newGroup.dialog.html",
+                    templateUrl: "modules/groups/newGroup-dialog.html",
                     parent: angular.element(document.body),
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 });
             };
+
+            $scope.inviteToGroup = function (group_id) {
+                $mdDialog.show({
+                    controller: AddMembersDialogController,
+                    locals: {
+                        group_id: group_id
+                    },
+                    templateUrl: "modules/groups/addMembers-dialog.html",
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true
+                });
+            }
 
 
             $scope.refresh = function () {
@@ -940,38 +1026,21 @@ angular
             $scope.refresh();
 
             $scope.showTracks = function (group) {
-                group.doShowTracks = !group.doShowTracks;
+                group.moreInfos = !group.moreInfos;
                 if (group.sctracks) {
                     return true; //already loaded
                 }
                 GroupsBackend.getTracks(group.id).then(function (data) {
                     group.sctracks = data;
                 });
-                
-                GroupsBackend.getMembers(group.id).then(function (data) {
-                    group.members = data;
-                    console.log(data);
-                })
+
+                GroupsBackend.getMembers(group.id)
+                    .then(function (data) {
+                        group.members = data;
+                    });
             };
 
         }]);
-
-
-
-function NewGroupDialogController($scope, $mdDialog, GroupsBackend) {
-    "use strict";
-    $scope.newgroup = {};
-
-    $scope.hide = function () {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    };
-    $scope.answer = function () {
-        GroupsBackend.newGroup($scope.newgroup.name, $scope.newgroup.description, 0).then($mdDialog.hide());
-    };
-}
 
 function FavoritesCtrl($scope, SoundcloudAPI) {
     "use strict";
@@ -987,16 +1056,18 @@ angular
     .module("core")
     .controller("FavoritesCtrl", FavoritesCtrl);
 
-function LoginCtrl($scope, $state, localStorageService, SoundcloudLogin, GroupsBackend) {
+function LoginCtrl($scope, $state, SoundcloudSessionManager, SoundcloudLogin, GroupsBackend) {
 
     "use strict";
-    
+
     $scope.mainOptions = {
-      sectionsColor: ["#100055"],
-			anchors: ["WelcomePage"]
+        sectionsColor: ["#100055"],
+        anchors: ["WelcomePage"]
     };
-    localStorageService.set("invitationcode", $state.params.code);
-    
+    if ($state.params.code) {
+        SoundcloudSessionManager.setInvitationCode($state.params.code);
+    }
+
 
 
     $scope.loginWithSoundcloud = function () {
