@@ -22,3 +22,15 @@ This projects builds on AngularJS Cordova generator:
 
 https://nodei.co/npm/generator-angularjs-cordova/
 
+
+### Design Consistency
+
+- Every button is represented by an icon. Every button has a mouse-over with info
+- A Track can be represented as a card or list item (row)
+- Every Track view can be toggled
+- Current Track is always shown on top
+- Every group of functionality is accessible via tabs
+- Every List Item (Group, Playlist) has the same style: Icon + Title + Additional info (one line) + show-more-button
+- Show more button is always chevron (up for hide, down for show)
+
+
