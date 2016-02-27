@@ -73,7 +73,7 @@ angular
                     clickOutsideToClose: true
                 });
                 //GroupsBackend.inviteToGroup(group_id);
-            }
+            };
 
 
             $scope.refresh = function () {
