@@ -22,7 +22,8 @@
     "angular-chart.js": "^0.8.8",
     "angular-resource": "^1.5.0",
     "angular-fullpage.js": "^0.2.1",
-    "clipboard": "^1.5.8"
+    "clipboard": "^1.5.8",
+    "angular-drag-and-drop-lists": "^1.4.0"
   },
   "resolutions": {
     "angular": "1.5.0"

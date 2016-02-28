@@ -4,7 +4,7 @@
         <p>Click the <i class="fa fa-hourglass-start"></i> to add tracks to your On-The-Go-Playlist.</p>
     </md-whiteframe>
     <div>
-        <md-toolbar ng-if="false" class="md-hue-3" layout="row" layout-align="space-between center">
+        <md-toolbar ng-show="nextTracks.length" class="md-hue-3" layout="row" layout-align="space-between center">
             <md-button class="md-accent" aria-label="convert to playlist" ng-show="!editMode && nextTracks.length" ng-click="editMode=true">Convert to playlist</md-button>
         </md-toolbar>
 
@@ -23,8 +23,12 @@
             <md-button aria-label="confirm" ng-show="editMode" ng-click="saveAsPlaylist()"><i class="fa fa-check"></i></md-button>
             <md-button aria-label="cancel" ng-show="editMode" ng-click="editMode=false"><i class="fa fa-times"></i></md-button>
         </div>
-
-        <track layout="row" layout-align="start stretch" flex-xs="100" flex-md="50" flex-lg="33" flex-sm="50" layout-wrap flex="33" track="track" ng-repeat="track in nextTracks"></track>
+        <div dnd-list="nextTracks" layout="row" layout-xs="column" layout-wrap>
+            <track dnd-draggable="track"
+        dnd-moved="nextTracks.splice($index, 1)"
+        dnd-effect-allowed="move"
+        layout="row" layout-align="start stretch" flex-xs="100" flex-md="50" flex-lg="33" flex-sm="50" layout-wrap flex="33" track="track" ng-repeat="track in nextTracks"></track>
+        </div>
 
 
     </div>

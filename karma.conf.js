@@ -50,6 +50,7 @@ module.exports = function(config) {
             "app/lib/angular-fullpage.js/angular-fullpage.js",
             "app/lib/angular-fullpage.js/angular-fullpage.min.js",
             "app/lib/clipboard/dist/clipboard.js",
+            "app/lib/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js",
             <!-- endinjector -->
 
             'app/js/config.js',

@@ -16,7 +16,8 @@ var ApplicationConfiguration = (function () {
             "ngMaterial",
             "LocalStorageModule",
             "chart.js",
-            "fullPage.js"
+            "fullPage.js",
+            "dndLists"
         ],
 
         // Add a new vertical module
