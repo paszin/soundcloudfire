@@ -66,7 +66,7 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
     
     this.getInvitationCode = function() {
         return localStorageService.get("invitationcode");
-    }
+    };
 
     
 

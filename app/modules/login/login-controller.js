@@ -8,7 +8,7 @@
  * @requires ng.$scope
  */
 
-function LoginCtrl($scope, $state, SoundcloudSessionManager, SoundcloudLogin, GroupsBackend) {
+function LoginCtrl($scope, $state, SoundcloudSessionManager, SoundcloudLogin) {
 
     "use strict";
 

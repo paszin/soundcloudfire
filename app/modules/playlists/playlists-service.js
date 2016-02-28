@@ -4,7 +4,7 @@
 /**
  * @ngdoc service
  */
-function PlaylistService($q, SoundcloudAPI, SoundcloudSessionManager) {
+function PlaylistService($q, SoundcloudAPI) {
 
     "use strict";
     var self = {

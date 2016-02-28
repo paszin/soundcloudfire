@@ -1,12 +1,15 @@
 <div flex class="decentbackground" layout="column">
+    <md-whiteframe class="md-whiteframe-1dp" ng-if="!playerService.audio.stream" layout="row" layout-align="center center">
+        <img layout-margin ng-src="{{me.avatar_url | artworksize: 'small'}}" />
+        <div layout="row" layout-align="center space-around">
+            <div>
+                <strong>Hi {{me.first_name}}!</strong>
+            </div>
+        </div>
+    </md-whiteframe>
 
-    <div ng-if="playerService.audio.stream === null" layout="row" layout-align="center center" layout-margin>
-        <img id="past" alt="-" ng-src="{{me.avatar_url}}" />
-        <h1>Hi {{me.first_name}}!</h1>
-    </div> 
-    
     <audioplayer ng-if="playerService.audio.stream" layout="column" layout-align="center stretch" track="playerService.audio.info"></audioplayer>
-        
+
     <md-tabs flex class="md-primary" md-selected="selectedIndex">
         <md-tab ng-repeat="tab in tabs">
             <md-tab-label>

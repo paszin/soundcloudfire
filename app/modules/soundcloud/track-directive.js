@@ -36,7 +36,7 @@ angular
                     
                     $scope.findMember = function(id) {
                         return _.find($scope.group.members, {id: id});
-                    }
+                    };
                     
                     $scope.addComment = function () {
                         $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});

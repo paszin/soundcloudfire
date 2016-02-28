@@ -20,7 +20,7 @@ function DialogController($scope, $mdDialog, GroupsBackend, SoundcloudSessionMan
             if (group.selected) {
                 GroupsBackend.addTrack(group.id, $scope.track_id, SoundcloudSessionManager.getUserId(), $scope.comment).then($mdDialog.hide());
             }
-        })
+        });
 
 
     };

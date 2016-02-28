@@ -1,4 +1,4 @@
-/*global angular, moment*/
+/*global angular*/
 /*jslint plusplus: true*/
 /**
  * @ngdoc object

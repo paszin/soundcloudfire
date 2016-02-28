@@ -12,9 +12,9 @@
                     <h4>{{ group.description }}</h4>
                     <p>{{ group.tracks.length }} Tracks</p>
                     <div class="md-secondary">
-                        <md-button ng-show="group.moreInfos" ng-click="inviteToGroup(group.id)"><i class="fa fa-user-plus"></i></md-button>
-                        <md-button ng-show="group.moreInfos" ng-click="showTracks(group)"><i class="fa fa-chevron-down"></i></md-button>
-                        <md-button ng-show="!group.moreInfos" ng-click="showTracks(group)"><i class="fa fa-chevron-up"></i></md-button>
+                        <md-button ng-show="group.moreInfos" ng-click="inviteToGroup(group.id)" aria-label="invite member"><i class="fa fa-user-plus"></i></md-button>
+                        <md-button ng-show="group.moreInfos" ng-click="showTracks(group)" aria-label="show more"><i class="fa fa-chevron-down"></i></md-button>
+                        <md-button ng-show="!group.moreInfos" ng-click="showTracks(group)" aria-label="show less"><i class="fa fa-chevron-up"></i></md-button>
                     </div>
                 </div>
             </md-list-item>
