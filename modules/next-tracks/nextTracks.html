@@ -4,9 +4,13 @@
         <p>Click the <i class="fa fa-hourglass-start"></i> to add tracks to your On-The-Go-Playlist.</p>
     </md-whiteframe>
     <div>
-        <md-button class="md-accent" aria-label="convert to playlist" ng-show="!editMode && nextTracks.length" ng-click="editMode=true">Convert to playlist</md-button>
+        <md-toolbar ng-show="nextTracks.length" class="md-hue-3" layout="row" layout-align="space-between center">
+            <md-button class="md-accent" aria-label="convert to playlist" ng-show="!editMode && nextTracks.length" ng-click="editMode=true">Convert to playlist</md-button>
+        </md-toolbar>
+
         <p ng-show="editMode" layout-margin>Save as playlist</p>
         <div ng-show="editMode" layout="row" layout-margin>
+            <!--refactor this to dialog -->
             <div layout="column">
                 <md-input-container ng-show="editMode">
                     <label>Name</label>
@@ -19,15 +23,14 @@
             <md-button aria-label="confirm" ng-show="editMode" ng-click="saveAsPlaylist()"><i class="fa fa-check"></i></md-button>
             <md-button aria-label="cancel" ng-show="editMode" ng-click="editMode=false"><i class="fa fa-times"></i></md-button>
         </div>
-        <md-list>
+        <div dnd-list="nextTracks" layout="row" layout-xs="column" layout-wrap>
+            <track dnd-draggable="track"
+        dnd-moved="nextTracks.splice($index, 1)"
+        dnd-effect-allowed="move"
+        layout="row" layout-align="start stretch" flex-xs="100" flex-md="50" flex-lg="33" flex-sm="50" layout-wrap flex="33" track="track" ng-repeat="track in nextTracks"></track>
+        </div>
 
-            <md-list-item ng-repeat="track in nextTracks" ng-click="$parent.playPauseSound(track)">
-                <img alt="-" ng-src="{{track.artwork_url}}" class="md-avatar" />
-                <p>{{ track.title }}</p>
-                <i ng-show="track.isPlaying" class="fa fa-play"></i>
-            </md-list-item>
 
-        </md-list>
     </div>
 
 </div>

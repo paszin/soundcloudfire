@@ -11,7 +11,8 @@ var ApplicationConfiguration = (function () {
             "ngMaterial",
             "LocalStorageModule",
             "chart.js",
-            "fullPage.js"
+            "fullPage.js",
+            "dndLists"
         ],
         registerModule = function (moduleName) {
             angular
@@ -218,7 +219,7 @@ function DialogController($scope, $mdDialog, GroupsBackend, SoundcloudSessionMan
             if (group.selected) {
                 GroupsBackend.addTrack(group.id, $scope.track_id, SoundcloudSessionManager.getUserId(), $scope.comment).then($mdDialog.hide());
             }
-        })
+        });
 
 
     };
@@ -355,6 +356,48 @@ function GroupsBackend($http, SoundcloudSessionManager) {
 angular
     .module("groups")
     .service("GroupsBackend", GroupsBackend);
+function PlaylistService($q, SoundcloudAPI) {
+
+    "use strict";
+    var self = {
+        playlists: [],
+        isLoaded: false
+    };
+
+
+    this.mapPlaylist = function (response) {
+
+        var i, j,
+            playlists = [],
+            data = response.data;
+        for (i = 0; i < data.length; i++) {
+            playlists.push(data[i]);
+            playlists[i].track_count_readable = (data[i].track_count === 1) ? "1 Track" : data[i].track_count + "Tracks";
+            playlists[i].duration_readable = moment.duration(data[i].duration, "milliseconds").humanize();
+            playlists[i].index = i;
+            playlists[i].showTracks = false;
+            for (j = 0; j < data[i].length; j++) {
+                playlists[i].tracks[j].isPlaying = false;
+            }
+        }
+        self.playlists = playlists;
+        self.isLoaded = true;
+        return playlists;
+    };
+
+    this.getPlaylists = function (reload) {
+        if (reload || !self.isLoaded) {
+            return SoundcloudAPI.getPlaylists().then(this.mapPlaylist);
+        }
+        return $q(function (resolve, reject) {
+            return resolve(self.playlists);
+        });
+    };
+}
+
+
+
+angular.module("playlists").service("PlaylistService", PlaylistService);
 function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCredentials, SoundcloudSessionManager) {
 
     "use strict";
@@ -626,7 +669,7 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
     
     this.getInvitationCode = function() {
         return localStorageService.get("invitationcode");
-    }
+    };
 
     
 
@@ -753,7 +796,7 @@ angular
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
                 controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks) {
-                    $scope.full = {info: true};
+                    $scope.full = {info: false};
                     $scope.playerService = playerService;
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
@@ -797,7 +840,7 @@ angular
                     
                     $scope.findMember = function(id) {
                         return _.find($scope.group.members, {id: id});
-                    }
+                    };
                     
                     $scope.addComment = function () {
                         $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
@@ -910,7 +953,7 @@ angular
 
             $scope.selectedIndex = 2;
             $scope.$watch("selectedIndex", function (current) {
-                $scope.$broadcast($scope.tabs[current].title)
+                $scope.$broadcast($scope.tabs[current].title);
             });
 
             $scope.playerService = playerService;
@@ -925,7 +968,6 @@ angular
                 }
             });
 
-
             $scope.addMeToGroup = function () {
 
                 GroupsBackend.invitationCheck(SoundcloudSessionManager.getInvitationCode())
@@ -937,9 +979,9 @@ angular
 
             SoundcloudAPI.getMe().then(function (response) {
                 $scope.me = response.data;
-                 
+
                 if (SoundcloudSessionManager.getInvitationCode()) {
-                     
+
                     $scope.addMeToGroup();
 
                 }
@@ -1014,7 +1056,7 @@ angular
                     parent: angular.element(document.body),
                     clickOutsideToClose: true
                 });
-            }
+            };
 
 
             $scope.refresh = function () {
@@ -1056,7 +1098,7 @@ angular
     .module("core")
     .controller("FavoritesCtrl", FavoritesCtrl);
 
-function LoginCtrl($scope, $state, SoundcloudSessionManager, SoundcloudLogin, GroupsBackend) {
+function LoginCtrl($scope, $state, SoundcloudSessionManager, SoundcloudLogin) {
 
     "use strict";
 
@@ -1128,43 +1170,28 @@ angular
     .module("core")
     .controller("NextTracksCtrl", NextTracksCtrl);
 
-function PlaylistsCtrl($scope, SoundcloudAPI) {
+function PlaylistsController($scope, $log, PlaylistService) {
     "use strict";
     $scope.playlists = [];
-    $scope.savePlaylists = function (response) {
-
-        var i, j,
-            data = response.data;
-        for (i = 0; i < data.length; i++) {
-            $scope.playlists[i] = data[i];
-            $scope.playlists[i].track_count_readable = (data[i].track_count === 1) ? "1 Track" : data[i].track_count + "Tracks";
-            $scope.playlists[i].duration_readable = moment.duration(data[i].duration, "milliseconds").humanize();
-            $scope.playlists[i].index = i;
-            $scope.playlists[i].showTracks = false;
-            for (j = 0; j < data[i].length; j++) {
-                $scope.playlists[i].tracks[j].isPlaying = false;
-            }
-        }
-    };
-
 
     $scope.getPlaylist = function (index) {
-
         $scope.playlists[index].showTracks = !$scope.playlists[index].showTracks;
     };
 
-    $scope.init = function () {
-        console.log("load playlists");
-        var playlists = SoundcloudAPI.getPlaylists();
-        playlists.then($scope.savePlaylists);
-    };
+    function loadPlaylists() {
+        $log.info("load playlists");
+        PlaylistService.getPlaylists().then(function (data) {
+            $scope.playlists = data;
+        });
+    }
     
-    $scope.$on("Playlists", $scope.init);
+    $scope.$on("Playlists", loadPlaylists);
+
 }
 
 angular
     .module("core")
-    .controller("PlaylistsCtrl", PlaylistsCtrl);
+    .controller("PlaylistsController", PlaylistsController);
 
 function SearchCtrl($scope, SoundcloudAPI) {
     "use strict";
