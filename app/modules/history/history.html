@@ -1,0 +1,7 @@
+<div ng-controller="HistoryController">
+    <md-toolbar class="md-hue-3" layout="row" layout-align="space-between center">
+        <md-button ng-click=""><i class="fa fa-refresh"></i></md-button>
+    </md-toolbar>
+
+    <div ng-repeat="track in tracks">{{track.sc.title}}</div>
+</div>
