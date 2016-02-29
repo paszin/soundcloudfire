@@ -4,12 +4,12 @@
 
 /**
  * @ngdoc service
- * @name Soundcloud.Services.SoundcloudNextTracks
- * @description SoundcloudNextTracks Service
+ * @name Soundcloud.Services.NextTracks
+ * @description NextTracks Service
  */
 
 
-function SoundcloudNextTracks() {
+function NextTracks() {
 
     "use strict";
     this.nextTracks = [];
@@ -34,13 +34,12 @@ function SoundcloudNextTracks() {
         if (force || !this.loop) {
             _.remove(this.nextTracks, function (o) {
                 return o.id === track_id;
-            })
-        } else {
-            debugger;
-            var element = _.find(this.nextTracks, {
-                id: track_id
             });
-            var fromIndex = this.nextTracks.indexOf(element);
+        } else {
+            var element = _.find(this.nextTracks, {
+                    id: track_id
+                }),
+                fromIndex = this.nextTracks.indexOf(element);
             this.nextTracks.splice(fromIndex, 1);
             this.nextTracks.splice(this.nextTracks.length, 0, element);
         }
@@ -84,5 +83,5 @@ function SoundcloudNextTracks() {
 }
 
 angular
-    .module("soundcloud")
-    .service("SoundcloudNextTracks", SoundcloudNextTracks);
+    .module("next-tracks")
+    .service("NextTracks", NextTracks);

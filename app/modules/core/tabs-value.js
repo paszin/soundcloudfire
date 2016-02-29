@@ -31,12 +31,12 @@ angular
         },
         {
             title: "History",
-            content: "modules/core/empty.template.html",
+            content: "modules/history/history.html",
             icon: "fa-clock-o"
         },
         {
             title: "Next Tracks",
-            content: "modules/next-tracks/nextTracks.html",
+            content: "modules/next-tracks/next-tracks.html",
             icon: "fa-hourglass-start" //"fa-headphones"
         },
         {

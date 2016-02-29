@@ -11,8 +11,8 @@
  */
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "SoundcloudSessionManager", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
-        function ($rootScope, $scope, $state, $stateParams, $log, SoundcloudSessionManager, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
+    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "SoundcloudSessionManager", "SoundcloudAPI", "GroupsBackend", "NextTracks", "Tabs", "playerService", "HistoryBackend",
+        function ($rootScope, $scope, $state, $stateParams, $log, SoundcloudSessionManager, SoundcloudAPI, GroupsBackend, NextTracks, Tabs, playerService, HistoryBackend) {
 
             "use strict";
 
@@ -30,8 +30,9 @@ angular
 
             $scope.$watch("playerService.audio.stream.progress", function (current) {
                 if (current === 1) {
-                    SoundcloudNextTracks.deleteTrack(playerService.audio.info.id);
-                    var nextTrack = SoundcloudNextTracks.getNextTrack();
+                    HistoryBackend.addTrack(playerService.audio.info);
+                    NextTracks.deleteTrack(playerService.audio.info.id);
+                    var nextTrack = NextTracks.getNextTrack();
                     if (nextTrack) {
                         playerService.playPauseSound(nextTrack);
                     }

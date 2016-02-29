@@ -84,7 +84,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
                 "oauth_token": SoundcloudSessionManager.getToken(),
                 "playlist[title]": title,
                 "playlist[sharing]": sharing,
-                "playlist[_resource_id]": undefined,
+                "playlist[_resource_id]": null,
                 "playlist[_resource_type]": "playlist"
             }) + "&" + idsSerie
         });
@@ -105,7 +105,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
                 "Content-Type": "application/json"
             },
             data: {
-                "oauth_token": "1-138878-12338076-4b43aa07814c42", //SoundcloudSessionManager.getToken(),
+                "oauth_token": SoundcloudSessionManager.getToken(),
                 "playlist": {
                     "tracks": ids
                 }

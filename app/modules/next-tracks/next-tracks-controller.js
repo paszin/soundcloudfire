@@ -8,7 +8,7 @@
  * @description NextTraclsController
  * @requires ng.$scope
  */
-function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, SoundcloudAPI) {
+function NextTracksCtrl($scope, $log, $mdToast, NextTracks, SoundcloudAPI) {
 
     "use strict";
 
@@ -19,10 +19,10 @@ function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, Soundcloud
     };
     $scope.loop = false;
 
-    $scope.nextTracks = SoundcloudNextTracks.nextTracks;
+    $scope.nextTracks = NextTracks.nextTracks;
 
     $scope.saveAsPlaylist = function () {
-        SoundcloudAPI.postPlaylist($scope.playlist.name, $scope.playlist.isPrivate, SoundcloudNextTracks.getNextTracksIds())
+        SoundcloudAPI.postPlaylist($scope.playlist.name, $scope.playlist.isPrivate, NextTracks.getNextTracksIds())
             .then(
                 function (resp) {
                     $scope.editMode = false;
@@ -46,11 +46,11 @@ function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, Soundcloud
     };
 
     $scope.refresh = function () {
-        $scope.playlist = SoundcloudNextTracks.getNextTracks();
+        $scope.playlist = NextTracks.getNextTracks();
     };
     
     $scope.$watch("loop", function(current) {
-        SoundcloudNextTracks.setLoopMode(current);
+        NextTracks.setLoopMode(current);
     });
 
 }
