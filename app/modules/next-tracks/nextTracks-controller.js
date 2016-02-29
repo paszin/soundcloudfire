@@ -17,7 +17,7 @@ function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, Soundcloud
         name: "Name",
         isPrivate: true
     };
-
+    $scope.loop = false;
 
     $scope.nextTracks = SoundcloudNextTracks.nextTracks;
 
@@ -48,6 +48,10 @@ function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, Soundcloud
     $scope.refresh = function () {
         $scope.playlist = SoundcloudNextTracks.getNextTracks();
     };
+    
+    $scope.$watch("loop", function(current) {
+        SoundcloudNextTracks.setLoopMode(current);
+    });
 
 }
 

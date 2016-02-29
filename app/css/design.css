@@ -94,3 +94,16 @@ md-list-item {
     width: 300px;
     height: 300px;
 }
+
+.checkbox-button {
+  padding: 0 6px 0 6px;
+  margin: 2px 8px 6px 8px;
+  min-width: 10px;
+  border-radius: 3px;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration:none;
+  border: none;
+  outline: none;
+}

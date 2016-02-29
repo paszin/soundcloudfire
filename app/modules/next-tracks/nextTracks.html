@@ -5,7 +5,8 @@
     </md-whiteframe>
     <div>
         <md-toolbar ng-show="nextTracks.length" class="md-hue-3" layout="row" layout-align="space-between center">
-            <md-button class="md-accent" aria-label="convert to playlist" ng-show="!editMode && nextTracks.length" ng-click="editMode=true">Convert to playlist</md-button>
+            <md-button class="md-accent" aria-label="convert to playlist" ng-show="!editMode && nextTracks.length" ng-click="editMode=true"><i class="fa fa-paper-plane"></i> save as playlist</md-button>
+            <md-switch layout-margin ng-model="loop"><p class="checkbox-button">loop</p></md-switch>
         </md-toolbar>
 
         <p ng-show="editMode" layout-margin>Save as playlist</p>

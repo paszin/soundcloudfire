@@ -14,6 +14,7 @@ function SoundcloudNextTracks() {
     "use strict";
     this.nextTracks = [];
     this.currentTrackId = null;
+    this.loop = false;
 
     /**
      * add to playlist.
@@ -29,21 +30,34 @@ function SoundcloudNextTracks() {
      * delete from playlist.
      * @param track_id id of track
      */
-    this.deleteTrack = function deleteTrack(track_id) {
-        _.remove(this.nextTracks, function (o) {
-            return o.id === track_id;
-        });
+    this.deleteTrack = function deleteTrack(track_id, force) {
+        if (force || !this.loop) {
+            _.remove(this.nextTracks, function (o) {
+                return o.id === track_id;
+            })
+        } else {
+            debugger;
+            var element = _.find(this.nextTracks, {
+                id: track_id
+            });
+            var fromIndex = this.nextTracks.indexOf(element);
+            this.nextTracks.splice(fromIndex, 1);
+            this.nextTracks.splice(this.nextTracks.length, 0, element);
+        }
     };
+
 
     /**
      * return next track in playlist.
      * @return {object} track
      */
     this.getNextTrack = function getNextTrack() {
-        var currentIndex = _.findIndex(this.nextTracks, ["id", this.currentTrackId]),
-            nextTrack = this.nextTracks[currentIndex + 1];
-        this.currentTrackId = nextTrack.id;
-        return nextTrack;
+        if (this.nextTracks.length) {
+            var nextTrack = this.nextTracks[0];
+            this.currentTrackId = nextTrack.id;
+            return nextTrack;
+        }
+        return null;
     };
 
     /**
@@ -62,6 +76,10 @@ function SoundcloudNextTracks() {
         return _.map(this.nextTracks, function (obj) {
             return obj.id;
         });
+    };
+
+    this.setLoopMode = function setLoopMode(on) {
+        this.loop = on;
     };
 }
 
