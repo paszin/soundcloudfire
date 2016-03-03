@@ -1,9 +1,11 @@
 
 # Soundcloudfire
-This webapp is tackles all my personal pain points at soundcloud. 
+This webapp extens the functionality of soundcloud.
 Features:
 - On the Go Playlist
 - share tracks in groups
+- collect played  tracks history 
+- analyze track (get some interessing metrics) 
 
 Progress: https://waffle.io/paszin/soundcloudfire
 
