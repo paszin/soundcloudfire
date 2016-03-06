@@ -25,6 +25,16 @@ This projects builds on AngularJS Cordova generator:
 https://nodei.co/npm/generator-angularjs-cordova/
 
 
+### Technology Stack
+- Soundcloud API
+- Echonest API
+- Amazon AWS (Backend)
+- MongoDB (other repository)
+- Hapi.js (other repository)
+- Angular.js
+- Angular Material Design
+- Grunt
+
 ### Design Consistency
 
 - Every button is represented by an icon. Every button has a mouse-over with info
