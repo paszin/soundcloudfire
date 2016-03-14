@@ -11,11 +11,18 @@
 function HistoryController($scope, HistoryBackend) {
     "use strict";
 
-    var history = HistoryBackend.getTracks();
+    var history;
 
-    history.then(function (response) {
-        $scope.tracks = response.data.tracks;
-    });
+    $scope.refresh = function refresh() {
+        history = HistoryBackend.getTracks();
+
+        history.then(function (response) {
+            $scope.tracks = response.data.tracks;
+        });
+    };
+    
+    $scope.$on("History", $scope.refresh);
+
 }
 
 angular
