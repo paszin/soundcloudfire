@@ -506,6 +506,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
         newPlaylistUrl = baseUrl + "/playlists",
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
         trackSearchUrl = baseUrl + "/tracks",
+        resolveUrl = baseUrl + "/resolve",
         followingsUrl = baseUrl + "/users/#{user_id}/followings";
     this.getMe = function () {
         return $http.get(meUrl, {
@@ -551,7 +552,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
 
 
     this.putPlaylist = function (playlist_id, track_ids) {
-       
+
         var ids = _.map(track_ids, function (id) {
             return {
                 id: id
@@ -616,6 +617,17 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
             params: {
                 oauth_token: SoundcloudSessionManager.getToken(),
                 q: searchterm
+            }
+        });
+    };
+
+    this.getTrackFromUrl = function (url) {
+        return $http({
+            method: "GET",
+            url: resolveUrl,
+            params: {
+                url: url,
+                client_id: SoundcloudCredentials.getClientId()
             }
         });
     };
@@ -1055,6 +1067,7 @@ angular
 
 
         }]);
+
 ApplicationConfiguration
     .registerModule("dev");
 
@@ -1305,6 +1318,15 @@ function SearchCtrl($scope, SoundcloudAPI) {
     "use strict";
     $scope.search = {
         input: ""
+    };
+
+    $scope.searchUrl = function () {
+        SoundcloudAPI.getTrackFromUrl($scope.search.input).then(
+            function (response) {
+                if (response.data.kind === "track") {
+                    $scope.results = [response.data];
+                }
+            });
     };
 
     $scope.searchTrack = function () {
