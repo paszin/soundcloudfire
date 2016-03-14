@@ -1,3 +1,5 @@
+/*global ApplicationConfiguration, angular*/
+
 ApplicationConfiguration
     .registerModule("dev");
 
