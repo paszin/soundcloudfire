@@ -1,3 +1,4 @@
+
 var ApplicationConfiguration = (function () {
     "use strict";
     var applicationModuleName = "Soundcloudfire",
@@ -99,6 +100,10 @@ angular
                     url: "/home",
                     templateUrl: "modules/core/home.html",
                     controller: "HomeController"
+                })
+            .state("dev", {
+                    url: "/dev",
+                    templateUrl: "modules/devpage/devpage.html"
                 });
         }
         ]);
@@ -356,6 +361,98 @@ function GroupsBackend($http, SoundcloudSessionManager) {
 angular
     .module("groups")
     .service("GroupsBackend", GroupsBackend);
+function HistoryBackend($http, SoundcloudSessionManager) {
+
+    "use strict";
+
+    var baseUrl;
+    baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
+    this.getTracks = function () {
+        return $http({
+            method: "GET",
+            url: baseUrl + "/history",
+            params: {
+                "user_id": SoundcloudSessionManager.getUserId()
+            }
+        });
+    };
+
+
+    this.addTrack = function (track) {
+        var statistics = {
+            comment_count: track.comment_count,
+            playback_count: track.playback_count,
+            favoritings_count: track.favoritings_count,
+        };
+        return $http({
+            method: "POST",
+            url: baseUrl + "/history",
+            data: {
+                track_id: track.id,
+                user_id: SoundcloudSessionManager.getUserId(),
+                statistics: statistics
+            }
+        });
+    };
+
+}
+
+
+angular
+    .module("history")
+    .service("HistoryBackend", HistoryBackend);
+
+
+function NextTracks() {
+
+    "use strict";
+    this.nextTracks = [];
+    this.currentTrackId = null;
+    this.loop = false;
+    this.addTrack = function addTrack(track) {
+        if (_.findIndex(this.nextTracks, ["id", track.id]) < 0) {
+            this.nextTracks.push(track);
+        }
+    };
+    this.deleteTrack = function deleteTrack(track_id, force) {
+        if (force || !this.loop) {
+            _.remove(this.nextTracks, function (o) {
+                return o.id === track_id;
+            });
+        } else {
+            var element = _.find(this.nextTracks, {
+                    id: track_id
+                }),
+                fromIndex = this.nextTracks.indexOf(element);
+            this.nextTracks.splice(fromIndex, 1);
+            this.nextTracks.splice(this.nextTracks.length, 0, element);
+        }
+    };
+    this.getNextTrack = function getNextTrack() {
+        if (this.nextTracks.length) {
+            var nextTrack = this.nextTracks[0];
+            this.currentTrackId = nextTrack.id;
+            return nextTrack;
+        }
+        return null;
+    };
+    this.getNextTracks = function getNextTracks() {
+        return this.nextTracks;
+    };
+    this.getNextTracksIds = function getNextTracksIds() {
+        return _.map(this.nextTracks, function (obj) {
+            return obj.id;
+        });
+    };
+
+    this.setLoopMode = function setLoopMode(on) {
+        this.loop = on;
+    };
+}
+
+angular
+    .module("next-tracks")
+    .service("NextTracks", NextTracks);
 function PlaylistService($q, SoundcloudAPI) {
 
     "use strict";
@@ -446,7 +543,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
                 "oauth_token": SoundcloudSessionManager.getToken(),
                 "playlist[title]": title,
                 "playlist[sharing]": sharing,
-                "playlist[_resource_id]": undefined,
+                "playlist[_resource_id]": null,
                 "playlist[_resource_type]": "playlist"
             }) + "&" + idsSerie
         });
@@ -467,7 +564,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
                 "Content-Type": "application/json"
             },
             data: {
-                "oauth_token": "1-138878-12338076-4b43aa07814c42", //SoundcloudSessionManager.getToken(),
+                "oauth_token": SoundcloudSessionManager.getToken(),
                 "playlist": {
                     "tracks": ids
                 }
@@ -596,42 +693,6 @@ function SoundcloudLogin($q, $log, SoundcloudAPIBase, SoundcloudUtil, Soundcloud
 angular
     .module("soundcloud")
     .service("SoundcloudLogin", SoundcloudLogin);
-
-
-function SoundcloudNextTracks() {
-
-    "use strict";
-    this.nextTracks = [];
-    this.currentTrackId = null;
-    this.addTrack = function addTrack(track) {
-        if (_.findIndex(this.nextTracks, ["id", track.id]) < 0) {
-            this.nextTracks.push(track);
-        }
-    };
-    this.deleteTrack = function deleteTrack(track_id) {
-        _.remove(this.nextTracks, function (o) {
-            return o.id === track_id;
-        });
-    };
-    this.getNextTrack = function getNextTrack() {
-        var currentIndex = _.findIndex(this.nextTracks, ["id", this.currentTrackId]),
-            nextTrack = this.nextTracks[currentIndex + 1];
-        this.currentTrackId = nextTrack.id;
-        return nextTrack;
-    };
-    this.getNextTracks = function getNextTracks() {
-        return this.nextTracks;
-    };
-    this.getNextTracksIds = function getNextTracksIds() {
-        return _.map(this.nextTracks, function (obj) {
-            return obj.id;
-        });
-    };
-}
-
-angular
-    .module("soundcloud")
-    .service("SoundcloudNextTracks", SoundcloudNextTracks);
 
 
 function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAPIBase) {
@@ -766,12 +827,12 @@ angular
         },
         {
             title: "History",
-            content: "modules/core/empty.template.html",
+            content: "modules/history/history.html",
             icon: "fa-clock-o"
         },
         {
             title: "Next Tracks",
-            content: "modules/next-tracks/nextTracks.html",
+            content: "modules/next-tracks/next-tracks.html",
             icon: "fa-hourglass-start" //"fa-headphones"
         },
         {
@@ -795,7 +856,7 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, SoundcloudNextTracks) {
+                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, NextTracks) {
                     $scope.full = {info: false};
                     $scope.playerService = playerService;
                     $scope.play = function (track) {
@@ -824,29 +885,29 @@ angular
                     track: "=track",
                     group: "=group"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($scope, $element, $attrs, $transclude, playerService, SoundcloudSessionManager, SoundcloudNextTracks, GroupsBackend, GroupDialog) {
+                controller: function controller($scope, $element, $attrs, $transclude, playerService, SoundcloudSessionManager, NextTracks, GroupsBackend, GroupDialog) {
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
                     };
                     $scope.addToPlayNext = function (track) {
-                        SoundcloudNextTracks.addTrack(track);
+                        NextTracks.addTrack(track);
                     };
                     
                     $scope.track.showComments = false;
                    
-                    $scope.addToGroup = function (track) {
+                    $scope.addToGroup = function () {
                         GroupDialog.show($scope.track.id);
                     };
                     
-                    $scope.findMember = function(id) {
+                    $scope.findMember = function (id) {
                         return _.find($scope.group.members, {id: id});
                     };
                     
                     $scope.addComment = function () {
                         $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
-                        GroupsBackend.addCommentToTrack($scope.group.id, 
-                                                        $scope.track.id, 
-                                                        SoundcloudSessionManager.getUserId(), 
+                        GroupsBackend.addCommentToTrack($scope.group.id,
+                                                        $scope.track.id,
+                                                        SoundcloudSessionManager.getUserId(),
                                                         $scope.track.newcomment);
                         $scope.track.newcomment = "";
                     };
@@ -941,8 +1002,8 @@ angular
     ]);
 angular
     .module("core")
-    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "SoundcloudSessionManager", "SoundcloudAPI", "GroupsBackend", "SoundcloudNextTracks", "Tabs", "playerService",
-        function ($rootScope, $scope, $state, $stateParams, $log, SoundcloudSessionManager, SoundcloudAPI, GroupsBackend, SoundcloudNextTracks, Tabs, playerService) {
+    .controller("HomeController", ["$rootScope", "$scope", "$state", "$stateParams", "$log", "SoundcloudSessionManager", "SoundcloudAPI", "GroupsBackend", "NextTracks", "Tabs", "playerService", "HistoryBackend",
+        function ($rootScope, $scope, $state, $stateParams, $log, SoundcloudSessionManager, SoundcloudAPI, GroupsBackend, NextTracks, Tabs, playerService, HistoryBackend) {
 
             "use strict";
 
@@ -960,8 +1021,9 @@ angular
 
             $scope.$watch("playerService.audio.stream.progress", function (current) {
                 if (current === 1) {
-                    SoundcloudNextTracks.deleteTrack(playerService.audio.info.id);
-                    var nextTrack = SoundcloudNextTracks.getNextTrack();
+                    HistoryBackend.addTrack(playerService.audio.info);
+                    NextTracks.deleteTrack(playerService.audio.info.id);
+                    var nextTrack = NextTracks.getNextTrack();
                     if (nextTrack) {
                         playerService.playPauseSound(nextTrack);
                     }
@@ -993,6 +1055,27 @@ angular
 
 
         }]);
+ApplicationConfiguration
+    .registerModule("dev");
+
+function DevController($scope, $http, playerService) {
+
+    var vm = this,
+        streamUrl = "https://api.soundcloud.com/tracks/97097113/stream";
+
+    $http.get("modules/devpage/flicflachome.json").then(function (resp) {
+        vm.data = resp.data;
+    });
+    
+    playerService.playPauseSound({stream_url: streamUrl});
+    vm.goto = function (pos) {
+        playerService.goTo(pos);
+    };
+
+
+}
+
+angular.module("dev").controller("DevController", DevController);
 
 
 
@@ -1084,6 +1167,27 @@ angular
 
         }]);
 
+function HistoryController($scope, HistoryBackend) {
+    "use strict";
+
+    var history;
+
+    $scope.refresh = function refresh() {
+        history = HistoryBackend.getTracks();
+
+        history.then(function (response) {
+            $scope.tracks = response.data.tracks;
+        });
+    };
+    
+    $scope.$on("History", $scope.refresh);
+
+}
+
+angular
+    .module("history")
+    .controller("HistoryController", HistoryController);
+
 function FavoritesCtrl($scope, SoundcloudAPI) {
     "use strict";
 
@@ -1123,7 +1227,7 @@ function LoginCtrl($scope, $state, SoundcloudSessionManager, SoundcloudLogin) {
 angular
     .module("login")
     .controller("LoginCtrl", LoginCtrl);
-function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, SoundcloudAPI) {
+function NextTracksCtrl($scope, $log, $mdToast, NextTracks, SoundcloudAPI) {
 
     "use strict";
 
@@ -1132,12 +1236,12 @@ function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, Soundcloud
         name: "Name",
         isPrivate: true
     };
+    $scope.loop = false;
 
-
-    $scope.nextTracks = SoundcloudNextTracks.nextTracks;
+    $scope.nextTracks = NextTracks.nextTracks;
 
     $scope.saveAsPlaylist = function () {
-        SoundcloudAPI.postPlaylist($scope.playlist.name, $scope.playlist.isPrivate, SoundcloudNextTracks.getNextTracksIds())
+        SoundcloudAPI.postPlaylist($scope.playlist.name, $scope.playlist.isPrivate, NextTracks.getNextTracksIds())
             .then(
                 function (resp) {
                     $scope.editMode = false;
@@ -1161,8 +1265,12 @@ function NextTracksCtrl($scope, $log, $mdToast, SoundcloudNextTracks, Soundcloud
     };
 
     $scope.refresh = function () {
-        $scope.playlist = SoundcloudNextTracks.getNextTracks();
+        $scope.playlist = NextTracks.getNextTracks();
     };
+    
+    $scope.$watch("loop", function(current) {
+        NextTracks.setLoopMode(current);
+    });
 
 }
 
