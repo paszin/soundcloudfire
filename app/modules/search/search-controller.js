@@ -13,6 +13,15 @@ function SearchCtrl($scope, SoundcloudAPI) {
         input: ""
     };
 
+    $scope.searchUrl = function () {
+        SoundcloudAPI.getTrackFromUrl($scope.search.input).then(
+            function (response) {
+                if (response.data.kind === "track") {
+                    $scope.results = [response.data];
+                }
+            });
+    };
+
     $scope.searchTrack = function () {
         var searchrequest = SoundcloudAPI.getTrackSearch($scope.search.input);
         searchrequest.then(function (response) {

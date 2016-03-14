@@ -23,6 +23,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
         favoritesUrl = baseUrl + "/users/#{user_id}/favorites",
         //trackUrl = baseUrl + "/tracks/#{track_id}",
         trackSearchUrl = baseUrl + "/tracks",
+        resolveUrl = baseUrl + "/resolve",
         followingsUrl = baseUrl + "/users/#{user_id}/followings";
 
 
@@ -92,7 +93,7 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
 
 
     this.putPlaylist = function (playlist_id, track_ids) {
-       
+
         var ids = _.map(track_ids, function (id) {
             return {
                 id: id
@@ -157,6 +158,17 @@ function SoundcloudAPI($http, $log, $httpParamSerializerJQLike, SoundcloudCreden
             params: {
                 oauth_token: SoundcloudSessionManager.getToken(),
                 q: searchterm
+            }
+        });
+    };
+
+    this.getTrackFromUrl = function (url) {
+        return $http({
+            method: "GET",
+            url: resolveUrl,
+            params: {
+                url: url,
+                client_id: SoundcloudCredentials.getClientId()
             }
         });
     };
