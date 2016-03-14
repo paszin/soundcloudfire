@@ -41,6 +41,10 @@ angular
                     url: "/home",
                     templateUrl: "modules/core/home.html",
                     controller: "HomeController"
+                })
+            .state("dev", {
+                    url: "/dev",
+                    templateUrl: "modules/devpage/devpage.html"
                 });
         }
         ]);
