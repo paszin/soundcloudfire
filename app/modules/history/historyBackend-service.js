@@ -33,7 +33,7 @@ function HistoryBackend($http, SoundcloudSessionManager) {
         var statistics = {
             comment_count: track.comment_count,
             playback_count: track.playback_count,
-            favoritings_count: track.favoritings_count,
+            favoritings_count: track.favoritings_count
         };
         return $http({
             method: "POST",
