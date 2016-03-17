@@ -1,4 +1,4 @@
-/*global angular*/
+/*global angular, _*/
 /*jshint nomen: true */
 
 /**
@@ -10,9 +10,14 @@ function GroupsBackend($http, SoundcloudSessionManager) {
 
     "use strict";
 
-    var baseUrl;
+    var baseUrl,
+        cache;
     baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
     //baseUrl = "http://localhost:8000";
+
+    cache = {
+        groups: []
+    };
 
     /**
      * Get information
@@ -25,6 +30,9 @@ function GroupsBackend($http, SoundcloudSessionManager) {
             params: {
                 "user_id": SoundcloudSessionManager.getUserId()
             }
+        }).then(function (resp) {
+            cache.groups = resp.data.groups;
+            return resp;
         });
     };
 
@@ -56,7 +64,8 @@ function GroupsBackend($http, SoundcloudSessionManager) {
                 return resp.data.members.map(function (member) {
                     return member.sc;
                 });
-            });
+            }
+        );
     };
 
     this.addTrack = function (group_id, track_id, user_id, comment) {
@@ -71,10 +80,15 @@ function GroupsBackend($http, SoundcloudSessionManager) {
         });
     };
 
+    this.hasTrack = function (group_id, track_id) {
+        debugger;
+        return !!(_.find(_.find(cache.groups, {id: group_id}).tracks, {id: track_id}));
+    };
+
     this.deleteTrack = function (group_id, track_id) {
         return $http({
             method: "DELETE",
-            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id,
+            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id
         });
     };
 

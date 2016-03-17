@@ -8,7 +8,13 @@ function DialogController($scope, $mdDialog, GroupsBackend, SoundcloudSessionMan
     $scope.groups = [];
     GroupsBackend.getGroups().then(function (resp) {
         $scope.groups = resp.data.groups;
+        $scope.groups.map(function(group) {
+            group.preSelected = GroupsBackend.hasTrack(group.id, $scope.track_id);
+            group.selected = group.preSelected;
+            return group;
+        });
     });
+    
     $scope.hide = function () {
         $mdDialog.hide();
     };

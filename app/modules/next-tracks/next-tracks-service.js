@@ -80,6 +80,10 @@ function NextTracks() {
     this.setLoopMode = function setLoopMode(on) {
         this.loop = on;
     };
+    
+    this.isInNextTracks = function isInNextTracks(track_id) {
+        return _.find(this.nextTracks, {id: track_id});
+    }
 }
 
 angular
