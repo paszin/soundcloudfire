@@ -13,7 +13,7 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     var baseUrl;
     baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
     //baseUrl = "http://localhost:8000";
-    
+
     /**
      * Get information
      * @returns {*} 
@@ -22,7 +22,9 @@ function GroupsBackend($http, SoundcloudSessionManager) {
         return $http({
             method: "GET",
             url: baseUrl + "/groups",
-            params: {"user_id": SoundcloudSessionManager.getUserId()}
+            params: {
+                "user_id": SoundcloudSessionManager.getUserId()
+            }
         });
     };
 
