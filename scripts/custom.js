@@ -260,7 +260,9 @@ function GroupsBackend($http, SoundcloudSessionManager) {
         return $http({
             method: "GET",
             url: baseUrl + "/groups",
-            params: {"user_id": SoundcloudSessionManager.getUserId()}
+            params: {
+                "user_id": SoundcloudSessionManager.getUserId()
+            }
         });
     };
 
@@ -307,6 +309,13 @@ function GroupsBackend($http, SoundcloudSessionManager) {
         });
     };
 
+    this.deleteTrack = function (group_id, track_id) {
+        return $http({
+            method: "DELETE",
+            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id,
+        });
+    };
+
     this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
         return $http({
             method: "POST",
@@ -341,15 +350,15 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     };
 
     this.inviteToGroup = function (group_id) {
-        var code = "welcome" + group_id;
+        var code = "welcome" + group_id + Math.random().toString(36).substring(2, 10);
         return $http({
             method: "POST",
             url: baseUrl + "/invitations",
             data: {
                 code: code,
                 group_id: group_id,
-                message: "",
-                added_by_name: ""
+                message: "say hi!",
+                username: SoundcloudSessionManager.getMe().first_name
             }
         }).then(function () {
             return code;
@@ -382,7 +391,7 @@ function HistoryBackend($http, SoundcloudSessionManager) {
         var statistics = {
             comment_count: track.comment_count,
             playback_count: track.playback_count,
-            favoritings_count: track.favoritings_count,
+            favoritings_count: track.favoritings_count
         };
         return $http({
             method: "POST",
@@ -719,8 +728,14 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
         })
             .then(function (response) {
                 localStorageService.set("user_id", response.data.id);
+                localStorageService.set("me", response.data);
             }, angular.noop);
+        
         localStorageService.set("ouath_token", token);
+    };
+    
+    this.getMe = function getMe() {
+        return localStorageService.get("me");
     };
     this.getToken = function getToken() {
         return localStorageService.get("ouath_token");
@@ -868,7 +883,7 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, NextTracks) {
+                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService) {
                     $scope.full = {info: false};
                     $scope.playerService = playerService;
                     $scope.play = function (track) {
@@ -1161,7 +1176,6 @@ angular
                 });
             };
 
-            $scope.refresh();
 
             $scope.showTracks = function (group) {
                 group.moreInfos = !group.moreInfos;
@@ -1177,6 +1191,8 @@ angular
                         group.members = data;
                     });
             };
+            
+            $scope.$on("Groups", $scope.refresh);
 
         }]);
 
