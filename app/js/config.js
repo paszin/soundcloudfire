@@ -17,7 +17,8 @@ var ApplicationConfiguration = (function () {
             "LocalStorageModule",
             "chart.js",
             "fullPage.js",
-            "dndLists"
+            "dndLists",
+            "ngclipboard"
         ],
 
         // Add a new vertical module
