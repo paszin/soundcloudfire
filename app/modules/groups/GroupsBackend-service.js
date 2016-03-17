@@ -69,6 +69,13 @@ function GroupsBackend($http, SoundcloudSessionManager) {
         });
     };
 
+    this.deleteTrack = function (group_id, track_id) {
+        return $http({
+            method: "DELETE",
+            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id,
+        });
+    };
+
     this.addCommentToTrack = function (group_id, track_id, user_id, comment) {
         return $http({
             method: "POST",
