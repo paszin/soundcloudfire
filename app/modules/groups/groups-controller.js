@@ -82,7 +82,6 @@ angular
                 });
             };
 
-            $scope.refresh();
 
             $scope.showTracks = function (group) {
                 group.moreInfos = !group.moreInfos;
@@ -98,5 +97,7 @@ angular
                         group.members = data;
                     });
             };
+            
+            $scope.$on("Groups", $scope.refresh);
 
         }]);

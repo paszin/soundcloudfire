@@ -32,7 +32,7 @@
           post in group
         </md-tooltip></i>
         </md-button>
-        <md-button ng-show="track.comments" class="md-icon-button" aria-label="share" ng-click="track.showComments=!track.showComments">
+        <md-button ng-if="!!group" ng-show="track.comments" class="md-icon-button" aria-label="share" ng-click="track.showComments=!track.showComments">
             <i class="fa fa-comment">
                 <md-tooltip md-direction="top">
           comment
@@ -49,7 +49,7 @@
         </md-tooltip></i>
         </md-button>
     </md-card-actions>
-    <div ng-show="track.showComments">
+    <div ng-if="!!group" ng-show="track.showComments">
         <md-list>
             <md-list-item class="md-2-line" ng-repeat="comment in track.comments">
                 <img ng-src="{{findMember(comment.author_id).avatar_url}}" class="md-avatar" alt="-" />
