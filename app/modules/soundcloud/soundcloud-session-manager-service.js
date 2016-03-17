@@ -24,8 +24,14 @@ function SoundcloudSessionManager($http, $log, localStorageService, SoundcloudAP
         })
             .then(function (response) {
                 localStorageService.set("user_id", response.data.id);
+                localStorageService.set("me", response.data);
             }, angular.noop);
+        
         localStorageService.set("ouath_token", token);
+    };
+    
+    this.getMe = function getMe() {
+        return localStorageService.get("me");
     };
     
     /**

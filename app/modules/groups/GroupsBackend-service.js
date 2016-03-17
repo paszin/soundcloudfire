@@ -103,15 +103,15 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     };
 
     this.inviteToGroup = function (group_id) {
-        var code = "welcome" + group_id;
+        var code = "welcome" + group_id + Math.random().toString(36).substring(2, 10);
         return $http({
             method: "POST",
             url: baseUrl + "/invitations",
             data: {
                 code: code,
                 group_id: group_id,
-                message: "",
-                added_by_name: ""
+                message: "say hi!",
+                username: SoundcloudSessionManager.getMe().first_name
             }
         }).then(function () {
             return code;
