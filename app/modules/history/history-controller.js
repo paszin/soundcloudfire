@@ -1,4 +1,4 @@
-/*global angular*/
+/*global angular, _*/
 /*jslint plusplus: true*/
 
 /**

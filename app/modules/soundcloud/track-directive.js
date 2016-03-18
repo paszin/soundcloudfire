@@ -50,19 +50,17 @@ angular
                     };
 
                     $scope.findMember = function (id) {
-                        return _.find($scope.group.members, {id: id});
+                        return _.find($scope.group.members, {
+                            id: id
+                        });
                     };
-                    
-                   
-                    };
-                },
-                // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements
-                restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
+            },
+            // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements
+            restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
                 templateUrl: "modules/soundcloud/track.html"
                 // replace: true,
                 // transclude: true,
                 // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
                 //link ($scope, iElm, iAttrs, controller) {}
             };
-        }
-    ]);
+    }]);
