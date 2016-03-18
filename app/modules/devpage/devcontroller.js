@@ -12,7 +12,19 @@ function DevController($scope, $http, playerService) {
         vm.data = resp.data;
     });
     
-    playerService.playPauseSound({stream_url: streamUrl});
+    $http.get("modules/devpage/flicflactrack.json").then(function (resp) {
+        vm.track = resp.data;
+    });
+
+    vm.loop = function () {
+        //find current beat
+        //wait until end and then go back
+        var currentTime = playerService.audio.stream.progress * vm.data.track.duration;
+    };
+
+    playerService.playPauseSound({
+        stream_url: streamUrl
+    });
     vm.goto = function (pos) {
         playerService.goTo(pos);
     };
