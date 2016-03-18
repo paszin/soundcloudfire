@@ -18,12 +18,13 @@ function HistoryBackend($http, SoundcloudSessionManager) {
      * Get information
      * @returns {*} 
      */
-    this.getTracks = function () {
+    this.getTracks = function (offset) {
         return $http({
             method: "GET",
             url: baseUrl + "/history",
             params: {
-                "user_id": SoundcloudSessionManager.getUserId()
+                "user_id": SoundcloudSessionManager.getUserId(),
+                "offset": offset
             }
         });
     };

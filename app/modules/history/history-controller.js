@@ -11,16 +11,29 @@
 function HistoryController($scope, HistoryBackend) {
     "use strict";
 
-    var history;
+    var history,
+        offset = 0;
+    $scope.tracks = [];
+    $scope.hasMoreTracks = false;
 
     $scope.refresh = function refresh() {
-        history = HistoryBackend.getTracks();
+        $scope.hasMoreTracks = false;
+        offset = 0;
+        $scope.tracks = [];
+        $scope.loadMore();
+    };
+
+    $scope.loadMore = function loadMore() {
+        history = HistoryBackend.getTracks(offset);
 
         history.then(function (response) {
-            $scope.tracks = response.data.tracks;
+            $scope.tracks = _.concat($scope.tracks, response.data.tracks);
+            offset = response.data.offset + response.data.tracks.length;
+            $scope.hasMoreTracks = response.data.nextpath !== null;
         });
+
     };
-    
+
     $scope.$on("History", $scope.refresh);
 
 }
