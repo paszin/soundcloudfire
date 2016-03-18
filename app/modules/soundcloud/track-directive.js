@@ -27,22 +27,28 @@ angular
                     };
                     if ($scope.group && $scope.track) {
                         $scope.track.showComments = false;
-                        $scope.addComment = function () {
-                        $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
-                        GroupsBackend.addCommentToTrack($scope.group.id,
-                                                        $scope.track.id,
-                                                        SoundcloudSessionManager.getUserId(),
-                                                        $scope.track.newcomment);
                         $scope.track.newcomment = "";
+                        $scope.addComment = function () {
+                            $scope.track.comments.push({
+                                text: $scope.track.newcomment,
+                                author_id: SoundcloudSessionManager.getUserId(),
+                                added_at: moment()
+                            });
+                            GroupsBackend.addCommentToTrack($scope.group.id,
+                                $scope.track.id,
+                                SoundcloudSessionManager.getUserId(),
+                                $scope.track.newcomment);
+                            $scope.track.newcomment = "";
+                        };
                     }
-                    
-                    
+
+
                     //$scope.showComments = true;
-                   
+
                     $scope.addToGroup = function () {
                         GroupDialog.show($scope.track.id);
                     };
-                    
+
                     $scope.findMember = function (id) {
                         return _.find($scope.group.members, {id: id});
                     };

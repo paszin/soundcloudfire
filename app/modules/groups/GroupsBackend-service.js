@@ -81,7 +81,6 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     };
 
     this.hasTrack = function (group_id, track_id) {
-        debugger;
         return !!(_.find(_.find(cache.groups, {id: group_id}).tracks, {id: track_id}));
     };
 
