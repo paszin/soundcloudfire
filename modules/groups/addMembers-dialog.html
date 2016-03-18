@@ -10,12 +10,16 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <div class="md-dialog-content">
-                Share this url with everybody you would like to invite
-                <md-input-container class="md-block">
-                    <input disabled="true" ng-model="url"></input>
-          </md-input-container>
+            <div class="md-dialog-content" layout-margin>
+                <p>Share this url with everybody you would like to invite</p>
+                <p style="color: grey">{{url}}</p>
+                <div layout="row" layout-align="center center">
+                    <md-button class="md-primary md-hue-3" flex="100" ngclipboard data-clipboard-text="{{url}}">
+                    <i class="fa fa-clipboard"></i> copy
+                </md-button></div>
+                
             </div>
+    
         </md-dialog-content>
     </form>
 </md-dialog>

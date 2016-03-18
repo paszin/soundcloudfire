@@ -13,7 +13,8 @@ var ApplicationConfiguration = (function () {
             "LocalStorageModule",
             "chart.js",
             "fullPage.js",
-            "dndLists"
+            "dndLists",
+            "ngclipboard"
         ],
         registerModule = function (moduleName) {
             angular
@@ -212,7 +213,13 @@ function DialogController($scope, $mdDialog, GroupsBackend, SoundcloudSessionMan
     $scope.groups = [];
     GroupsBackend.getGroups().then(function (resp) {
         $scope.groups = resp.data.groups;
+        $scope.groups.map(function(group) {
+            group.preSelected = GroupsBackend.hasTrack(group.id, $scope.track_id);
+            group.selected = group.preSelected;
+            return group;
+        });
     });
+    
     $scope.hide = function () {
         $mdDialog.hide();
     };
@@ -254,8 +261,13 @@ function GroupsBackend($http, SoundcloudSessionManager) {
 
     "use strict";
 
-    var baseUrl;
+    var baseUrl,
+        cache;
     baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
+
+    cache = {
+        groups: []
+    };
     this.getGroups = function () {
         return $http({
             method: "GET",
@@ -263,6 +275,9 @@ function GroupsBackend($http, SoundcloudSessionManager) {
             params: {
                 "user_id": SoundcloudSessionManager.getUserId()
             }
+        }).then(function (resp) {
+            cache.groups = resp.data.groups;
+            return resp;
         });
     };
 
@@ -294,7 +309,8 @@ function GroupsBackend($http, SoundcloudSessionManager) {
                 return resp.data.members.map(function (member) {
                     return member.sc;
                 });
-            });
+            }
+        );
     };
 
     this.addTrack = function (group_id, track_id, user_id, comment) {
@@ -309,10 +325,15 @@ function GroupsBackend($http, SoundcloudSessionManager) {
         });
     };
 
+    this.hasTrack = function (group_id, track_id) {
+        debugger;
+        return !!(_.find(_.find(cache.groups, {id: group_id}).tracks, {id: track_id}));
+    };
+
     this.deleteTrack = function (group_id, track_id) {
         return $http({
             method: "DELETE",
-            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id,
+            url: baseUrl + "/groups/" + group_id + "/tracks/" + track_id
         });
     };
 
@@ -457,6 +478,10 @@ function NextTracks() {
     this.setLoopMode = function setLoopMode(on) {
         this.loop = on;
     };
+    
+    this.isInNextTracks = function isInNextTracks(track_id) {
+        return _.find(this.nextTracks, {id: track_id});
+    }
 }
 
 angular
@@ -919,8 +944,16 @@ angular
                     $scope.addToPlayNext = function (track) {
                         NextTracks.addTrack(track);
                     };
-                    
-                    $scope.track.showComments = false;
+                    if ($scope.group && $scope.track) {
+                        $scope.track.showComments = false;
+                        $scope.addComment = function () {
+                        $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
+                        GroupsBackend.addCommentToTrack($scope.group.id,
+                                                        $scope.track.id,
+                                                        SoundcloudSessionManager.getUserId(),
+                                                        $scope.track.newcomment);
+                        $scope.track.newcomment = "";
+                    }
                    
                     $scope.addToGroup = function () {
                         GroupDialog.show($scope.track.id);
@@ -930,13 +963,7 @@ angular
                         return _.find($scope.group.members, {id: id});
                     };
                     
-                    $scope.addComment = function () {
-                        $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
-                        GroupsBackend.addCommentToTrack($scope.group.id,
-                                                        $scope.track.id,
-                                                        SoundcloudSessionManager.getUserId(),
-                                                        $scope.track.newcomment);
-                        $scope.track.newcomment = "";
+                   
                     };
                 },
                 restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
@@ -1095,7 +1122,17 @@ function DevController($scope, $http, playerService) {
         vm.data = resp.data;
     });
     
-    playerService.playPauseSound({stream_url: streamUrl});
+    $http.get("modules/devpage/flicflactrack.json").then(function (resp) {
+        vm.track = resp.data;
+    });
+
+    vm.loop = function () {
+        var currentTime = playerService.audio.stream.progress * vm.data.track.duration;
+    };
+
+    playerService.playPauseSound({
+        stream_url: streamUrl
+    });
     vm.goto = function (pos) {
         playerService.goTo(pos);
     };
