@@ -25,8 +25,17 @@ angular
                     $scope.addToPlayNext = function (track) {
                         NextTracks.addTrack(track);
                     };
+                    if ($scope.group && $scope.track) {
+                        $scope.track.showComments = false;
+                        $scope.addComment = function () {
+                        $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
+                        GroupsBackend.addCommentToTrack($scope.group.id,
+                                                        $scope.track.id,
+                                                        SoundcloudSessionManager.getUserId(),
+                                                        $scope.track.newcomment);
+                        $scope.track.newcomment = "";
+                    }
                     
-                    $scope.track.showComments = false;
                     
                     //$scope.showComments = true;
                    
@@ -38,13 +47,7 @@ angular
                         return _.find($scope.group.members, {id: id});
                     };
                     
-                    $scope.addComment = function () {
-                        $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
-                        GroupsBackend.addCommentToTrack($scope.group.id,
-                                                        $scope.track.id,
-                                                        SoundcloudSessionManager.getUserId(),
-                                                        $scope.track.newcomment);
-                        $scope.track.newcomment = "";
+                   
                     };
                 },
                 // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements
