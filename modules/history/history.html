@@ -4,7 +4,7 @@
     </md-toolbar>
 
     <md-list>
-        <div ng-repeat="track in tracks">
+        <div ng-repeat="track in tracks track by $index">
             <div layout="column">
                 <md-list-item class="md-2-line">
                     <img ng-src="{{track.sc.artwork_url}}" class="md-avatar" />
@@ -30,4 +30,6 @@
             </div>
         </div>
     </md-list>
+<md-list-item ng-show="hasMoreTracks"><md-button layout="row" flex="100" ng-click="loadMore()">load more tracks</md-button>
+</md-list-item>
 </div>

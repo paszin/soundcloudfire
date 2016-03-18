@@ -326,7 +326,6 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     };
 
     this.hasTrack = function (group_id, track_id) {
-        debugger;
         return !!(_.find(_.find(cache.groups, {id: group_id}).tracks, {id: track_id}));
     };
 
@@ -397,12 +396,13 @@ function HistoryBackend($http, SoundcloudSessionManager) {
 
     var baseUrl;
     baseUrl = "http://ec2-54-201-43-157.us-west-2.compute.amazonaws.com:8000";
-    this.getTracks = function () {
+    this.getTracks = function (offset) {
         return $http({
             method: "GET",
             url: baseUrl + "/history",
             params: {
-                "user_id": SoundcloudSessionManager.getUserId()
+                "user_id": SoundcloudSessionManager.getUserId(),
+                "offset": offset
             }
         });
     };
@@ -946,31 +946,35 @@ angular
                     };
                     if ($scope.group && $scope.track) {
                         $scope.track.showComments = false;
-                        $scope.addComment = function () {
-                        $scope.track.comments.push({text: $scope.track.newcomment, author_id: SoundcloudSessionManager.getUserId(), added_at: moment()});
-                        GroupsBackend.addCommentToTrack($scope.group.id,
-                                                        $scope.track.id,
-                                                        SoundcloudSessionManager.getUserId(),
-                                                        $scope.track.newcomment);
                         $scope.track.newcomment = "";
+                        $scope.addComment = function () {
+                            $scope.track.comments.push({
+                                text: $scope.track.newcomment,
+                                author_id: SoundcloudSessionManager.getUserId(),
+                                added_at: moment()
+                            });
+                            GroupsBackend.addCommentToTrack($scope.group.id,
+                                $scope.track.id,
+                                SoundcloudSessionManager.getUserId(),
+                                $scope.track.newcomment);
+                            $scope.track.newcomment = "";
+                        };
                     }
-                   
+
                     $scope.addToGroup = function () {
                         GroupDialog.show($scope.track.id);
                     };
-                    
+
                     $scope.findMember = function (id) {
-                        return _.find($scope.group.members, {id: id});
+                        return _.find($scope.group.members, {
+                            id: id
+                        });
                     };
-                    
-                   
-                    };
-                },
-                restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
+            },
+            restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
                 templateUrl: "modules/soundcloud/track.html"
             };
-        }
-    ]);
+    }]);
 
 angular
     .module("core")
@@ -1236,16 +1240,29 @@ angular
 function HistoryController($scope, HistoryBackend) {
     "use strict";
 
-    var history;
+    var history,
+        offset = 0;
+    $scope.tracks = [];
+    $scope.hasMoreTracks = false;
 
     $scope.refresh = function refresh() {
-        history = HistoryBackend.getTracks();
+        $scope.hasMoreTracks = false;
+        offset = 0;
+        $scope.tracks = [];
+        $scope.loadMore();
+    };
+
+    $scope.loadMore = function loadMore() {
+        history = HistoryBackend.getTracks(offset);
 
         history.then(function (response) {
-            $scope.tracks = response.data.tracks;
+            $scope.tracks = _.concat($scope.tracks, response.data.tracks);
+            offset = response.data.offset + response.data.tracks.length;
+            $scope.hasMoreTracks = response.data.nextpath !== null;
         });
+
     };
-    
+
     $scope.$on("History", $scope.refresh);
 
 }
