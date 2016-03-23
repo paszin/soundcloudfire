@@ -403,6 +403,15 @@ module.exports = function (grunt) {
                 "svgmin"
             ]
         },
+ 
+        uglify: {
+            dist: {
+                files: {
+                    "<%= yeoman.dist %>/scripts/vendor.min.js": ["<%= yeoman.dist %>/scripts/vendor.js"],
+                    "<%= yeoman.dist %>/scripts/custom.min.js": ["<%= yeoman.dist %>/scripts/custom.js"]
+            }
+        }
+    },
 
         //rewriting font url
         cssUrlRewrite: {
@@ -498,6 +507,7 @@ module.exports = function (grunt) {
         "usemin",
         "htmlmin",
         "comments:dist",
+        "uglify",
         "copy:distindex",
         "cssUrlRewrite"
     ]);
