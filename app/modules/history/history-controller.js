@@ -8,7 +8,7 @@
  * @requires ng.$scope
  */
 
-function HistoryController($scope, HistoryBackend) {
+function HistoryController($scope, HistoryBackend, NextTracks) {
     "use strict";
 
     var history,
@@ -33,6 +33,11 @@ function HistoryController($scope, HistoryBackend) {
         });
 
     };
+
+    $scope.addToPlayNext = function (track) {
+        NextTracks.addTrack(track);
+    };
+
 
     $scope.$on("History", $scope.refresh);
 
