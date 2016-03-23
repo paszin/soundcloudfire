@@ -379,7 +379,14 @@ module.exports = function (grunt) {
                 cwd: "<%= yeoman.app %>/css",
                 dest: ".tmp/css/",
                 src: "**/*.css"
-            }
+            },
+            distindex: {
+                files: [{
+                    expand: true,
+                    cwd: "template",
+                    src: 'index.html',
+                    dest: '<%= yeoman.dist %>',
+            }]}
         },
 
         // Run some tasks in parallel to speed up the build process
@@ -491,6 +498,7 @@ module.exports = function (grunt) {
         "usemin",
         "htmlmin",
         "comments:dist",
+        "copy:distindex",
         "cssUrlRewrite"
     ]);
 
