@@ -17,8 +17,10 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService) {
-                    $scope.full = {info: false};
+                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, GroupDialog) {
+                    $scope.full = {
+                        info: false
+                    };
                     $scope.playerService = playerService;
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
@@ -29,6 +31,11 @@ angular
                         playerService.goTo((event.offsetX) / element.clientWidth);
 
                     };
+
+                    $scope.addToGroup = function () {
+                        GroupDialog.show($scope.track.id);
+                    };
+
 
                 },
                 // require: "ngModel", // Array = multiple requires, ? = optional, ^ = check parent elements
