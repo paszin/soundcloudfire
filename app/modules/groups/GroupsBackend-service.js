@@ -143,6 +143,13 @@ function GroupsBackend($http, SoundcloudSessionManager) {
             return code;
         });
     };
+
+    this.deleteMember = function (group_id) {
+        return $http({
+            method: "DELETE",
+            url: baseUrl + "/groups/" + group_id + "/members/" + SoundcloudSessionManager.getUserId()
+        });
+    };
 }
 
 

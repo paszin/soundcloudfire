@@ -75,6 +75,10 @@ angular
                 //GroupsBackend.inviteToGroup(group_id);
             };
 
+            $scope.leaveGroup = function (group_id) {
+                GroupsBackend.deleteMember(group_id);
+            };
+
 
             $scope.refresh = function () {
                 GroupsBackend.getGroups().then(function (resp) {
