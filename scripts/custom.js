@@ -326,7 +326,11 @@ function GroupsBackend($http, SoundcloudSessionManager) {
     };
 
     this.hasTrack = function (group_id, track_id) {
-        return !!(_.find(_.find(cache.groups, {id: group_id}).tracks, {id: track_id}));
+        return !!(_.find(_.find(cache.groups, {
+            id: group_id
+        }).tracks, {
+            id: track_id
+        }));
     };
 
     this.deleteTrack = function (group_id, track_id) {
@@ -382,6 +386,13 @@ function GroupsBackend($http, SoundcloudSessionManager) {
             }
         }).then(function () {
             return code;
+        });
+    };
+
+    this.deleteMember = function (group_id) {
+        return $http({
+            method: "DELETE",
+            url: baseUrl + "/groups/" + group_id + "/members/" + SoundcloudSessionManager.getUserId()
         });
     };
 }
@@ -908,8 +919,10 @@ angular
                 scope: {
                     track: "=track"
                 }, // {} = isolate, true = child, false/undefined = no change
-                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService) {
-                    $scope.full = {info: false};
+                controller: function controller($rootScope, $scope, $element, $attrs, $transclude, playerService, GroupDialog) {
+                    $scope.full = {
+                        info: false
+                    };
                     $scope.playerService = playerService;
                     $scope.play = function (track) {
                         playerService.playPauseSound(track);
@@ -920,6 +933,11 @@ angular
                         playerService.goTo((event.offsetX) / element.clientWidth);
 
                     };
+
+                    $scope.addToGroup = function () {
+                        GroupDialog.show($scope.track.id);
+                    };
+
 
                 },
                 restrict: "E", // E = Element, A = Attribute, C = Class, M = Comment
@@ -1210,6 +1228,10 @@ angular
                 });
             };
 
+            $scope.leaveGroup = function (group_id) {
+                GroupsBackend.deleteMember(group_id);
+            };
+
 
             $scope.refresh = function () {
                 GroupsBackend.getGroups().then(function (resp) {
@@ -1232,12 +1254,12 @@ angular
                         group.members = data;
                     });
             };
-            
+
             $scope.$on("Groups", $scope.refresh);
 
         }]);
 
-function HistoryController($scope, HistoryBackend) {
+function HistoryController($scope, HistoryBackend, NextTracks) {
     "use strict";
 
     var history,
@@ -1262,6 +1284,11 @@ function HistoryController($scope, HistoryBackend) {
         });
 
     };
+
+    $scope.addToPlayNext = function (track) {
+        NextTracks.addTrack(track);
+    };
+
 
     $scope.$on("History", $scope.refresh);
 
